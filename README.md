@@ -1,18 +1,21 @@
 # nestjs-skills
 
-`nestjs-skills` is a stripped-down fork that keeps a reusable engineering workflow while the skill library is being reshaped around `NestJS`, `Prisma`, `Clean Architecture`, and `SOLID` principles.
+`nestjs-skills` is a unified skill library for `Claude Code` and `Codex`. It keeps a backend-first workflow for `NestJS`, `Prisma`, `Clean Architecture`, and `SOLID`, while also shipping a prefixed Nuxt/Vuetify skill set for frontend-specific work.
 
-This repository is no longer trying to be a general-purpose upstream mirror. The current goal is to preserve only the workflow core and the minimum bootstrap needed for `Claude Code` and `Codex`.
+This repository is no longer an upstream mirror. It is the canonical plugin that now consolidates:
+- a backend-first workflow core
+- NestJS-specific auditing skills
+- Nuxt/Vuetify-specific prefixed skills
+- shared Claude and Codex integration files
 
-## Current Status
+## Skill Model
 
 - Supported harnesses: `Claude Code` and `Codex`
-- Current focus: planning, execution, debugging, review, and skill-authoring workflows
-- Next phase: replace generic upstream-oriented guidance with stack-specific NestJS guidance
+- Default architecture bias: `NestJS + Prisma + Clean Architecture + SOLID`
+- Nuxt-specific work stays explicit through `nuxt-*` skill names
 
-## Included Skills
+### Core workflow skills
 
-- `using-nestjs-skills`
 - `brainstorming`
 - `writing-plans`
 - `executing-plans`
@@ -27,13 +30,28 @@ This repository is no longer trying to be a general-purpose upstream mirror. The
 - `finishing-a-development-branch`
 - `writing-skills`
 
+### NestJS-specific skills
+
+- `nestjs-audit-http-tests`
+- `nestjs-audit-prisma-repositories`
+
+### Nuxt-specific skills
+
+- `nuxt-think`
+- `nuxt-plan`
+- `nuxt-catalog`
+- `nuxt-audit`
+- `nuxt-test`
+
 ## Repository Layout
 
-- `skills/` contains the reusable skill library
-- `agents/` contains auxiliary agent prompts
-- `.claude-plugin/` and `hooks/` contain the Claude bootstrap
+- `skills/` contains the unified skill library exposed to Claude and Codex
+- `agents/` contains auxiliary review and auditing agents
+- `.claude-plugin/` exposes the skill library to Claude Code
 - `.codex/INSTALL.md` documents the Codex setup path
 - `docs/plans/` is the default location for generated plans and design artifacts
+- `scripts/generate-catalog.ts` provides the fallback Nuxt component catalog generator
+- `tests/` covers manifests, skill tree layout, and the catalog generator
 
 ## Codex Setup
 
@@ -52,15 +70,30 @@ Then restart Codex.
 This repository keeps the files needed for a local Claude plugin workflow:
 
 - `.claude-plugin/plugin.json`
-- `hooks/hooks.json`
-- `hooks/session-start`
 
-Point your Claude local plugin setup at this repository and make sure the hook is enabled so `using-nestjs-skills` is injected at session start.
+Point your Claude local plugin setup at this repository. The plugin manifest exposes `./skills` directly, without bootstrap hooks.
+
+## Nuxt Catalog Workflow
+
+The Nuxt domain ships a local catalog workflow:
+
+```bash
+npm install
+npm run catalog
+npm run catalog:validate
+```
+
+This fallback workflow writes:
+- `components.meta.json`
+- `.generated/component-catalog/components.meta.json`
+
+If a target Nuxt project already has native catalog commands, the `nuxt-catalog` skill should prefer them.
 
 ## Notes
 
-- This fork intentionally removed marketplace, OpenCode, Cursor, Gemini, Copilot, and upstream contribution scaffolding.
-- The repository is expected to keep changing while the NestJS-specific skill set is introduced.
+- `brainstorming` and `writing-plans` are intentionally backend-first. For Nuxt ideation and planning, use `nuxt-think` and `nuxt-plan`.
+- `executing-plans` absorbs the former Nuxt dependency-aware execution pattern and can follow explicit execution groups.
+- This fork intentionally removed upstream bootstrap hooks and unsupported harness integrations.
 
 ## License
 

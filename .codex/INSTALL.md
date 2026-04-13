@@ -1,6 +1,6 @@
 # Installing nestjs-skills for Codex
 
-Enable `nestjs-skills` in Codex via native skill discovery.
+Enable the unified `nestjs-skills` plugin in Codex via native skill discovery.
 
 ## Prerequisites
 
@@ -34,6 +34,11 @@ ls -la ~/.agents/skills/nestjs-skills
 ```
 
 You should see a symlink (or junction on Windows) pointing to your `nestjs-skills` directory.
+
+The linked skill tree exposes:
+- backend-first core skills such as `brainstorming`, `writing-plans`, and `executing-plans`
+- NestJS-specific skills such as `nestjs-audit-http-tests`
+- Nuxt-specific skills such as `nuxt-catalog`
 
 ## Updating
 

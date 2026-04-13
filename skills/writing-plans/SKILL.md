@@ -1,50 +1,54 @@
 ---
 name: writing-plans
-description: Use when you have a spec or requirements for a multi-step task, before touching code
+description: Use after design approval to write a backend implementation plan focused on NestJS, Prisma, Clean Architecture, and SOLID.
 ---
 
 # Writing Plans
 
 ## Overview
 
-Write comprehensive implementation plans assuming the engineer has zero context for our codebase and questionable taste. Document everything they need to know: which files to touch for each task, code, testing, docs they might need to check, how to test it. Give them the whole plan as bite-sized tasks. DRY. YAGNI. TDD. Frequent commits.
+Write implementation plans for backend work assuming the engineer has zero context for the codebase. The plan must force good boundaries, make the NestJS and Prisma structure explicit, and leave little room for architecture drift.
 
-Assume they are a skilled developer, but know almost nothing about our toolset or problem domain. Assume they don't know good test design very well.
+Assume the engineer is competent but does not know the domain, layering rules, or test strategy.
 
 **Announce at start:** "I'm using the writing-plans skill to create the implementation plan."
 
-**Context:** This should be run in a dedicated worktree (created by brainstorming skill).
-
 **Save plans to:** `docs/plans/YYYY-MM-DD-<feature-name>.md`
-- (User preferences for plan location override this default)
+- User preferences override this default.
 
 ## Scope Check
 
-If the spec covers multiple independent subsystems, it should have been broken into sub-project specs during brainstorming. If it wasn't, suggest breaking this into separate plans — one per subsystem. Each plan should produce working, testable software on its own.
+If the approved spec still covers multiple independent subsystems, split it before writing the plan. Each plan should produce working, testable software on its own.
 
-## File Structure
+## File Structure First
 
-Before defining tasks, map out which files will be created or modified and what each one is responsible for. This is where decomposition decisions get locked in.
+Before writing tasks, map the file structure and responsibility of each file.
 
-- Design units with clear boundaries and well-defined interfaces. Each file should have one clear responsibility.
-- You reason best about code you can hold in context at once, and your edits are more reliable when files are focused. Prefer smaller, focused files over large ones that do too much.
-- Files that change together should live together. Split by responsibility, not by technical layer.
-- In existing codebases, follow established patterns. If the codebase uses large files, don't unilaterally restructure - but if a file you're modifying has grown unwieldy, including a split in the plan is reasonable.
+- Make the boundary explicit:
+  - controller or transport
+  - DTOs and validation
+  - application or use-case layer
+  - domain contracts or policies
+  - infrastructure adapters and Prisma repositories
+  - tests per boundary
+- Keep Prisma outside controllers and use-cases unless the existing codebase already violates this and the plan includes the cleanup.
+- In existing codebases, follow established patterns when they are sound. If the current structure is muddy, plan the smallest refactor that restores a clean boundary.
 
-This structure informs the task decomposition. Each task should produce self-contained changes that make sense independently.
+This file map drives the task decomposition.
 
-## Bite-Sized Task Granularity
+## Task Granularity
 
-**Each step is one action (2-5 minutes):**
-- "Write the failing test" - step
-- "Run it to make sure it fails" - step
-- "Implement the minimal code to make the test pass" - step
-- "Run the tests and make sure they pass" - step
-- "Commit" - step
+Each step should be a small action, typically 2-5 minutes:
+
+- write the failing HTTP or use-case test
+- run it to prove it fails
+- implement the minimal controller, use-case, or repository code
+- rerun the test
+- commit
 
 ## Plan Document Header
 
-**Every plan MUST start with this header:**
+Every plan MUST start with this header:
 
 ```markdown
 # [Feature Name] Implementation Plan
@@ -53,7 +57,7 @@ This structure informs the task decomposition. Each task should produce self-con
 
 **Goal:** [One sentence describing what this builds]
 
-**Architecture:** [2-3 sentences about approach]
+**Architecture:** [2-3 sentences about NestJS modules, boundaries, and Prisma ownership]
 
 **Tech Stack:** [Key technologies/libraries]
 
@@ -63,90 +67,123 @@ This structure informs the task decomposition. Each task should produce self-con
 ## Task Structure
 
 ````markdown
-### Task N: [Component Name]
+### Task N: [Use-case or Slice Name]
 
 **Files:**
-- Create: `exact/path/to/file.py`
-- Modify: `exact/path/to/existing.py:123-145`
-- Test: `tests/exact/path/to/test.py`
+- Create: `src/modules/...`
+- Modify: `src/...`
+- Test: `test/...` or `src/...spec.ts`
 
 - [ ] **Step 1: Write the failing test**
 
-```python
-def test_specific_behavior():
-    result = function(input)
-    assert result == expected
+```ts
+describe('CreateInvoiceUseCase', () => {
+  it('rejects duplicate external references', async () => {
+    await expect(
+      sut.execute({ externalReference: 'dup-1' }),
+    ).rejects.toThrow(DuplicateInvoiceReferenceError)
+  })
+})
 ```
 
 - [ ] **Step 2: Run test to verify it fails**
 
-Run: `pytest tests/path/test.py::test_name -v`
-Expected: FAIL with "function not defined"
+Run: `pnpm test -- --runInBand path/to/spec`
+Expected: FAIL with the missing behavior or missing provider error that proves the test is real
 
 - [ ] **Step 3: Write minimal implementation**
 
-```python
-def function(input):
-    return expected
+```ts
+@Injectable()
+export class CreateInvoiceUseCase {
+  constructor(
+    @Inject(INVOICE_REPOSITORY)
+    private readonly invoiceRepository: InvoiceRepository,
+  ) {}
+
+  async execute(input: CreateInvoiceInput): Promise<CreateInvoiceOutput> {
+    const existing = await this.invoiceRepository.findByExternalReference(
+      input.externalReference,
+    )
+
+    if (existing) {
+      throw new DuplicateInvoiceReferenceError(input.externalReference)
+    }
+
+    return this.invoiceRepository.create(input)
+  }
+}
 ```
 
 - [ ] **Step 4: Run test to verify it passes**
 
-Run: `pytest tests/path/test.py::test_name -v`
+Run: `pnpm test -- --runInBand path/to/spec`
 Expected: PASS
 
 - [ ] **Step 5: Commit**
 
-```bash
-git add tests/path/test.py src/path/file.py
-git commit -m "feat: add specific feature"
-```
+Run: `git add <exact files> && git commit -m "feat: implement [task name]"`
 ````
 
 ## No Placeholders
 
-Every step must contain the actual content an engineer needs. These are **plan failures** — never write them:
-- "TBD", "TODO", "implement later", "fill in details"
-- "Add appropriate error handling" / "add validation" / "handle edge cases"
-- "Write tests for the above" (without actual test code)
-- "Similar to Task N" (repeat the code — the engineer may be reading tasks out of order)
-- Steps that describe what to do without showing how (code blocks required for code steps)
-- References to types, functions, or methods not defined in any task
+These are plan failures:
+
+- `TBD`, `TODO`, `implement later`
+- `Add validation`, `handle edge cases`, `add proper error handling`
+- `Write tests for the above` without actual test code
+- `Similar to Task N`
+- references to types, functions, or methods not defined in any task
+- `Create DTO/use-case/repository as needed` without exact names and locations
+- `Use Prisma here` without defining which adapter or repository owns that access
+
+## Planning Rules For This Repository
+
+- Default to a task sequence that protects boundaries:
+  1. contracts and tests
+  2. use-cases and domain services
+  3. repositories and Prisma adapters
+  4. NestJS transport wiring
+  5. verification and review
+- If the request is HTTP-facing, include controller, DTO, guard, filter or interceptor, and route-level verification tasks.
+- If the request is persistence-heavy, include repository contracts, Prisma adapters, fixture strategy, and integration-test tasks.
+- If the request spans both, make dependency direction explicit so application logic does not depend on Prisma or NestJS transport details.
+- If the plan is better expressed as execution groups with dependencies, include `## Grupos de Execucao` so `executing-plans` can run in group mode.
 
 ## Remember
-- Exact file paths always
-- Complete code in every step — if a step changes code, show the code
-- Exact commands with expected output
+
+- exact file paths always
+- complete code in every code-changing step
+- exact commands with expected output
 - DRY, YAGNI, TDD, frequent commits
+- the plan should read like a Clean Architecture implementation guide, not a generic checklist
 
 ## Self-Review
 
-After writing the complete plan, look at the spec with fresh eyes and check the plan against it. This is a checklist you run yourself — not a subagent dispatch.
+After writing the complete plan, check:
 
-**1. Spec coverage:** Skim each section/requirement in the spec. Can you point to a task that implements it? List any gaps.
+1. **Spec coverage:** every approved requirement maps to one or more tasks
+2. **Placeholder scan:** no red-flag placeholders remain
+3. **Type consistency:** later tasks use the same names and signatures defined earlier
+4. **Boundary consistency:** controllers stay thin, use-cases stay framework-light, Prisma stays in infrastructure tasks
+5. **Test coverage:** the plan proves behavior at HTTP, application, and persistence levels when relevant
 
-**2. Placeholder scan:** Search your plan for red flags — any of the patterns from the "No Placeholders" section above. Fix them.
-
-**3. Type consistency:** Do the types, method signatures, and property names you used in later tasks match what you defined in earlier tasks? A function called `clearLayers()` in Task 3 but `clearFullLayers()` in Task 7 is a bug.
-
-If you find issues, fix them inline. No need to re-review — just fix and move on. If you find a spec requirement with no task, add the task.
+Fix issues inline before handing off the plan.
 
 ## Execution Handoff
 
-After saving the plan, offer execution choice:
+After saving the plan, offer the execution choice:
 
 **"Plan complete and saved to `docs/plans/<filename>.md`. Two execution options:**
 
 **1. Subagent-Driven (recommended)** - I dispatch a fresh subagent per task, review between tasks, fast iteration
 
-**2. Inline Execution** - Execute tasks in this session using executing-plans, batch execution with checkpoints
+**2. Inline Execution** - Execute tasks in this session using executing-plans, with checkpoints and dependency-aware group execution when the plan defines groups
 
 **Which approach?"**
 
-**If Subagent-Driven chosen:**
-- **REQUIRED SUB-SKILL:** Use nestjs-skills:subagent-driven-development
-- Fresh subagent per task + two-stage review
+If Subagent-Driven is chosen:
+- use `nestjs-skills:subagent-driven-development`
 
-**If Inline Execution chosen:**
-- **REQUIRED SUB-SKILL:** Use nestjs-skills:executing-plans
-- Batch execution with checkpoints for review
+If Inline Execution is chosen:
+- use `nestjs-skills:executing-plans`

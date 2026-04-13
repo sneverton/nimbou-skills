@@ -1,7 +1,8 @@
 {
   "name": "nestjs-skills",
-  "description": "Workflow-first skill library for Claude Code, being adapted for NestJS, Prisma, Clean Architecture, and SOLID.",
+  "description": "Unified Claude Code skill library with a backend-first NestJS core and prefixed Nuxt/Vuetify frontend skills.",
   "version": "0.1.0",
+  "skills": "./skills",
   "author": {
     "name": "nestjs-skills"
   },
@@ -12,6 +13,10 @@
     "prisma",
     "clean-architecture",
     "solid",
-    "workflow"
+    "workflow",
+    "nuxt",
+    "vuetify",
+    "frontend",
+    "backend"
   ]
 }

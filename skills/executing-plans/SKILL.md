@@ -1,70 +1,100 @@
 ---
 name: executing-plans
-description: Use when you have a written implementation plan to execute in a separate session with review checkpoints
+description: Use when you have an approved implementation plan and need to execute it with review checkpoints, including dependency-aware parallel groups when the plan defines them.
 ---
 
 # Executing Plans
 
 ## Overview
 
-Load plan, review critically, execute all tasks, report when complete.
+Load the plan, review it critically, detect whether it is task-driven or group-driven, then execute it without guessing.
 
 **Announce at start:** "I'm using the executing-plans skill to implement this plan."
 
-**Note:** This workflow works much better with access to subagents. If subagents are available, use `nestjs-skills:subagent-driven-development` instead of this skill.
+If subagents are available, `nestjs-skills:subagent-driven-development` is still the better default. Use this skill when execution should stay inline in the current session.
 
-## The Process
+## Step 1: Load and Review
 
-### Step 1: Load and Review Plan
-1. Read plan file
-2. Review critically - identify any questions or concerns about the plan
-3. If concerns: Raise them with your human partner before starting
-4. If no concerns: Create TodoWrite and proceed
+1. Read the plan file
+2. Review it critically
+3. Raise any blockers or missing assumptions before starting
+4. Detect execution shape:
+   - **Task mode:** traditional ordered tasks with checklists
+   - **Group mode:** explicit execution groups with dependency order and parallelizable items
+5. Create TodoWrite and proceed only when the plan is executable
 
-### Step 2: Execute Tasks
+## Step 2: Execute
+
+### Task mode
 
 For each task:
-1. Mark as in_progress
-2. Follow each step exactly (plan has bite-sized steps)
-3. Run verifications as specified
-4. Mark as completed
 
-### Step 3: Complete Development
+1. Mark it as in progress
+2. Follow each step exactly
+3. Run the specified verifications
+4. Mark it complete
 
-After all tasks complete and verified:
+### Group mode
+
+For each execution group:
+
+1. Confirm which files or tasks are independent inside the group
+2. Dispatch independent items in parallel when the tool/runtime supports it
+3. Wait for the whole group to finish before starting dependent groups
+4. If one item in the group fails, stop all downstream dependent groups
+5. Report the exact file, task, or group that blocked the flow
+
+Use group mode when the plan explicitly models dependency order for multi-slice or frontend-heavy work. Do not flatten the topology unless the user approves it.
+
+## Step 3: Complete Development
+
+After all tasks complete and verifications pass:
+
 - Announce: "I'm using the finishing-a-development-branch skill to complete this work."
-- **REQUIRED SUB-SKILL:** Use nestjs-skills:finishing-a-development-branch
-- Follow that skill to verify tests, present options, execute choice
+- Use `nestjs-skills:finishing-a-development-branch`
 
-## When to Stop and Ask for Help
+## When to Stop
 
-**STOP executing immediately when:**
-- Hit a blocker (missing dependency, test fails, instruction unclear)
-- Plan has critical gaps preventing starting
-- You don't understand an instruction
-- Verification fails repeatedly
+Stop immediately when:
 
-**Ask for clarification rather than guessing.**
+- you hit a blocker
+- the plan has critical gaps
+- an instruction is unclear
+- verification fails repeatedly
+- a grouped plan encounters a failure that invalidates downstream groups
 
-## When to Revisit Earlier Steps
+Ask for clarification instead of guessing.
 
-**Return to Review (Step 1) when:**
-- Partner updates the plan based on your feedback
-- Fundamental approach needs rethinking
+## When to Revisit Review
 
-**Don't force through blockers** - stop and ask.
+Return to Step 1 when:
+
+- the user updates the plan
+- the approach needs rethinking
+- a blocker shows the plan is incomplete or inconsistent
 
 ## Remember
-- Review plan critically first
-- Follow plan steps exactly
-- Don't skip verifications
-- Reference skills when plan says to
-- Stop when blocked, don't guess
-- Never start implementation on main/master branch without explicit user consent
+
+- review the plan critically first
+- follow plan steps exactly
+- do not skip verifications
+- respect dependency order and parallel groups when they exist
+- stop when blocked
+- do not start implementation on `main` or `master` without explicit user consent
 
 ## Integration
 
-**Required workflow skills:**
-- **nestjs-skills:using-git-worktrees** - REQUIRED: Set up isolated workspace before starting
-- **nestjs-skills:writing-plans** - Creates the plan this skill executes
-- **nestjs-skills:finishing-a-development-branch** - Complete development after all tasks
+Required workflow skills:
+
+- `nestjs-skills:using-git-worktrees` - set up an isolated workspace before starting
+- `nestjs-skills:writing-plans` - creates the plan this skill executes
+- `nestjs-skills:finishing-a-development-branch` - completes the branch after execution
+
+## Output Discipline
+
+When execution completes or stops, report:
+
+- what was executed
+- what was verified
+- what failed or remains blocked
+- whether the failure belongs to one task, one file, or one execution group
