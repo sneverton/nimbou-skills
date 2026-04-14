@@ -29,6 +29,8 @@ test('plugin manifest points to the unified skills tree', () => {
   assert.ok(shippedSkills.includes('nuxt-catalog'))
   assert.ok(shippedSkills.includes('nuxt-audit'))
   assert.ok(shippedSkills.includes('nuxt-test'))
+  assert.ok(shippedSkills.includes('nestjs-debug'))
+  assert.ok(shippedSkills.includes('nuxt-debug'))
   assert.ok(shippedSkills.includes('nestjs-audit-http-tests'))
   assert.ok(shippedSkills.includes('nestjs-audit-prisma-repositories'))
 
@@ -36,6 +38,21 @@ test('plugin manifest points to the unified skills tree', () => {
     const skillFile = resolve(skillsRoot, skillName, 'SKILL.md')
     assert.equal(existsSync(skillFile), true, `Missing scaffold file: ${skillFile}`)
     assert.match(readFileSync(skillFile, 'utf8'), /^---\nname: /, `Missing frontmatter in ${skillFile}`)
+  }
+})
+
+test('command and agent scaffolds exist for guided feature development', () => {
+  const files = [
+    'commands/feature-dev.md',
+    'commands/merge-pr.md',
+    'agents/code-explorer.md',
+    'agents/code-architect.md',
+    'agents/code-reviewer.md',
+    'skills/nuxt-audit/reference/guidelines-template.md',
+  ]
+
+  for (const file of files) {
+    assert.equal(existsSync(resolve(root, file)), true, `${file} should exist`)
   }
 })
 
@@ -55,6 +72,11 @@ test('README documents backend-first core and prefixed NestJS and Nuxt skills', 
   assert.match(readme, /backend-first/i)
   assert.match(readme, /NestJS/)
   assert.match(readme, /Prisma/)
+  assert.match(readme, /feature-dev/)
+  assert.match(readme, /merge-pr/)
+  assert.match(readme, /code-explorer/)
+  assert.match(readme, /code-architect/)
+  assert.match(readme, /code-reviewer/)
   assert.match(readme, /nestjs-think/)
   assert.match(readme, /nestjs-plan/)
   assert.match(readme, /nuxt-think/)
@@ -62,6 +84,11 @@ test('README documents backend-first core and prefixed NestJS and Nuxt skills', 
   assert.match(readme, /nuxt-catalog/)
   assert.match(readme, /nuxt-audit/)
   assert.match(readme, /nuxt-test/)
+  assert.match(readme, /nestjs-debug.*backend-first/i)
+  assert.match(readme, /nuxt-debug/)
+  assert.match(readme, /DevTools MCP/i)
+  assert.match(readme, /guidelines-template\.md/i)
+  assert.match(readme, /single review pass/i)
   assert.match(readme, /nestjs-audit-http-tests/)
   assert.match(readme, /nestjs-audit-prisma-repositories/)
   assert.match(readme, /\.generated\/component-catalog\/components\.meta\.json/)

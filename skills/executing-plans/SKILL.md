@@ -87,7 +87,8 @@ Return to Step 1 when:
 Required workflow skills:
 
 - `nestjs-skills:using-git-worktrees` - set up an isolated workspace before starting
-- `nestjs-skills:nestjs-plan` - creates the plan this skill executes
+- `nestjs-skills:nestjs-plan` - creates task-driven backend plans for this skill to execute
+- `nestjs-skills:nuxt-plan` - creates group-driven frontend plans for this skill to execute
 - `nestjs-skills:finishing-a-development-branch` - completes the branch after execution
 
 ## Output Discipline

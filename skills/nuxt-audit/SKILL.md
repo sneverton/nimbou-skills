@@ -1,27 +1,76 @@
 ---
 name: nuxt-audit
-description: Audit Nuxt 4 + Vuetify 3 frontend structure, catalog health, and CSS quality without editing code.
+description: Audit Nuxt 4 + Vuetify 3 frontend work for architecture, reuse, hardening, performance, and final polish without editing code.
 ---
 
 # Nuxt Audit
 
 Read `reference/quality-rules.md` before auditing.
 
+This is the single frontend review pass for Nuxt/Vuetify work in this repository. Do not split the review into separate "harden", "extract", "optimize", or "polish" passes. Cover all of those dimensions here.
+
+## Guideline Resolution
+
+Before auditing, locate the nearest `GUIDELINES.md` for the area being changed.
+
+Resolution order:
+1. If the request names a route, page, feature, or component path, start from that directory and walk upward.
+2. If the request does not name a path, infer the likely ownership area from the target feature and inspect that subtree first.
+3. Use the first local `GUIDELINES.md` you find as the primary source.
+4. If a broader project-level `GUIDELINES.md` also exists higher in the tree, use it as fallback context only.
+
+If no `GUIDELINES.md` exists, continue with the repository rules, call out the missing guideline file as a `Sugestao`, and suggest bootstrapping one from `reference/guidelines-template.md`.
+
 ## Severity
 
-- Critico - breaks core maintainability or architecture rules.
-- Atencao - convention drift that should be fixed soon.
-- Sugestao - non-blocking improvement.
+- Critico - breaks architecture, maintainability, resilience, or user-visible correctness.
+- Atencao - convention drift, weak reuse, or performance debt that should be fixed soon.
+- Sugestao - non-blocking improvement, guideline gap, or cleanup opportunity.
 
-## Dimensions
+## Audit Dimensions
 
-- Componentizacao
-- Arquitetura e SOLID
-- Convencoes Nuxt
-- Vuetify
+- Componentizacao e ownership
+- Arquitetura, SOLID, e fluxo de dados
+- Reuso e extracao de componentes, composables, utils, e config
+- Hardening: erro, vazio, loading, overflow, i18n, e dados extremos
+- Performance: rendering, requests, hydration, images, and bundle behavior
+- Polish: spacing, alignment, consistency, copy seams, and visual drift
+- Convencoes Nuxt e Vuetify
 - Catalogo
 - CSS e SCSS
 
+## Audit Method
+
+1. Read the nearest `GUIDELINES.md` and extract the local rules that apply to the target area.
+2. Inspect the route/page owner first, then child components, composables, stores, and styles.
+3. Compare the implementation to existing patterns before inventing a better one.
+4. Separate issues by type:
+   - bug or broken behavior
+   - guideline drift
+   - missing extraction opportunity
+   - hardening gap
+   - performance or polish debt
+5. Do not fix code. Produce a report that can drive the next implementation pass directly.
+
 ## Output
 
-Produce a report with counts per severity and a concrete suggested next command.
+Produce a report with:
+
+### Resumo
+
+- Scope audited
+- Guideline files consulted
+- Counts per severity
+
+### Achados
+
+List each finding with:
+- severity
+- area
+- file or feature reference
+- why it is a problem
+- the smallest concrete correction direction
+
+### Proximo passo sugerido
+
+End with one concrete next command or next action, using the findings as input for the implementation pass in the current session.
