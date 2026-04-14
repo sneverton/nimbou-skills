@@ -1,9 +1,9 @@
 ---
-name: brainstorming
+name: nestjs-think
 description: "Use before backend design or implementation work. Drive NestJS, Prisma, Clean Architecture, and SOLID decisions into an approved design before code changes."
 ---
 
-# Brainstorming NestJS Work Into Designs
+# NestJS Think
 
 Turn backend requests into concrete NestJS-first designs before code changes. This skill is not stack-neutral: default to `NestJS + Prisma + Clean Architecture + SOLID`.
 
@@ -24,12 +24,12 @@ You MUST create a task for each of these items and complete them in order:
 5. **Write design doc** — save to `docs/plans/YYYY-MM-DD-<topic>-design.md`
 6. **Spec self-review** — check placeholders, contradictions, ambiguity, and boundary drift
 7. **User reviews written spec** — ask the user to review the file before proceeding
-8. **Transition to implementation** — invoke `writing-plans`
+8. **Transition to implementation** — invoke `nestjs-plan`
 
 ## Process Flow
 
 ```dot
-digraph brainstorming {
+digraph nestjs_think {
     "Explore project context" [shape=box];
     "Ask clarifying questions" [shape=box];
     "Propose 2-3 backend approaches" [shape=box];
@@ -38,7 +38,7 @@ digraph brainstorming {
     "Write design doc" [shape=box];
     "Spec self-review" [shape=box];
     "User reviews spec?" [shape=diamond];
-    "Invoke writing-plans" [shape=doublecircle];
+    "Invoke nestjs-plan" [shape=doublecircle];
 
     "Explore project context" -> "Ask clarifying questions";
     "Ask clarifying questions" -> "Propose 2-3 backend approaches";
@@ -49,7 +49,7 @@ digraph brainstorming {
     "Write design doc" -> "Spec self-review";
     "Spec self-review" -> "User reviews spec?";
     "User reviews spec?" -> "Write design doc" [label="changes requested"];
-    "User reviews spec?" -> "Invoke writing-plans" [label="approved"];
+    "User reviews spec?" -> "Invoke nestjs-plan" [label="approved"];
 }
 ```
 
@@ -140,4 +140,4 @@ Wait for approval. If the user requests changes, update the spec and re-run the 
 
 ## Transition
 
-When the design is approved, the ONLY next skill is `writing-plans`.
+When the design is approved, the ONLY next skill is `nestjs-plan`.

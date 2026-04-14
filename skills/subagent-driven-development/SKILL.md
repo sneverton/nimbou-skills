@@ -266,7 +266,7 @@ Done!
 
 **Required workflow skills:**
 - **nestjs-skills:using-git-worktrees** - REQUIRED: Set up isolated workspace before starting
-- **nestjs-skills:writing-plans** - Creates the plan this skill executes
+- **nestjs-skills:nestjs-plan** - Creates the plan this skill executes
 - **nestjs-skills:requesting-code-review** - Code review template for reviewer subagents
 - **nestjs-skills:finishing-a-development-branch** - Complete development after all tasks
 

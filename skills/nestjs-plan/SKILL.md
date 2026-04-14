@@ -1,9 +1,9 @@
 ---
-name: writing-plans
+name: nestjs-plan
 description: Use after design approval to write a backend implementation plan focused on NestJS, Prisma, Clean Architecture, and SOLID.
 ---
 
-# Writing Plans
+# NestJS Plan
 
 ## Overview
 
@@ -11,7 +11,7 @@ Write implementation plans for backend work assuming the engineer has zero conte
 
 Assume the engineer is competent but does not know the domain, layering rules, or test strategy.
 
-**Announce at start:** "I'm using the writing-plans skill to create the implementation plan."
+**Announce at start:** "I'm using the nestjs-plan skill to create the implementation plan."
 
 **Save plans to:** `docs/plans/YYYY-MM-DD-<feature-name>.md`
 - User preferences override this default.

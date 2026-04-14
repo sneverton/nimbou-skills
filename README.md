@@ -12,12 +12,13 @@ This repository is no longer an upstream mirror. It is the canonical plugin that
 
 - Supported harnesses: `Claude Code` and `Codex`
 - Default architecture bias: `NestJS + Prisma + Clean Architecture + SOLID`
+- NestJS-specific planning and auditing work stays explicit through `nestjs-*` skill names
 - Nuxt-specific work stays explicit through `nuxt-*` skill names
 
 ### Core workflow skills
 
-- `brainstorming`
-- `writing-plans`
+- `nestjs-think`
+- `nestjs-plan`
 - `executing-plans`
 - `subagent-driven-development`
 - `dispatching-parallel-agents`
@@ -91,7 +92,7 @@ If a target Nuxt project already has native catalog commands, the `nuxt-catalog`
 
 ## Notes
 
-- `brainstorming` and `writing-plans` are intentionally backend-first. For Nuxt ideation and planning, use `nuxt-think` and `nuxt-plan`.
+- `nestjs-think` and `nestjs-plan` are intentionally backend-first. For Nuxt ideation and planning, use `nuxt-think` and `nuxt-plan`.
 - `executing-plans` absorbs the former Nuxt dependency-aware execution pattern and can follow explicit execution groups.
 - This fork intentionally removed upstream bootstrap hooks and unsupported harness integrations.
 

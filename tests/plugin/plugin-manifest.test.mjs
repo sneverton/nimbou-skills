@@ -21,8 +21,8 @@ test('plugin manifest points to the unified skills tree', () => {
   assert.equal(plugin.name, 'nestjs-skills')
   assert.equal(plugin.skills, './skills')
   assert.equal(existsSync(skillsRoot), true)
-  assert.ok(shippedSkills.includes('brainstorming'))
-  assert.ok(shippedSkills.includes('writing-plans'))
+  assert.ok(shippedSkills.includes('nestjs-think'))
+  assert.ok(shippedSkills.includes('nestjs-plan'))
   assert.ok(shippedSkills.includes('executing-plans'))
   assert.ok(shippedSkills.includes('nuxt-think'))
   assert.ok(shippedSkills.includes('nuxt-plan'))
@@ -49,12 +49,14 @@ test('marketplace manifest points at the local unified plugin folder', () => {
   assert.equal(pluginEntry.name, 'nestjs-skills')
 })
 
-test('README documents backend-first core and prefixed Nuxt skills', () => {
+test('README documents backend-first core and prefixed NestJS and Nuxt skills', () => {
   const readme = readFileSync(resolve(root, 'README.md'), 'utf8')
 
   assert.match(readme, /backend-first/i)
   assert.match(readme, /NestJS/)
   assert.match(readme, /Prisma/)
+  assert.match(readme, /nestjs-think/)
+  assert.match(readme, /nestjs-plan/)
   assert.match(readme, /nuxt-think/)
   assert.match(readme, /nuxt-plan/)
   assert.match(readme, /nuxt-catalog/)

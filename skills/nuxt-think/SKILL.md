@@ -9,7 +9,9 @@ description: Explore Nuxt 4 + Vuetify 3 frontend requests, reuse the catalog whe
 
 Clarify what to build before frontend implementation. Consult `components.meta.json` when it exists, or `.generated/component-catalog/components.meta.json` when the project ships the slim catalog mirror, ask only the minimum useful questions, and challenge weak component boundaries.
 
-Use this skill instead of `brainstorming` when the request is clearly Nuxt/Vuetify-first.
+Use this skill instead of `nestjs-think` when the request is clearly Nuxt/Vuetify-first.
+
+This skill owns discovery and design closure for frontend work. Resolve UI structure, reuse choices, state ownership, user interactions, and responsive behavior here so `nuxt-plan` can stay focused on execution topology.
 
 ## Flow
 
@@ -17,7 +19,13 @@ Use this skill instead of `brainstorming` when the request is clearly Nuxt/Vueti
 2. Classify the request as simple, medium, or complex.
 3. Search for reusable components by `tags`, `category`, and `domain`. Use `useWhen` only when the rich catalog includes it.
 4. Ask focused follow-up questions only when the request still has material ambiguity.
-5. Produce the structured output below and stop. Do not write code.
+5. Close the design decisions that matter for implementation:
+   - what screen, route, modal, or dashboard slice owns the work
+   - which existing components are reused versus newly created
+   - what loading, empty, error, and success states must exist
+   - what user interactions change navigation, filtering, or local state
+   - what responsive layout shifts matter
+6. Produce the structured output below and stop. Do not write code.
 
 Read `reference/conventions.md` before proposing component splits.
 
@@ -42,3 +50,20 @@ Describe the requested page, flow, or component in one sentence.
 ### Decisoes tomadas
 
 - Split the header and sidebar because the concerns and reuse surface are different.
+
+### Estados e interacoes
+
+- Loading: show skeletons in the main content area.
+- Empty: show a neutral empty state when no records exist.
+- Error: show inline retry feedback near the failing block.
+- Interaction: sidebar actions trigger navigation and local refresh only.
+
+### Responsividade
+
+- Collapse the sidebar below tablet width.
+- Preserve the header summary above the content stack on mobile.
+
+### Pronto para planejar
+
+- Route ownership, reuse decisions, state behavior, and responsive behavior are closed.
+- `nuxt-plan` should only turn this into exact file paths, dependency order, and execution groups.

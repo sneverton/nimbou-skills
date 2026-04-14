@@ -1,31 +1,76 @@
 ---
 name: nuxt-plan
-description: Transform a Nuxt think output into an execution topology with exact files, dependency order, and parallel groups.
+description: Use after frontend design approval to write a Nuxt implementation plan with exact files, dependency order, reuse decisions, and execution groups.
 ---
 
 # Nuxt Plan
 
-## Purpose
+## Overview
 
-Turn an approved frontend design direction into a concrete file tree and execution sequence. This skill never writes code and never runs without user approval.
+Turn an approved frontend design direction into a concrete file tree and execution sequence. The plan must make component reuse, route ownership, state boundaries, and responsive behavior explicit before implementation starts.
 
-## Flow
+This skill never writes code and never runs without user approval.
+By default, return the plan in the chat as a structured response. Do not write a standalone Markdown document unless the user explicitly asks for one.
 
-1. Consume the latest `nuxt-think` output or a direct request with equivalent detail.
-2. Read `components.meta.json` when the plan references reusable components. Fall back to `.generated/component-catalog/components.meta.json` when the project only ships the slim catalog.
-3. Define the exact file paths, grouped by dependency order.
-4. Mark which files can run in parallel and which must wait.
-5. Present the plan and wait for user approval.
+**Announce at start:** "I'm using the nuxt-plan skill to create the frontend implementation plan."
 
 Read `reference/plan-format.md` before writing the plan.
 
-## Output Shape
+## Scope Check
+
+If the approved design still bundles multiple independent screens, flows, or domains, split it before writing the plan. Each plan should produce one coherent frontend slice that can be implemented and verified on its own.
+
+## Minimal Clarifications Only
+
+Assume `nuxt-think` already closed product and UI decisions.
+
+Ask follow-up questions only when the execution topology is blocked by missing structural details such as:
+
+- the exact route or page file path
+- the exact component or composable names to create
+- whether a shared file must land before dependent files
+- whether the work should stay in one execution group or split into parallel groups
+
+Do not reopen settled UX, reuse, state, interaction, or responsive decisions unless the prior output is contradictory.
+
+## File Structure First
+
+Before writing tasks, map the file structure and responsibility of each file.
+
+- Make the boundary explicit:
+  - page or route entry under `pages/`
+  - reusable components under `components/`
+  - composables under `composables/`
+  - shared types or config when needed
+  - tests and catalog verification
+- Treat reuse decisions from `nuxt-think` as inputs. Do not re-decide them here.
+- If the current structure is muddy, plan the smallest refactor that restores clear ownership.
+
+This file map drives the execution groups.
+
+## Planning Rules For This Repository
+
+- Consume the latest `nuxt-think` output or a direct request with equivalent detail.
+- Read `components.meta.json` when the plan references reusable components. Fall back to `.generated/component-catalog/components.meta.json` when the project only ships the slim catalog.
+- Define exact file paths before describing execution groups.
+- Convert approved design decisions into file ownership and execution order. Do not expand discovery scope.
+- Make dependency order explicit when a page depends on shared components, composables, or contracts.
+- Keep page integration, `/catalog`, and test suggestions at the end.
+- Make the handoff between page, components, and composables explicit.
+- If the plan is better expressed as execution groups with dependencies, use `## Grupos de Execucao` so `executing-plans` can run in group mode.
+
+## Response Shape
 
 ```md
 # Plan: Project Details Page
 
 ## Contexto
 Create a project details page using the existing status badge and a new sidebar.
+
+## Decisoes Fechadas
+- Reuse `ProjectStatusBadge` for the header summary.
+- Create a dedicated sidebar component instead of expanding the page file.
+- Keep filtering state in a page-level composable.
 
 ## Arquivos
 | Acao | Caminho | Grupo | Depende de |
@@ -34,9 +79,42 @@ Create a project details page using the existing status badge and a new sidebar.
 ### Grupo 1 - paralelo
 ### Grupo 2 - serial
 
+## Riscos e Validacoes
+- Confirm mobile collapse behavior on the sidebar.
+- Verify loading and empty states against the real API payload.
+
 ## Pos-execucao
 - [ ] Rodar /catalog
 - [ ] Sugestao: /test projects
 ```
+
+This is a response format, not a file requirement.
+
+## No Placeholders
+
+These are plan failures:
+
+- `TBD`, `TODO`, `ajustar depois`
+- `Create component as needed`
+- `Handle loading and errors` without saying where and how
+- `Reuse existing component` without naming it
+- `Test the page` without naming the recommended command or scope
+- vague references to composables, stores, or API data without ownership
+
+## Self-Review
+
+After writing the complete plan, check:
+
+1. **Design coverage:** every approved UI requirement maps to files or execution groups
+2. **Topology clarity:** exact file ownership and dependency order are explicit
+3. **Execution clarity:** parallel versus serial groups are justified by dependencies
+4. **Boundary clarity:** page, component, and composable responsibilities are clear
+5. **Verification clarity:** `/catalog` and test suggestions still appear at the end
+
+Fix issues inline before handing off the plan.
+
+## Execution Handoff
+
+Present the plan and wait for user approval.
 
 When the user approves this shape, `executing-plans` is the execution skill. Do not introduce a separate `nuxt-execute` skill.

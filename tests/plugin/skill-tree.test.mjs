@@ -49,6 +49,16 @@ test('nuxt think and plan skills explain catalog-aware design and execution topo
   assert.match(think, /\.generated\/component-catalog\/components\.meta\.json/)
   assert.match(think, /tags`, `category`, and `domain/)
   assert.match(think, /## Think Output/)
+  assert.match(think, /This skill owns discovery and design closure/i)
+  assert.match(think, /loading, empty, error, and success states/i)
+  assert.match(think, /responsive layout shifts/i)
+  assert.match(think, /exact file paths, dependency order, and execution groups/i)
+  assert.match(plan, /## Scope Check/)
+  assert.match(plan, /## Minimal Clarifications Only/)
+  assert.match(plan, /Assume `nuxt-think` already closed product and UI decisions\./)
+  assert.match(plan, /exact route or page file path/i)
+  assert.match(plan, /Do not reopen settled UX, reuse, state, interaction, or responsive decisions/i)
+  assert.match(plan, /## Self-Review/)
   assert.match(plan, /## Grupos de Execucao/)
   assert.match(plan, /wait for user approval/i)
   assert.match(plan, /executing-plans/)
@@ -56,8 +66,8 @@ test('nuxt think and plan skills explain catalog-aware design and execution topo
 
 test('core and audit skills document their new guardrails', () => {
   const files = [
-    'skills/brainstorming/SKILL.md',
-    'skills/writing-plans/SKILL.md',
+    'skills/nestjs-think/SKILL.md',
+    'skills/nestjs-plan/SKILL.md',
     'skills/executing-plans/SKILL.md',
     'skills/nestjs-audit-http-tests/SKILL.md',
     'skills/nestjs-audit-prisma-repositories/SKILL.md',
@@ -71,8 +81,8 @@ test('core and audit skills document their new guardrails', () => {
     assert.equal(existsSync(resolve(root, file)), true, `${file} should exist`)
   }
 
-  const brainstorming = read('skills/brainstorming/SKILL.md')
-  const writingPlans = read('skills/writing-plans/SKILL.md')
+  const nestjsThink = read('skills/nestjs-think/SKILL.md')
+  const nestjsPlan = read('skills/nestjs-plan/SKILL.md')
   const execute = read('skills/executing-plans/SKILL.md')
   const nestHttpAudit = read('skills/nestjs-audit-http-tests/SKILL.md')
   const prismaAudit = read('skills/nestjs-audit-prisma-repositories/SKILL.md')
@@ -81,11 +91,13 @@ test('core and audit skills document their new guardrails', () => {
   const testSkill = read('skills/nuxt-test/SKILL.md')
   const testRules = read('skills/nuxt-test/reference/test-conventions.md')
 
-  assert.match(brainstorming, /NestJS/)
-  assert.match(brainstorming, /Prisma/)
-  assert.match(brainstorming, /Clean Architecture/)
-  assert.match(writingPlans, /repository contracts/i)
-  assert.match(writingPlans, /Prisma adapters/i)
+  assert.match(nestjsThink, /^---\nname: nestjs-think/m)
+  assert.match(nestjsThink, /NestJS/)
+  assert.match(nestjsThink, /Prisma/)
+  assert.match(nestjsThink, /Clean Architecture/)
+  assert.match(nestjsPlan, /^---\nname: nestjs-plan/m)
+  assert.match(nestjsPlan, /repository contracts/i)
+  assert.match(nestjsPlan, /Prisma adapters/i)
   assert.match(execute, /Group mode/)
   assert.match(execute, /parallel/)
   assert.match(nestHttpAudit, /^---\nname: nestjs-audit-http-tests/m)
