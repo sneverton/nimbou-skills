@@ -18,7 +18,7 @@ test('plugin manifest points to the unified skills tree', () => {
     .map((entry) => entry.name)
     .sort()
 
-  assert.equal(plugin.name, 'nestjs-skills')
+  assert.equal(plugin.name, 'nimbou-skills')
   assert.equal(plugin.skills, './skills')
   assert.equal(existsSync(skillsRoot), true)
   assert.ok(shippedSkills.includes('nestjs-think'))
@@ -64,10 +64,10 @@ test('marketplace manifest points at the local unified plugin folder', () => {
   const marketplace = readJson('.claude-plugin/marketplace.json')
   const pluginEntry = marketplace.plugins[0]
 
-  assert.equal(marketplace.name, 'nestjs-skills-dev')
+  assert.equal(marketplace.name, 'nimbou-skills-dev')
   assert.equal(marketplace.$schema, 'https://anthropic.com/claude-code/marketplace.schema.json')
   assert.equal(pluginEntry.source, './')
-  assert.equal(pluginEntry.name, 'nestjs-skills')
+  assert.equal(pluginEntry.name, 'nimbou-skills')
 })
 
 test('README documents backend-first core and prefixed NestJS and Nuxt skills', () => {

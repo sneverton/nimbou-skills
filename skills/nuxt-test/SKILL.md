@@ -19,7 +19,7 @@ Use this skill when the main job is:
 - separate test defects from product defects
 - tighten auth, seed, reset, and wait assumptions
 
-Do not use this skill as the default browser debugging workflow. Use `nestjs-skills:nuxt-debug` when the main job is to investigate a frontend bug live in the browser before deciding how to test it.
+Do not use this skill as the default browser debugging workflow. Use `nimbou-skills:nuxt-debug` when the main job is to investigate a frontend bug live in the browser before deciding how to test it.
 
 ## Workflow
 

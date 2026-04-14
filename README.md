@@ -1,6 +1,6 @@
-# nestjs-skills
+# nimbou-skills
 
-`nestjs-skills` is a unified skill library for `Claude Code` and `Codex`. It keeps a backend-first workflow for `NestJS`, `Prisma`, `Clean Architecture`, and `SOLID`, while also shipping a prefixed Nuxt/Vuetify skill set for frontend-specific work.
+`nimbou-skills` is a unified skill library for `Claude Code` and `Codex`. It keeps a backend-first workflow for `NestJS`, `Prisma`, `Clean Architecture`, and `SOLID`, while also shipping a prefixed Nuxt/Vuetify skill set for frontend-specific work.
 
 This repository is no longer an upstream mirror. It is the canonical plugin that now consolidates:
 - a backend-first workflow core
@@ -56,7 +56,7 @@ This repository is no longer an upstream mirror. It is the canonical plugin that
 - `.codex/INSTALL.md` documents the Codex setup path
 - `skills/nuxt-audit/reference/design-md-template.md` is the template for project- or feature-level `DESIGN.MD` files used by Nuxt planning and audit flows
 - `docs/plans/` is the default location for generated plans and design artifacts
-- `scripts/generate-catalog.ts` provides the fallback Nuxt component catalog generator
+- `skills/nuxt-catalog/scripts/generate-catalog.ts` provides the bundled Nuxt component catalog generator
 - `tests/` covers manifests, skill tree layout, and the catalog generator
 
 ## Codex Setup
@@ -64,9 +64,9 @@ This repository is no longer an upstream mirror. It is the canonical plugin that
 Clone your fork and expose the skills through Codex native discovery:
 
 ```bash
-git clone <your-fork-url> ~/.codex/nestjs-skills
+ git clone <your-fork-url> ~/.codex/nimbou-skills
 mkdir -p ~/.agents/skills
-ln -s ~/.codex/nestjs-skills/skills ~/.agents/skills/nestjs-skills
+ ln -s ~/.codex/nimbou-skills/skills ~/.agents/skills/nimbou-skills
 ```
 
 Then restart Codex.
@@ -97,6 +97,16 @@ This fallback workflow writes:
 - `.generated/component-catalog/components.meta.json`
 
 The `nuxt-catalog` skill should default to `validate -> generate` and can run the bundled generator from this repository against another project via `CATALOG_ROOT`, without requiring catalog scripts in the target project.
+
+If a project wants to embed the skill locally instead of depending on this checkout at runtime, copy `skills/nuxt-catalog/` into `.claude/skills/nuxt-catalog/` and run `.claude/skills/nuxt-catalog/scripts/install.sh <project-root>`.
+
+If you want a machine-level CLI instead, run `pnpm link --global` from this repository and use:
+
+```bash
+catalog validate
+catalog generate
+catalog generate projects
+```
 
 ## Notes
 

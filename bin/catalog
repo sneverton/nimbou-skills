@@ -1,0 +1,58 @@
+#!/usr/bin/env node
+
+import { spawnSync } from 'node:child_process'
+import { existsSync } from 'node:fs'
+import { dirname, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..')
+const tsxCli = resolve(repoRoot, 'node_modules', 'tsx', 'dist', 'cli.mjs')
+const generatorScript = resolve(repoRoot, 'skills', 'nuxt-catalog', 'scripts', 'generate-catalog.ts')
+
+if (!existsSync(tsxCli)) {
+  console.error(`Missing tsx runtime at ${tsxCli}. Run install in ${repoRoot} first.`)
+  process.exit(1)
+}
+
+const [command, ...rest] = process.argv.slice(2)
+
+if (!command || command === '--help' || command === '-h' || command === 'help') {
+  console.log(`Usage:
+  catalog validate
+  catalog generate [domain]
+
+Runs the bundled nuxt-catalog generator against the current working directory.`)
+  process.exit(0)
+}
+
+let generatorArgs
+
+switch (command) {
+  case 'validate':
+    generatorArgs = ['--validate', ...rest]
+    break
+  case 'generate':
+    generatorArgs = rest
+    break
+  default:
+    console.error(`Unknown catalog command: ${command}`)
+    console.error('Expected "validate" or "generate".')
+    process.exit(1)
+}
+
+const result = spawnSync(
+  process.execPath,
+  [tsxCli, generatorScript, ...generatorArgs],
+  {
+    cwd: process.cwd(),
+    env: { ...process.env, CATALOG_ROOT: process.cwd() },
+    stdio: 'inherit',
+  },
+)
+
+if (result.error) {
+  console.error(result.error.message)
+  process.exit(1)
+}
+
+process.exit(result.status ?? 1)

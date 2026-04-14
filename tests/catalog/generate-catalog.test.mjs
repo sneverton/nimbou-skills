@@ -9,7 +9,7 @@ const root = resolve(import.meta.dirname, '..', '..')
 const fixtureRoot = resolve(root, 'tests/fixtures/catalog')
 
 function withFixtureProject(callback, { includeBroken = false } = {}) {
-  const projectRoot = mkdtempSync(resolve(tmpdir(), 'nestjs-skills-catalog-'))
+  const projectRoot = mkdtempSync(resolve(tmpdir(), 'nimbou-skills-catalog-'))
   cpSync(fixtureRoot, projectRoot, { recursive: true })
 
   if (!includeBroken) {
@@ -81,6 +81,18 @@ test('catalog validate mode reports broken fixtures without writing output', () 
     assert.match(result.stdout, /Field "useWhen" must be a non-empty string/)
     assert.match(result.stdout, /Field "related" must be a string array/)
   }, { includeBroken: true })
+})
+
+test('catalog bin validates the current project root via bundled tsx wrapper', () => {
+  withFixtureProject((projectRoot) => {
+    const result = spawnSync(resolve(root, 'bin', 'catalog'), ['validate'], {
+      cwd: projectRoot,
+      encoding: 'utf8',
+    })
+
+    assert.equal(result.status, 0, result.stderr)
+    assert.match(result.stdout, /Validated 2 component files/)
+  })
 })
 
 test('catalog domain filter emits only the requested domain', () => {

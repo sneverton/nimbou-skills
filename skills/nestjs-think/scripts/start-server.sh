@@ -6,7 +6,7 @@
 # Each session gets its own directory to avoid conflicts.
 #
 # Options:
-#   --project-dir <path>  Store session files under <path>/.nestjs-skills/think/
+#   --project-dir <path>  Store session files under <path>/.nimbou-skills/think/
 #                         instead of /tmp. Files persist after server stops.
 #   --host <bind-host>    Host/interface to bind (default: 127.0.0.1).
 #                         Use 0.0.0.0 in remote/containerized environments.
@@ -78,7 +78,7 @@ fi
 SESSION_ID="$$-$(date +%s)"
 
 if [[ -n "$PROJECT_DIR" ]]; then
-  SESSION_DIR="${PROJECT_DIR}/.nestjs-skills/think/${SESSION_ID}"
+  SESSION_DIR="${PROJECT_DIR}/.nimbou-skills/think/${SESSION_ID}"
 else
   SESSION_DIR="/tmp/think-${SESSION_ID}"
 fi

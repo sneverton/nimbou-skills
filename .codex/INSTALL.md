@@ -1,6 +1,6 @@
-# Installing nestjs-skills for Codex
+# Installing nimbou-skills for Codex
 
-Enable the unified `nestjs-skills` plugin in Codex via native skill discovery.
+Enable the unified `nimbou-skills` plugin in Codex via native skill discovery.
 
 ## Prerequisites
 
@@ -10,19 +10,19 @@ Enable the unified `nestjs-skills` plugin in Codex via native skill discovery.
 
 1. **Clone your fork:**
    ```bash
-   git clone <your-fork-url> ~/.codex/nestjs-skills
+   git clone <your-fork-url> ~/.codex/nimbou-skills
    ```
 
 2. **Create the skills symlink:**
    ```bash
    mkdir -p ~/.agents/skills
-   ln -s ~/.codex/nestjs-skills/skills ~/.agents/skills/nestjs-skills
+   ln -s ~/.codex/nimbou-skills/skills ~/.agents/skills/nimbou-skills
    ```
 
    **Windows (PowerShell):**
    ```powershell
    New-Item -ItemType Directory -Force -Path "$env:USERPROFILE\.agents\skills"
-   cmd /c mklink /J "$env:USERPROFILE\.agents\skills\nestjs-skills" "$env:USERPROFILE\.codex\nestjs-skills\skills"
+   cmd /c mklink /J "$env:USERPROFILE\.agents\skills\nimbou-skills" "$env:USERPROFILE\.codex\nimbou-skills\skills"
    ```
 
 3. **Restart Codex** (quit and relaunch the CLI) to discover the skills.
@@ -30,10 +30,10 @@ Enable the unified `nestjs-skills` plugin in Codex via native skill discovery.
 ## Verify
 
 ```bash
-ls -la ~/.agents/skills/nestjs-skills
+ls -la ~/.agents/skills/nimbou-skills
 ```
 
-You should see a symlink (or junction on Windows) pointing to your `~/.codex/nestjs-skills/skills` tree.
+You should see a symlink (or junction on Windows) pointing to your `~/.codex/nimbou-skills/skills` tree.
 
 The linked skill tree exposes:
 - backend-first core skills such as `nestjs-think`, `nestjs-plan`, and `executing-plans`
@@ -43,7 +43,7 @@ The linked skill tree exposes:
 ## Updating
 
 ```bash
-cd ~/.codex/nestjs-skills && git pull
+cd ~/.codex/nimbou-skills && git pull
 ```
 
 The symlink exposes the latest cloned files immediately. If Codex does not pick up newly added skills, restart the CLI.
@@ -51,7 +51,7 @@ The symlink exposes the latest cloned files immediately. If Codex does not pick 
 ## Uninstalling
 
 ```bash
-rm ~/.agents/skills/nestjs-skills
+rm ~/.agents/skills/nimbou-skills
 ```
 
-Optionally delete the clone: `rm -rf ~/.codex/nestjs-skills`.
+Optionally delete the clone: `rm -rf ~/.codex/nimbou-skills`.

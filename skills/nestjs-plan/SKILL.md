@@ -53,7 +53,7 @@ Every plan MUST start with this header:
 ```markdown
 # [Feature Name] Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use nestjs-skills:subagent-driven-development (recommended) or nestjs-skills:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use nimbou-skills:subagent-driven-development (recommended) or nimbou-skills:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** [One sentence describing what this builds]
 
@@ -183,7 +183,7 @@ After saving the plan, offer the execution choice:
 **Which approach?"**
 
 If Subagent-Driven is chosen:
-- use `nestjs-skills:subagent-driven-development`
+- use `nimbou-skills:subagent-driven-development`
 
 If Inline Execution is chosen:
-- use `nestjs-skills:executing-plans`
+- use `nimbou-skills:executing-plans`

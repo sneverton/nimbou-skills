@@ -1,4 +1,4 @@
-# nestjs-skills
+# nimbou-skills
 
 ## Purpose
 

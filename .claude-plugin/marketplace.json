@@ -1,18 +1,18 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
-  "name": "nestjs-skills-dev",
-  "description": "Development marketplace for the local unified nestjs-skills plugin",
+  "name": "nimbou-skills-dev",
+  "description": "Development marketplace for the local unified nimbou-skills plugin",
   "owner": {
-    "name": "nestjs-skills"
+    "name": "nimbou-skills"
   },
   "plugins": [
     {
-      "name": "nestjs-skills",
+      "name": "nimbou-skills",
       "description": "Unified Claude Code skill library with a backend-first NestJS core and prefixed Nuxt/Vuetify frontend skills.",
       "version": "0.1.0",
       "source": "./",
       "author": {
-        "name": "nestjs-skills"
+        "name": "nimbou-skills"
       }
     }
   ]

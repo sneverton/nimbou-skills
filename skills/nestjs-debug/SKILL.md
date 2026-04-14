@@ -124,7 +124,7 @@ Then test only that hypothesis.
      - use-case/unit when the rule is wrong
      - repository/integration when persistence is wrong
 
-   Use `nestjs-skills:test-driven-development` when you need the exact RED-GREEN-REFACTOR discipline.
+   Use `nimbou-skills:test-driven-development` when you need the exact RED-GREEN-REFACTOR discipline.
 
 2. Implement one fix.
    - Fix the layer that owns the bug.
@@ -179,5 +179,5 @@ Stop. Return to investigation.
 - `condition-based-waiting.md` - use condition-based waits instead of arbitrary sleeps when tests are timing-sensitive
 
 Related skills:
-- `nestjs-skills:test-driven-development`
-- `nestjs-skills:verification-before-completion`
+- `nimbou-skills:test-driven-development`
+- `nimbou-skills:verification-before-completion`

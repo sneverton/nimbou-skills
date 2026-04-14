@@ -53,7 +53,7 @@ Use for:
 - frontend-only auth or route-guard issues
 - flaky Playwright failures caused by selectors, timing, or network sequencing
 
-Do not use this skill to broadly rewrite or expand the Playwright suite. Use `nestjs-skills:nuxt-test` when the main work is E2E test coverage or stabilization.
+Do not use this skill to broadly rewrite or expand the Playwright suite. Use `nimbou-skills:nuxt-test` when the main work is E2E test coverage or stabilization.
 
 ## Mandatory Flow
 
@@ -134,7 +134,7 @@ Examples:
    - Playwright for user-visible regressions
    - component or composable tests when the failure is local and already supported
 
-   Use `nestjs-skills:nuxt-test` when you need to expand or stabilize Playwright coverage.
+   Use `nimbou-skills:nuxt-test` when you need to expand or stabilize Playwright coverage.
 
 2. Apply one fix at the owning layer.
    - route/composable for state-sync bugs
@@ -195,6 +195,6 @@ Stop. Gather more browser evidence.
 
 ## Related Skills
 
-- `nestjs-skills:nuxt-test`
-- `nestjs-skills:nuxt-audit`
-- `nestjs-skills:verification-before-completion`
+- `nimbou-skills:nuxt-test`
+- `nimbou-skills:nuxt-audit`
+- `nimbou-skills:verification-before-completion`

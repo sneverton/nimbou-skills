@@ -1,16 +1,19 @@
 {
-  "name": "nestjs-skills",
+  "name": "nimbou-skills",
   "version": "0.1.0",
   "private": true,
   "description": "Unified Claude Code and Codex skill library with a NestJS backend core and prefixed Nuxt/Vuetify frontend skills",
   "type": "module",
+  "bin": {
+    "catalog": "./bin/catalog"
+  },
   "engines": {
     "node": ">=20"
   },
   "scripts": {
     "test": "node --test",
-    "catalog": "tsx scripts/generate-catalog.ts",
-    "catalog:validate": "tsx scripts/generate-catalog.ts --validate"
+    "catalog": "tsx skills/nuxt-catalog/scripts/generate-catalog.ts",
+    "catalog:validate": "tsx skills/nuxt-catalog/scripts/generate-catalog.ts --validate"
   },
   "keywords": [
     "claude",

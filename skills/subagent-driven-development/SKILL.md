@@ -61,7 +61,7 @@ digraph process {
     "Read plan, extract all tasks with full text, note context, create TodoWrite" [shape=box];
     "More tasks remain?" [shape=diamond];
     "Dispatch final code reviewer subagent for entire implementation" [shape=box];
-    "Use nestjs-skills:finishing-a-development-branch" [shape=box style=filled fillcolor=lightgreen];
+    "Use nimbou-skills:finishing-a-development-branch" [shape=box style=filled fillcolor=lightgreen];
 
     "Read plan, extract all tasks with full text, note context, create TodoWrite" -> "Dispatch implementer subagent (./implementer-prompt.md)";
     "Dispatch implementer subagent (./implementer-prompt.md)" -> "Implementer subagent asks questions?";
@@ -80,7 +80,7 @@ digraph process {
     "Mark task complete in TodoWrite" -> "More tasks remain?";
     "More tasks remain?" -> "Dispatch implementer subagent (./implementer-prompt.md)" [label="yes"];
     "More tasks remain?" -> "Dispatch final code reviewer subagent for entire implementation" [label="no"];
-    "Dispatch final code reviewer subagent for entire implementation" -> "Use nestjs-skills:finishing-a-development-branch";
+    "Dispatch final code reviewer subagent for entire implementation" -> "Use nimbou-skills:finishing-a-development-branch";
 }
 ```
 
@@ -265,13 +265,13 @@ Done!
 ## Integration
 
 **Required workflow skills:**
-- **nestjs-skills:using-git-worktrees** - REQUIRED: Set up isolated workspace before starting
-- **nestjs-skills:nestjs-plan** - Creates the plan this skill executes
-- **nestjs-skills:requesting-code-review** - Code review template for reviewer subagents
-- **nestjs-skills:finishing-a-development-branch** - Complete development after all tasks
+- **nimbou-skills:using-git-worktrees** - REQUIRED: Set up isolated workspace before starting
+- **nimbou-skills:nestjs-plan** - Creates the plan this skill executes
+- **nimbou-skills:requesting-code-review** - Code review template for reviewer subagents
+- **nimbou-skills:finishing-a-development-branch** - Complete development after all tasks
 
 **Subagents should use:**
-- **nestjs-skills:test-driven-development** - Subagents follow TDD for each task
+- **nimbou-skills:test-driven-development** - Subagents follow TDD for each task
 
 **Alternative workflow:**
-- **nestjs-skills:executing-plans** - Use for parallel session instead of same-session execution
+- **nimbou-skills:executing-plans** - Use for parallel session instead of same-session execution

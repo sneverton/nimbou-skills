@@ -11,7 +11,7 @@ Load the plan, review it critically, detect whether it is task-driven or group-d
 
 **Announce at start:** "I'm using the executing-plans skill to implement this plan."
 
-If subagents are available, `nestjs-skills:subagent-driven-development` is still the better default. Use this skill when execution should stay inline in the current session.
+If subagents are available, `nimbou-skills:subagent-driven-development` is still the better default. Use this skill when execution should stay inline in the current session.
 
 ## Step 1: Load and Review
 
@@ -51,7 +51,7 @@ Use group mode when the plan explicitly models dependency order for multi-slice 
 After all tasks complete and verifications pass:
 
 - Announce: "I'm using the finishing-a-development-branch skill to complete this work."
-- Use `nestjs-skills:finishing-a-development-branch`
+- Use `nimbou-skills:finishing-a-development-branch`
 
 ## When to Stop
 
@@ -86,10 +86,10 @@ Return to Step 1 when:
 
 Required workflow skills:
 
-- `nestjs-skills:using-git-worktrees` - set up an isolated workspace before starting
-- `nestjs-skills:nestjs-plan` - creates task-driven backend plans for this skill to execute
-- `nestjs-skills:nuxt-plan` - creates group-driven frontend plans for this skill to execute
-- `nestjs-skills:finishing-a-development-branch` - completes the branch after execution
+- `nimbou-skills:using-git-worktrees` - set up an isolated workspace before starting
+- `nimbou-skills:nestjs-plan` - creates task-driven backend plans for this skill to execute
+- `nimbou-skills:nuxt-plan` - creates group-driven frontend plans for this skill to execute
+- `nimbou-skills:finishing-a-development-branch` - completes the branch after execution
 
 ## Output Discipline
 

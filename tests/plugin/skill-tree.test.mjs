@@ -12,6 +12,9 @@ function read(relativePath) {
 test('nuxt catalog skill files exist and describe validate-then-generate mode', () => {
   const files = [
     'skills/nuxt-catalog/SKILL.md',
+    'bin/catalog',
+    'skills/nuxt-catalog/scripts/generate-catalog.ts',
+    'skills/nuxt-catalog/scripts/install.sh',
     'skills/nuxt-catalog/reference/catalog-schema.md',
     'skills/nuxt-catalog/reference/taxonomy.md',
   ]
@@ -24,10 +27,14 @@ test('nuxt catalog skill files exist and describe validate-then-generate mode', 
   assert.match(skill, /validate -> generate/)
   assert.match(skill, /catalog:generate/)
   assert.match(skill, /catalog:validate/)
+  assert.match(skill, /pnpm link --global/)
+  assert.match(skill, /catalog validate/)
   assert.match(skill, /CATALOG_ROOT/)
   assert.match(skill, /npm --prefix/)
+  assert.match(skill, /\.claude\/skills\/nuxt-catalog/)
+  assert.match(skill, /install\.sh/)
   assert.match(skill, /fallback/)
-  assert.match(skill, /scripts\/generate-catalog\.ts/)
+  assert.match(skill, /skills\/nuxt-catalog\/scripts\/generate-catalog\.ts/)
   assert.match(skill, /components\.meta\.json/)
   assert.match(skill, /\.generated\/component-catalog\/components\.meta\.json/)
   assert.doesNotMatch(skill, /\/catalog --validate/)
@@ -116,7 +123,7 @@ test('core and audit skills document their new guardrails', () => {
   assert.match(nestjsPlan, /Prisma adapters/i)
   assert.match(execute, /Group mode/)
   assert.match(execute, /parallel/)
-  assert.match(execute, /nestjs-skills:nuxt-plan/)
+  assert.match(execute, /nimbou-skills:nuxt-plan/)
   assert.match(execute, /group-driven frontend plans/i)
   assert.match(e2eQuality, /^---\nname: e2e-test-quality/m)
   assert.match(e2eQuality, /e2e-quality-auditor/)
@@ -148,7 +155,7 @@ test('core and audit skills document their new guardrails', () => {
   assert.match(testSkill, /module-bounded Playwright and E2E discipline/i)
   assert.match(testSkill, /test, the frontend, the environment\/setup/i)
   assert.match(testSkill, /critical happy path/i)
-  assert.match(testSkill, /Use `nestjs-skills:nuxt-debug` when the main job is to investigate/i)
+  assert.match(testSkill, /Use `nimbou-skills:nuxt-debug` when the main job is to investigate/i)
   assert.match(testRules, /getByRole\(\)/)
   assert.match(testRules, /getByTestId\(\)/)
   assert.match(testRules, /waitForTimeout\(\)/)
