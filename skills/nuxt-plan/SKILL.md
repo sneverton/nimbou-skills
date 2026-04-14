@@ -16,6 +16,8 @@ By default, return the plan in the chat as a structured response. Do not write a
 
 Read `reference/plan-format.md` before writing the plan.
 
+When the target project has a relevant `DESIGN.MD`, consume it as an input constraint. In a monorepo, default to the relevant app-level `DESIGN.MD` and let a closer feature-level file override it.
+
 ## Scope Check
 
 If the approved design still bundles multiple independent screens, flows, or domains, split it before writing the plan. Each plan should produce one coherent frontend slice that can be implemented and verified on its own.
@@ -44,6 +46,7 @@ Before writing tasks, map the file structure and responsibility of each file.
   - shared types or config when needed
   - tests and catalog verification
 - Treat reuse decisions from `nuxt-think` as inputs. Do not re-decide them here.
+- Treat the relevant `DESIGN.MD` rules as constraints. Do not reopen them here unless they contradict the approved `nuxt-think` output.
 - If the current structure is muddy, plan the smallest refactor that restores clear ownership.
 
 This file map drives the execution groups.
@@ -51,11 +54,12 @@ This file map drives the execution groups.
 ## Planning Rules For This Repository
 
 - Consume the latest `nuxt-think` output or a direct request with equivalent detail.
+- Read the nearest relevant `DESIGN.MD` in the target project when the feature has a concrete target path or app.
 - Read `components.meta.json` when the plan references reusable components. Fall back to `.generated/component-catalog/components.meta.json` when the project only ships the slim catalog.
 - Define exact file paths before describing execution groups.
 - Convert approved design decisions into file ownership and execution order. Do not expand discovery scope.
 - Make dependency order explicit when a page depends on shared components, composables, or contracts.
-- Keep page integration, `/catalog`, and test suggestions at the end.
+- Keep page integration, catalog verification, and test suggestions at the end.
 - Make the handoff between page, components, and composables explicit.
 - If the plan is better expressed as execution groups with dependencies, use `## Grupos de Execucao` so `executing-plans` can run in group mode.
 
@@ -84,7 +88,7 @@ Create a project details page using the existing status badge and a new sidebar.
 - Verify loading and empty states against the real API payload.
 
 ## Pos-execucao
-- [ ] Rodar /catalog
+- [ ] Rodar `nuxt-catalog` no fluxo `validate -> generate`
 - [ ] Sugestao: /test projects
 ```
 
@@ -109,7 +113,7 @@ After writing the complete plan, check:
 2. **Topology clarity:** exact file ownership and dependency order are explicit
 3. **Execution clarity:** parallel versus serial groups are justified by dependencies
 4. **Boundary clarity:** page, component, and composable responsibilities are clear
-5. **Verification clarity:** `/catalog` and test suggestions still appear at the end
+5. **Verification clarity:** catalog verification and test suggestions still appear at the end
 
 Fix issues inline before handing off the plan.
 

@@ -24,6 +24,7 @@ test('plugin manifest points to the unified skills tree', () => {
   assert.ok(shippedSkills.includes('nestjs-think'))
   assert.ok(shippedSkills.includes('nestjs-plan'))
   assert.ok(shippedSkills.includes('executing-plans'))
+  assert.ok(shippedSkills.includes('e2e-test-quality'))
   assert.ok(shippedSkills.includes('nuxt-think'))
   assert.ok(shippedSkills.includes('nuxt-plan'))
   assert.ok(shippedSkills.includes('nuxt-catalog'))
@@ -44,11 +45,14 @@ test('plugin manifest points to the unified skills tree', () => {
 test('command and agent scaffolds exist for guided feature development', () => {
   const files = [
     'commands/feature-dev.md',
+    'commands/design-md.md',
     'commands/merge-pr.md',
     'agents/code-explorer.md',
     'agents/code-architect.md',
     'agents/code-reviewer.md',
-    'skills/nuxt-audit/reference/guidelines-template.md',
+    'agents/guidelines-gap-analyzer.md',
+    'agents/e2e-quality-auditor.md',
+    'skills/nuxt-audit/reference/design-md-template.md',
   ]
 
   for (const file of files) {
@@ -73,10 +77,14 @@ test('README documents backend-first core and prefixed NestJS and Nuxt skills', 
   assert.match(readme, /NestJS/)
   assert.match(readme, /Prisma/)
   assert.match(readme, /feature-dev/)
+  assert.match(readme, /design-md/)
   assert.match(readme, /merge-pr/)
   assert.match(readme, /code-explorer/)
   assert.match(readme, /code-architect/)
   assert.match(readme, /code-reviewer/)
+  assert.match(readme, /guidelines-gap-analyzer/)
+  assert.match(readme, /e2e-test-quality/)
+  assert.match(readme, /e2e-quality-auditor/)
   assert.match(readme, /nestjs-think/)
   assert.match(readme, /nestjs-plan/)
   assert.match(readme, /nuxt-think/)
@@ -86,8 +94,8 @@ test('README documents backend-first core and prefixed NestJS and Nuxt skills', 
   assert.match(readme, /nuxt-test/)
   assert.match(readme, /nestjs-debug.*backend-first/i)
   assert.match(readme, /nuxt-debug/)
-  assert.match(readme, /DevTools MCP/i)
-  assert.match(readme, /guidelines-template\.md/i)
+  assert.match(readme, /Chrome DevTools MCP/i)
+  assert.match(readme, /design-md-template\.md/i)
   assert.match(readme, /single review pass/i)
   assert.match(readme, /nestjs-audit-http-tests/)
   assert.match(readme, /nestjs-audit-prisma-repositories/)

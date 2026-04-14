@@ -9,7 +9,7 @@ function read(relativePath) {
   return readFileSync(resolve(root, relativePath), 'utf8')
 }
 
-test('nuxt catalog skill files exist and describe validate mode', () => {
+test('nuxt catalog skill files exist and describe validate-then-generate mode', () => {
   const files = [
     'skills/nuxt-catalog/SKILL.md',
     'skills/nuxt-catalog/reference/catalog-schema.md',
@@ -21,13 +21,16 @@ test('nuxt catalog skill files exist and describe validate mode', () => {
   }
 
   const skill = read('skills/nuxt-catalog/SKILL.md')
-  assert.match(skill, /\/catalog --validate/)
+  assert.match(skill, /validate -> generate/)
   assert.match(skill, /catalog:generate/)
   assert.match(skill, /catalog:validate/)
+  assert.match(skill, /CATALOG_ROOT/)
+  assert.match(skill, /npm --prefix/)
   assert.match(skill, /fallback/)
   assert.match(skill, /scripts\/generate-catalog\.ts/)
   assert.match(skill, /components\.meta\.json/)
   assert.match(skill, /\.generated\/component-catalog\/components\.meta\.json/)
+  assert.doesNotMatch(skill, /\/catalog --validate/)
 })
 
 test('nuxt think and plan skills explain catalog-aware design and execution topology', () => {
@@ -36,7 +39,7 @@ test('nuxt think and plan skills explain catalog-aware design and execution topo
     'skills/nuxt-think/reference/conventions.md',
     'skills/nuxt-plan/SKILL.md',
     'skills/nuxt-plan/reference/plan-format.md',
-    'skills/nuxt-audit/reference/guidelines-template.md',
+    'skills/nuxt-audit/reference/design-md-template.md',
   ]
 
   for (const file of files) {
@@ -51,7 +54,7 @@ test('nuxt think and plan skills explain catalog-aware design and execution topo
   assert.match(think, /tags`, `category`, and `domain/)
   assert.match(think, /## Think Output/)
   assert.match(think, /This skill owns discovery and design closure/i)
-  assert.match(think, /nearest `GUIDELINES\.md`/i)
+  assert.match(think, /nearest `DESIGN\.MD`/i)
   assert.match(think, /loading, empty, error, and success states/i)
   assert.match(think, /responsive layout shifts/i)
   assert.match(think, /### Direcao visual/)
@@ -64,6 +67,9 @@ test('nuxt think and plan skills explain catalog-aware design and execution topo
   assert.match(plan, /Do not reopen settled UX, reuse, state, interaction, or responsive decisions/i)
   assert.match(plan, /## Self-Review/)
   assert.match(plan, /## Grupos de Execucao/)
+  assert.match(plan, /DESIGN\.MD/)
+  assert.match(plan, /catalog verification/i)
+  assert.match(plan, /validate -> generate/)
   assert.match(plan, /wait for user approval/i)
   assert.match(plan, /executing-plans/)
 })
@@ -73,6 +79,7 @@ test('core and audit skills document their new guardrails', () => {
     'skills/nestjs-think/SKILL.md',
     'skills/nestjs-plan/SKILL.md',
     'skills/executing-plans/SKILL.md',
+    'skills/e2e-test-quality/SKILL.md',
     'skills/nestjs-debug/SKILL.md',
     'skills/nestjs-audit-http-tests/SKILL.md',
     'skills/nestjs-audit-prisma-repositories/SKILL.md',
@@ -90,6 +97,7 @@ test('core and audit skills document their new guardrails', () => {
   const nestjsThink = read('skills/nestjs-think/SKILL.md')
   const nestjsPlan = read('skills/nestjs-plan/SKILL.md')
   const execute = read('skills/executing-plans/SKILL.md')
+  const e2eQuality = read('skills/e2e-test-quality/SKILL.md')
   const systematic = read('skills/nestjs-debug/SKILL.md')
   const nestHttpAudit = read('skills/nestjs-audit-http-tests/SKILL.md')
   const prismaAudit = read('skills/nestjs-audit-prisma-repositories/SKILL.md')
@@ -98,7 +106,7 @@ test('core and audit skills document their new guardrails', () => {
   const testSkill = read('skills/nuxt-test/SKILL.md')
   const testRules = read('skills/nuxt-test/reference/test-conventions.md')
   const nuxtDebug = read('skills/nuxt-debug/SKILL.md')
-  const guidelines = read('skills/nuxt-audit/reference/guidelines-template.md')
+  const designMdTemplate = read('skills/nuxt-audit/reference/design-md-template.md')
   assert.match(nestjsThink, /^---\nname: nestjs-think/m)
   assert.match(nestjsThink, /NestJS/)
   assert.match(nestjsThink, /Prisma/)
@@ -110,6 +118,12 @@ test('core and audit skills document their new guardrails', () => {
   assert.match(execute, /parallel/)
   assert.match(execute, /nestjs-skills:nuxt-plan/)
   assert.match(execute, /group-driven frontend plans/i)
+  assert.match(e2eQuality, /^---\nname: e2e-test-quality/m)
+  assert.match(e2eQuality, /e2e-quality-auditor/)
+  assert.match(e2eQuality, /Playwright/)
+  assert.match(e2eQuality, /Cypress/)
+  assert.match(e2eQuality, /bounded user flow/i)
+  assert.match(e2eQuality, /nuxt-test/)
   assert.match(systematic, /^---\nname: nestjs-debug/m)
   assert.match(systematic, /NestJS/)
   assert.match(systematic, /Prisma/)
@@ -119,38 +133,49 @@ test('core and audit skills document their new guardrails', () => {
   assert.match(prismaAudit, /^---\nname: nestjs-audit-prisma-repositories/m)
   assert.match(nuxtAudit, /^---\nname: nuxt-audit/m)
   assert.match(nuxtAudit, /single frontend review pass/i)
-  assert.match(nuxtAudit, /nearest `GUIDELINES\.md`/i)
+  assert.match(nuxtAudit, /nearest `DESIGN\.MD`/i)
   assert.match(nuxtAudit, /Hardening/i)
   assert.match(nuxtAudit, /Performance/i)
   assert.match(nuxtAudit, /Polish/i)
   assert.match(nuxtAudit, /Do not split the review into separate "harden", "extract", "optimize", or "polish" passes/i)
   assert.match(nuxtAudit, /Critico/)
-  assert.match(qualityRules, /Guideline First/)
+  assert.match(qualityRules, /Design File First/)
   assert.match(qualityRules, /Extraction and Reuse/)
   assert.match(qualityRules, /Hardening/)
   assert.match(qualityRules, /Performance/)
   assert.match(qualityRules, /Polish/)
   assert.match(qualityRules, /Vuetify/)
-  assert.match(testSkill, /data-testid/)
-  assert.match(testRules, /getByTestId/)
+  assert.match(testSkill, /module-bounded Playwright and E2E discipline/i)
+  assert.match(testSkill, /test, the frontend, the environment\/setup/i)
+  assert.match(testSkill, /critical happy path/i)
+  assert.match(testSkill, /Use `nestjs-skills:nuxt-debug` when the main job is to investigate/i)
+  assert.match(testRules, /getByRole\(\)/)
+  assert.match(testRules, /getByTestId\(\)/)
+  assert.match(testRules, /waitForTimeout\(\)/)
   assert.match(nuxtDebug, /^---\nname: nuxt-debug/m)
-  assert.match(nuxtDebug, /DevTools MCP/i)
+  assert.match(nuxtDebug, /Chrome DevTools MCP/i)
   assert.match(nuxtDebug, /Playwright/)
   assert.match(nuxtDebug, /hydration/i)
   assert.match(nuxtDebug, /NO FRONTEND FIXES BEFORE LIVE BROWSER EVIDENCE/)
-  assert.match(guidelines, /Nuxt Frontend Guidelines/)
-  assert.match(guidelines, /Component Responsibility Model/)
-  assert.match(guidelines, /Visual Guardrails/)
-  assert.match(guidelines, /Hardening Expectations/)
-  assert.match(guidelines, /Audit Expectations/)
+  assert.match(nuxtDebug, /QA inventory/i)
+  assert.match(nuxtDebug, /Boundary With `nuxt-test`/)
+  assert.match(designMdTemplate, /Nuxt Frontend DESIGN\.MD Template/)
+  assert.match(designMdTemplate, /Product and Interface Context/)
+  assert.match(designMdTemplate, /Component Responsibility Model/)
+  assert.match(designMdTemplate, /Visual Guardrails/)
+  assert.match(designMdTemplate, /Hardening Expectations/)
+  assert.match(designMdTemplate, /Audit Expectations/)
 })
 
 test('feature development command and agents describe the guided orchestration workflow', () => {
   const featureCommand = read('commands/feature-dev.md')
+  const designCommand = read('commands/design-md.md')
   const mergeCommand = read('commands/merge-pr.md')
   const explorer = read('agents/code-explorer.md')
   const architect = read('agents/code-architect.md')
   const reviewer = read('agents/code-reviewer.md')
+  const guidelinesAnalyzer = read('agents/guidelines-gap-analyzer.md')
+  const e2eAuditor = read('agents/e2e-quality-auditor.md')
 
   assert.match(featureCommand, /^---\ndescription:/m)
   assert.match(featureCommand, /backend-only/)
@@ -163,6 +188,14 @@ test('feature development command and agents describe the guided orchestration w
   assert.match(featureCommand, /code-reviewer/)
   assert.match(featureCommand, /Phase 1: Discovery/)
   assert.match(featureCommand, /Phase 6: Quality Review/)
+
+  assert.match(designCommand, /^---\ndescription:/m)
+  assert.match(designCommand, /DESIGN\.MD/)
+  assert.match(designCommand, /monorepo/i)
+  assert.match(designCommand, /app root/i)
+  assert.match(designCommand, /repository root/i)
+  assert.match(designCommand, /design-md-template\.md/i)
+  assert.match(designCommand, /create or refresh/i)
 
   assert.match(mergeCommand, /^---\ndescription:/m)
   assert.match(mergeCommand, /Single mode/)
@@ -190,4 +223,17 @@ test('feature development command and agents describe the guided orchestration w
   assert.match(reviewer, /Optional Review Focus/)
   assert.match(reviewer, /Critical/)
   assert.match(reviewer, /Important/)
+
+  assert.match(guidelinesAnalyzer, /^---\nname: guidelines-gap-analyzer/m)
+  assert.match(guidelinesAnalyzer, /Only report findings with confidence `>= 80`/)
+  assert.match(guidelinesAnalyzer, /AGENTS\.md/)
+  assert.match(guidelinesAnalyzer, /GUIDELINES\.md/)
+  assert.match(guidelinesAnalyzer, /`code-reviewer` remains the default reviewer/)
+
+  assert.match(e2eAuditor, /^---\nname: 'e2e-quality-auditor'/m)
+  assert.match(e2eAuditor, /Playwright, Cypress/)
+  assert.match(e2eAuditor, /deterministic, trustworthy E2E confidence/i)
+  assert.match(e2eAuditor, /Run only the target E2E tests/i)
+  assert.match(e2eAuditor, /selectors tied to unstable markup/i)
+  assert.match(e2eAuditor, /waitForTimeout/i)
 })

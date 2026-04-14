@@ -33,10 +33,10 @@ Enable the unified `nestjs-skills` plugin in Codex via native skill discovery.
 ls -la ~/.agents/skills/nestjs-skills
 ```
 
-You should see a symlink (or junction on Windows) pointing to your `nestjs-skills` directory.
+You should see a symlink (or junction on Windows) pointing to your `~/.codex/nestjs-skills/skills` tree.
 
 The linked skill tree exposes:
-- backend-first core skills such as `brainstorming`, `writing-plans`, and `executing-plans`
+- backend-first core skills such as `nestjs-think`, `nestjs-plan`, and `executing-plans`
 - NestJS-specific skills such as `nestjs-audit-http-tests`
 - Nuxt-specific skills such as `nuxt-catalog`
 
@@ -46,7 +46,7 @@ The linked skill tree exposes:
 cd ~/.codex/nestjs-skills && git pull
 ```
 
-Skills update instantly through the symlink.
+The symlink exposes the latest cloned files immediately. If Codex does not pick up newly added skills, restart the CLI.
 
 ## Uninstalling
 

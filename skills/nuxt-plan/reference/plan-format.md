@@ -10,7 +10,7 @@ Return it directly in the chat by default. Only turn it into a saved Markdown do
 - `## Arquivos` with exact paths and dependency grouping
 - `## Grupos de Execucao` for parallel versus serial work
 - `## Riscos e Validacoes` for responsive, data, or interaction risks
-- `## Pos-execucao` for `/catalog` and testing follow-up
+- `## Pos-execucao` for catalog verification and testing follow-up
 
 ## Naming
 
@@ -34,7 +34,7 @@ Return it directly in the chat by default. Only turn it into a saved Markdown do
 
 - Parallel for independent components and isolated configs.
 - Serial for shared contracts, shared composables, and final page integration.
-- Always leave page integration, `/catalog`, and `/test` suggestions for the end.
+- Always leave page integration, catalog verification, and `/test` suggestions for the end.
 
 ## Questions to close before planning
 

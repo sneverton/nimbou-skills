@@ -1,10 +1,10 @@
 # Quality Rules
 
-## Guideline First
+## Design File First
 
-- Local `GUIDELINES.md` beats generic preference.
-- Root-level `GUIDELINES.md` is fallback, not override, when a closer file exists.
-- If implementation repeats a known primitive or composition rule, audit against the guideline before proposing new structure.
+- Local `DESIGN.MD` beats generic preference.
+- App-level or root-level `DESIGN.MD` is fallback, not override, when a closer file exists.
+- If implementation repeats a known primitive or composition rule, audit against `DESIGN.MD` before proposing new structure.
 
 ## Ownership and Architecture
 

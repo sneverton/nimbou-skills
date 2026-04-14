@@ -23,6 +23,7 @@ This repository is no longer an upstream mirror. It is the canonical plugin that
 - `subagent-driven-development`
 - `dispatching-parallel-agents`
 - `test-driven-development`
+- `e2e-test-quality`
 - `nestjs-debug` backend-first debugging for NestJS/Prisma work
 - `verification-before-completion`
 - `requesting-code-review`
@@ -49,10 +50,11 @@ This repository is no longer an upstream mirror. It is the canonical plugin that
 
 - `skills/` contains the unified skill library exposed to Claude and Codex
 - `agents/` contains auxiliary review and auditing agents
-- `commands/` contains Claude command entrypoints such as `/feature-dev` and `/merge-pr`
+  including `code-explorer`, `code-architect`, `code-reviewer`, `guidelines-gap-analyzer`, and `e2e-quality-auditor`
+- `commands/` contains Claude command entrypoints such as `/feature-dev`, `/design-md`, and `/merge-pr`
 - `.claude-plugin/` exposes the skill library to Claude Code
 - `.codex/INSTALL.md` documents the Codex setup path
-- `skills/nuxt-audit/reference/guidelines-template.md` is the template for project- or feature-level `GUIDELINES.md` files used by Nuxt planning and audit flows
+- `skills/nuxt-audit/reference/design-md-template.md` is the template for project- or feature-level `DESIGN.MD` files used by Nuxt planning and audit flows
 - `docs/plans/` is the default location for generated plans and design artifacts
 - `scripts/generate-catalog.ts` provides the fallback Nuxt component catalog generator
 - `tests/` covers manifests, skill tree layout, and the catalog generator
@@ -75,6 +77,7 @@ This repository keeps the files needed for a local Claude plugin workflow:
 
 - `.claude-plugin/plugin.json`
 - `commands/feature-dev.md`
+- `commands/design-md.md`
 - `commands/merge-pr.md`
 
 Point your Claude local plugin setup at this repository. The plugin manifest exposes `./skills` directly, without bootstrap hooks.
@@ -85,24 +88,31 @@ The Nuxt domain ships a local catalog workflow:
 
 ```bash
 npm install
-npm run catalog
 npm run catalog:validate
+npm run catalog
 ```
 
 This fallback workflow writes:
 - `components.meta.json`
 - `.generated/component-catalog/components.meta.json`
 
-If a target Nuxt project already has native catalog commands, the `nuxt-catalog` skill should prefer them.
+The `nuxt-catalog` skill should default to `validate -> generate` and can run the bundled generator from this repository against another project via `CATALOG_ROOT`, without requiring catalog scripts in the target project.
 
 ## Notes
 
 - `/feature-dev` provides a guided command workflow that classifies the request as backend-only, frontend-only, or fullstack and then uses `nestjs-think`, `nestjs-plan`, `nuxt-think`, `nuxt-plan`, `code-explorer`, `code-architect`, and `code-reviewer`.
+- `guidelines-gap-analyzer` is the conventions-first review agent for checking changed work against local `AGENTS.md`, `CLAUDE.md`, `GUIDELINES.md`, and `DESIGN.MD` files without hard-coding project-specific paths.
+- `e2e-test-quality` dispatches `e2e-quality-auditor` for bounded browser-driven flows when the main question is E2E reliability, setup quality, selectors, waits, and whether the failure is in the test or the product.
+- `/design-md` explores a target project or app, asks only the missing design questions, and creates or refreshes `DESIGN.MD` at the app root for monorepos or the repo root otherwise.
 - `/merge-pr` handles single-PR and batch merge flows, showing the effective PR state first and offering immediate merge or auto-merge.
 - `nestjs-think` and `nestjs-plan` are intentionally backend-first. For Nuxt ideation and planning, use `nuxt-think` and `nuxt-plan`.
 - `nestjs-debug` is the backend-first debugging flow for NestJS, Prisma, and boundary failures across controller, use-case, repository, and transaction layers.
-- `nuxt-debug` is the frontend-first debugging flow for Nuxt/Vuetify browser issues using DevTools MCP and/or Playwright evidence before fixes.
-- `nuxt-think` and `nuxt-audit` should resolve the nearest `GUIDELINES.md` for the feature area before closing design or review decisions.
+- `nuxt-debug` is the frontend-first debugging flow for Nuxt/Vuetify browser issues. In Codex it is Chrome DevTools MCP first, with Playwright only when scripted reproduction is required.
+- `nuxt-test` is the narrower Playwright/E2E discipline for a bounded Nuxt/Vuetify module or user flow: selectors, waits, auth/setup drift, and coverage expansion.
+- `nuxt-test` now prefers semantic selectors first and uses `data-testid` only when the UI does not expose a stable observable contract.
+- `nuxt-debug` investigates live runtime behavior; `nuxt-test` codifies the result into trustworthy bounded coverage.
+- use `e2e-test-quality` when the problem is broader end-to-end flow reliability or mixed setup/product failure analysis beyond one Nuxt module slice.
+- `nuxt-think`, `nuxt-plan`, and `nuxt-audit` should resolve the nearest `DESIGN.MD` in the target project before closing design, planning, or review decisions.
 - `nuxt-audit` is the single review pass for frontend architecture, extraction, hardening, performance, and polish; those concerns are not split into separate Nuxt skills here.
 - `executing-plans` absorbs the former Nuxt dependency-aware execution pattern and can follow explicit execution groups.
 - This fork intentionally removed upstream bootstrap hooks and unsupported harness integrations.

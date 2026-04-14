@@ -1,8 +1,8 @@
-# Nuxt Frontend Guidelines Template
+# Nuxt Frontend DESIGN.MD Template
 
-Use this file as the starting point for a project- or feature-level `GUIDELINES.md`.
+Use this file as the starting point for a project- or feature-level `DESIGN.MD`.
 
-The goal is to give `nuxt-think` and `nuxt-audit` a local source of truth for:
+The goal is to give `nuxt-think`, `nuxt-plan`, and `nuxt-audit` a local source of truth for:
 - page and component responsibilities
 - composable and util boundaries
 - preferred UI primitives and layout shells
@@ -10,7 +10,7 @@ The goal is to give `nuxt-think` and `nuxt-audit` a local source of truth for:
 - visual guardrails
 - review and audit expectations
 
-When a feature area has its own closer `GUIDELINES.md`, that local file should override a broader project-level one for that subtree.
+When a feature area has its own closer `DESIGN.MD`, that local file should override a broader project- or app-level one for that subtree.
 
 ---
 
@@ -25,6 +25,15 @@ Use this document to align:
 - review and audit expectations
 
 If a repeated pattern becomes stable, update this file instead of rewriting the same rationale in one-off plans.
+
+---
+
+## Product and Interface Context
+
+- Who uses this app or feature
+- What job they are trying to get done
+- What tone the interface should communicate
+- What this should explicitly avoid looking like
 
 ---
 
@@ -170,7 +179,7 @@ Frontend review should check:
 
 ## When To Update This File
 
-Update `GUIDELINES.md` when:
+Update `DESIGN.MD` when:
 - a pattern becomes stable and repeatable
 - a recurring refactor keeps reaching the same conclusion
 - a shared primitive becomes the preferred solution

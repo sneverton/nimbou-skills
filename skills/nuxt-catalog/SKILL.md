@@ -9,24 +9,33 @@ description: Generate and validate the Nuxt component catalog for Vue SFCs with 
 
 Scan `components/**/*.vue`, extract `<catalog lang="json">`, merge the result with `vue-component-meta`, and write both the rich `components.meta.json` catalog and the slim `.generated/component-catalog/components.meta.json` mirror.
 
-## Commands
-
-- `/catalog` - generate aggregate and per-component metadata
-- `/catalog [domain]` - generate only one semantic domain
-- `/catalog --validate` - report problems without writing files
-
 ## Execution Priority
 
-1. If the project already exposes native scripts such as `catalog:generate` and `catalog:validate`, use those commands first.
-2. If the project only ships catalog artifacts, read `components.meta.json` or `.generated/component-catalog/components.meta.json` directly.
-3. Use the local fallback generator in `scripts/generate-catalog.ts` only when the project does not provide a native catalog workflow.
+1. If the project only ships catalog artifacts and the user wants to inspect or reuse them, read `components.meta.json` or `.generated/component-catalog/components.meta.json` directly.
+2. Otherwise use the bundled workflow from this `nestjs-skills` checkout as the default path. Do not require `catalog:validate` or `catalog:generate` to exist inside the target project.
+3. Use project-native catalog scripts only when the user explicitly asks for the project's own generator or when the target project requires behavior that this bundled generator cannot provide.
 
 ## Behavior
 
 1. Read the project root catalog target from the current working directory.
-2. Prefer the native project workflow when `catalog:generate` or `catalog:validate` already exist.
-3. Inspect every Vue component under `components/` only in fallback mode.
-4. Require the semantic schema documented in `reference/catalog-schema.md`.
-5. Validate `category` and `domain` rules from `reference/taxonomy.md`.
-6. Report broken `related`, `replaces`, and `usedBy` references in the rich schema.
-7. In fallback mode, generate `components.meta.json`, `.generated/component-catalog/components.meta.json`, and `components/{ComponentName}.meta.json` unless `--validate` is active.
+2. Resolve the `nestjs-skills` repo root that contains `package.json` and `scripts/generate-catalog.ts`.
+3. Run the bundled scripts against the target project by setting `CATALOG_ROOT` to the target root and using `npm --prefix <nestjs-skills-root> run ...`.
+4. Default flow is `validate -> generate`:
+   - run validation first
+   - only run generation if validation passes
+   - stop after validation when the user asked only for audit or troubleshooting
+5. Inspect every Vue component under `components/` only in fallback mode.
+6. Require the semantic schema documented in `reference/catalog-schema.md`.
+7. Validate `category` and `domain` rules from `reference/taxonomy.md`.
+8. Report broken `related`, `replaces`, and `usedBy` references in the rich schema.
+9. In the bundled workflow, generate `components.meta.json`, `.generated/component-catalog/components.meta.json`, and `components/{ComponentName}.meta.json` only after validation passes.
+10. If the user only wants catalog consultation, reuse, or planning context, read the existing artifacts instead of regenerating them.
+
+## Typical invocations
+
+- Bundled workflow against the target project:
+  - `CATALOG_ROOT="$PWD" npm --prefix <nestjs-skills-root> run catalog:validate`
+  - `CATALOG_ROOT="$PWD" npm --prefix <nestjs-skills-root> run catalog`
+- If the user explicitly wants the target project's own generator:
+  - `pnpm catalog:validate`
+  - `pnpm catalog:generate`
