@@ -1,6 +1,6 @@
 # nimbou-skills
 
-`nimbou-skills` is a unified skill library for `Claude Code` and `Codex`. It keeps a backend-first workflow for `NestJS`, `Prisma`, `Clean Architecture`, and `SOLID`, while also shipping a prefixed Nuxt/Vuetify skill set for frontend-specific work.
+`nimbou-skills` is a unified skill library for `Claude Code` and `Codex`. It keeps a backend-first workflow for `NestJS`, `Prisma`, `Clean Architecture`, and `SOLID`, while also shipping a prefixed Nuxt/Vuetify skill set for frontend-specific work and Codex-only skill mirrors for Claude command entrypoints under `.codex/skills/`.
 
 This repository is no longer an upstream mirror. It is the canonical repository that now consolidates:
 - a backend-first workflow core
@@ -55,6 +55,7 @@ This repository is no longer an upstream mirror. It is the canonical repository 
   - `commands/` — Claude command entrypoints such as `/feature-dev`, `/design-md`, and `/merge-pr`
   - `skills/nuxt-audit/reference/design-md-template.md` is the template for `DESIGN.MD` files
   - `skills/nuxt-catalog/scripts/generate-catalog.ts` provides the bundled Nuxt component catalog generator
+- `.codex/skills/` — Codex-only mirrors for the Claude command workflows
 - `.claude-plugin/marketplace.json` — marketplace manifest for `claude plugin marketplace add`
 - `docs/plans/` is the default location for generated plans and design artifacts
 - `tests/` covers the skill tree layout, install flow documentation, and the catalog generator
@@ -74,8 +75,9 @@ The bootstrap script does all required machine setup:
 - runs `pnpm install`
 - registers the GitHub repo as a Claude Code marketplace via `claude plugin marketplace add`
 - installs the plugin via `claude plugin install`
-- links skills into `~/.agents/skills/nimbou-skills` for Codex
+- links skills into `~/.agents/skills/nimbou-skills` for Codex, including the Codex-only mirrors from `.codex/skills/`
 - runs `npm link` to publish the `nb-catalog` CLI
+- creates `~/.local/bin/codex-full` if it does not already exist, wired to `codex --dangerously-bypass-approvals-and-sandbox`
 
 After the bootstrap finishes, restart Claude Code so it picks up the new plugin.
 

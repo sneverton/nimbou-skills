@@ -14,6 +14,7 @@ test('nuxt catalog skill files exist and describe validate-then-generate mode', 
     'plugins/nimbou-skills/skills/nuxt-catalog/SKILL.md',
     'bin/nb-catalog',
     'install.sh',
+    'scripts/setup-codex-full-wrapper.sh',
     'plugins/nimbou-skills/skills/nuxt-catalog/scripts/generate-catalog.ts',
     'plugins/nimbou-skills/skills/nuxt-catalog/scripts/install.sh',
     'plugins/nimbou-skills/skills/nuxt-catalog/reference/catalog-schema.md',
@@ -180,6 +181,9 @@ test('feature development command and agents describe the guided orchestration w
   const featureCommand = read('plugins/nimbou-skills/commands/feature-dev.md')
   const designCommand = read('plugins/nimbou-skills/commands/design-md.md')
   const mergeCommand = read('plugins/nimbou-skills/commands/merge-pr.md')
+  const featureSkill = read('.codex/skills/feature-dev/SKILL.md')
+  const designSkill = read('.codex/skills/design-md/SKILL.md')
+  const mergeSkill = read('.codex/skills/merge-pr/SKILL.md')
   const explorer = read('plugins/nimbou-skills/agents/code-explorer.md')
   const architect = read('plugins/nimbou-skills/agents/code-architect.md')
   const reviewer = read('plugins/nimbou-skills/agents/code-reviewer.md')
@@ -197,6 +201,9 @@ test('feature development command and agents describe the guided orchestration w
   assert.match(featureCommand, /code-reviewer/)
   assert.match(featureCommand, /Phase 1: Discovery/)
   assert.match(featureCommand, /Phase 6: Quality Review/)
+  assert.match(featureSkill, /^---\nname: feature-dev/m)
+  assert.match(featureSkill, /Capture the current user request from the conversation/)
+  assert.match(featureSkill, /Phase 4: Architecture and Design/)
 
   assert.match(designCommand, /^---\ndescription:/m)
   assert.match(designCommand, /DESIGN\.MD/)
@@ -205,6 +212,9 @@ test('feature development command and agents describe the guided orchestration w
   assert.match(designCommand, /repository root/i)
   assert.match(designCommand, /design-md-template\.md/i)
   assert.match(designCommand, /create or refresh/i)
+  assert.match(designSkill, /^---\nname: design-md/m)
+  assert.match(designSkill, /Capture the target from the user's request/)
+  assert.match(designSkill, /Ask only the missing high-impact design questions/)
 
   assert.match(mergeCommand, /^---\ndescription:/m)
   assert.match(mergeCommand, /Single mode/)
@@ -217,6 +227,9 @@ test('feature development command and agents describe the guided orchestration w
   assert.match(mergeCommand, /auto-merge enabled/)
   assert.match(mergeCommand, /skipped/)
   assert.match(mergeCommand, /failed/)
+  assert.match(mergeSkill, /^---\nname: merge-pr/m)
+  assert.match(mergeSkill, /Choose the mode from the user's request/)
+  assert.match(mergeSkill, /Never batch-merge without explicit confirmation/)
 
   assert.match(explorer, /^---\nname: code-explorer/m)
   assert.match(explorer, /Key Files To Read/)

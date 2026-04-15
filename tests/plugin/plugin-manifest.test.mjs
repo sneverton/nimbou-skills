@@ -42,6 +42,9 @@ test('command and agent scaffolds exist for guided feature development', () => {
     'plugins/nimbou-skills/commands/feature-dev.md',
     'plugins/nimbou-skills/commands/design-md.md',
     'plugins/nimbou-skills/commands/merge-pr.md',
+    '.codex/skills/feature-dev/SKILL.md',
+    '.codex/skills/design-md/SKILL.md',
+    '.codex/skills/merge-pr/SKILL.md',
     'plugins/nimbou-skills/agents/code-explorer.md',
     'plugins/nimbou-skills/agents/code-architect.md',
     'plugins/nimbou-skills/agents/code-reviewer.md',
@@ -57,6 +60,7 @@ test('command and agent scaffolds exist for guided feature development', () => {
 
 test('README documents backend-first core and prefixed NestJS and Nuxt skills', () => {
   const readme = readFileSync(resolve(root, 'README.md'), 'utf8')
+  const install = readFileSync(resolve(root, 'install.sh'), 'utf8')
 
   assert.match(readme, /backend-first/i)
   assert.match(readme, /NestJS/)
@@ -64,6 +68,7 @@ test('README documents backend-first core and prefixed NestJS and Nuxt skills', 
   assert.match(readme, /feature-dev/)
   assert.match(readme, /design-md/)
   assert.match(readme, /merge-pr/)
+  assert.match(readme, /\.codex\/skills\//)
   assert.match(readme, /code-explorer/)
   assert.match(readme, /code-architect/)
   assert.match(readme, /code-reviewer/)
@@ -86,10 +91,18 @@ test('README documents backend-first core and prefixed NestJS and Nuxt skills', 
   assert.match(readme, /claude plugin marketplace add/)
   assert.match(readme, /claude plugin install/)
   assert.match(readme, /~\/\.agents\/skills\/nimbou-skills/)
+  assert.match(readme, /Codex-only skill mirrors/)
   assert.match(readme, /nb-catalog/)
   assert.match(readme, /single review pass/i)
   assert.match(readme, /nestjs-audit-http-tests/)
   assert.match(readme, /nestjs-audit-prisma-repositories/)
   assert.match(readme, /\.generated\/component-catalog\/components\.meta\.json/)
+  assert.match(readme, /codex-full/)
+  assert.match(readme, /dangerously-bypass-approvals-and-sandbox/)
+  assert.match(install, /link_skill_tree/)
+  assert.match(install, /\.codex\/skills/)
+  assert.match(install, /CODEX_SKILL_ROOT/)
+  assert.match(install, /setup-codex-full-wrapper\.sh/)
+  assert.match(install, /CODEX_WRAPPER_PATH/)
   assert.equal(existsSync(resolve(root, 'LICENSE')), true)
 })
