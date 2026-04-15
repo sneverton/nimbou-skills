@@ -157,7 +157,8 @@ function findDefinePropsCall(sourceFile: ts.SourceFile): ts.CallExpression | und
 function nuxtComponentName(filePath: string): string {
   const componentsDir = join(projectRoot, 'components')
   const relPath = relative(componentsDir, filePath).replace(/\.vue$/, '')
-  return relPath
+  const baseName = basename(relPath)
+  return baseName
     .split(/[/\\]/)
     .flatMap((part) => part.split('-'))
     .map((segment) => segment.charAt(0).toUpperCase() + segment.slice(1))
