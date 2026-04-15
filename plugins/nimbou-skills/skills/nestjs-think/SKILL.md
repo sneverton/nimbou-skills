@@ -15,6 +15,8 @@ Do NOT invoke any implementation skill, write any code, scaffold any project, or
 
 ## Domain Specification Gate
 
+Complete this gate before checklist step 1.
+
 Before writing the implementation plan:
 
 1. identify the target business domain
@@ -28,6 +30,12 @@ Before writing the implementation plan:
 9. only after approval, invoke `nestjs-plan`
 
 Treat the domain directory as the approved contract for backend planning, route coverage, and later test generation.
+
+**Pronto para planejar**
+
+- `docs/domain/<domain>/domain.md` approved.
+- `docs/domain/<domain>/*.feature` approved.
+- Backend contract, persistence shape, and review constraints are closed.
 
 ## Checklist
 
@@ -46,6 +54,11 @@ You MUST create a task for each of these items and complete them in order:
 
 ```dot
 digraph nestjs_think {
+    "Identify target domain" [shape=box];
+    "Use mapping-domain-states" [shape=box];
+    "Use generating-gherkin-specs" [shape=box];
+    "User approves domain and Gherkin?" [shape=diamond];
+    "Domain Specification Gate complete" [shape=box];
     "Explore project context" [shape=box];
     "Ask clarifying questions" [shape=box];
     "Propose 2-3 backend approaches" [shape=box];
@@ -66,6 +79,13 @@ digraph nestjs_think {
     "Spec self-review" -> "User reviews spec?";
     "User reviews spec?" -> "Write design doc" [label="changes requested"];
     "User reviews spec?" -> "Invoke nestjs-plan" [label="approved"];
+
+    "Identify target domain" -> "Use mapping-domain-states";
+    "Use mapping-domain-states" -> "Use generating-gherkin-specs";
+    "Use generating-gherkin-specs" -> "User approves domain and Gherkin?";
+    "User approves domain and Gherkin?" -> "Use generating-gherkin-specs" [label="no, revise"];
+    "User approves domain and Gherkin?" -> "Domain Specification Gate complete" [label="yes"];
+    "Domain Specification Gate complete" -> "Explore project context";
 }
 ```
 

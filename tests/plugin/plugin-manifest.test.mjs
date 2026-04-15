@@ -62,11 +62,12 @@ test('command and agent scaffolds exist for guided feature development', () => {
   }
 })
 
-test('shared specification skills document the domain-centered layout and gate', () => {
+test('specification skills and think orchestrators document the domain-centered layout and gate', () => {
   const files = [
     'plugins/nimbou-skills/skills/mapping-domain-states/SKILL.md',
     'plugins/nimbou-skills/skills/generating-gherkin-specs/SKILL.md',
     'plugins/nimbou-skills/skills/nuxt-think/SKILL.md',
+    'plugins/nimbou-skills/skills/nestjs-think/SKILL.md',
   ]
 
   for (const file of files) {
@@ -98,12 +99,15 @@ test('shared specification skills document the domain-centered layout and gate',
   assert.match(nestjsThink, /docs\/domain\/<domain>\//)
   assert.match(nestjsThink, /use `mapping-domain-states` to create or update `docs\/domain\/<domain>\/domain\.md`/i)
   assert.match(nestjsThink, /use `generating-gherkin-specs` to create or update `docs\/domain\/<domain>\/\*\.feature`/i)
+  assert.match(nestjsThink, /complete this gate before checklist step 1/i)
   assert.match(nestjsThink, /present the domain and Gherkin changes for approval/i)
   assert.match(nestjsThink, /do not advance to `nestjs-plan` with stale domain or Gherkin artifacts/i)
   assert.match(nestjsThink, /if state transitions changed, regenerate the affected `\.feature` files before planning/i)
   assert.match(nestjsThink, /do not do the `domain\.md` or `\*\.feature` work inline inside `nestjs-think`/i)
   assert.match(nestjsThink, /if the request splits into multiple independent domains, split them and close one domain at a time/i)
   assert.match(nestjsThink, /only after approval, invoke `nestjs-plan`/i)
+  assert.match(nestjsThink, /`docs\/domain\/<domain>\/domain\.md` approved\./i)
+  assert.match(nestjsThink, /`docs\/domain\/<domain>\/\*\.feature` approved\./i)
 })
 
 test('README documents backend-first core and prefixed NestJS and Nuxt skills', () => {
