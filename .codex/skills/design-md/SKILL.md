@@ -7,8 +7,6 @@ description: Generate or refresh a project-facing DESIGN.MD by exploring the tar
 
 Use this skill when the user wants a `DESIGN.MD` created, refreshed, or standardized for a Nuxt/Vuetify project.
 
-This skill is not a one-shot template dump. It should produce a project-facing `DESIGN.MD` grounded in the actual codebase and local UI patterns.
-
 ## Core Rules
 
 - Explore first, ask second
@@ -19,10 +17,9 @@ This skill is not a one-shot template dump. It should produce a project-facing `
 
 ## Phase 1: Resolve Target Scope
 
-1. Capture the target from the user's request
+1. Capture the target from the user's request.
 2. If the target is a monorepo:
-   - identify the relevant app or package root
-   - use that app root as the default write location
+   - identify the relevant app or package root and use that app root as the default write location
 3. If the target is not a monorepo:
    - use the repository root as the default write location
 4. If the user named a route, feature, or path:
@@ -71,8 +68,4 @@ If a `DESIGN.MD` already exists:
 
 ## Phase 5: Confirm Result
 
-After writing or updating the file:
-- show the resolved target root
-- show whether the file was created or updated
-- summarize the most important design rules captured
-- point out any important unknowns that remain intentionally undecided
+After writing or updating the file, show the resolved target root, whether the file was created or updated, the most important design rules captured, and any intentionally undecided unknowns.

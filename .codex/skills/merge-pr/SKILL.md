@@ -5,9 +5,7 @@ description: Merge one PR or multiple ready PRs after validating status, showing
 
 # Merge Pull Request
 
-Use this skill when the user wants to merge one PR or several ready PRs.
-
-This skill is merge-focused. It does not perform code review. If the user wants review first, that is a separate workflow.
+Use this skill when the user wants to merge one PR or several ready PRs. It is merge-focused and does not perform code review.
 
 ## Modes
 
@@ -28,15 +26,15 @@ Choose the mode from the user's request and any PR identifiers already present i
 
 ### Single mode
 
-1. Resolve the target PR number
-2. Fetch PR metadata
-3. Confirm the repo, base branch, head branch, title, and current state
+1. Resolve the target PR number.
+2. Fetch PR metadata.
+3. Confirm the repo, base branch, head branch, title, and current state.
 
 ### Batch mode
 
-1. List candidate PRs
-2. Filter to ready or mergeable PRs
-3. Build a concise summary table before acting
+1. List candidate PRs.
+2. Filter to ready or mergeable PRs.
+3. Build a concise summary table before acting.
 
 ## Phase 2: Validate Eligibility
 
