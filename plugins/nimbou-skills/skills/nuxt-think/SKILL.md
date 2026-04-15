@@ -24,6 +24,8 @@ Before closing design decisions:
 3. create or update `docs/domain/<domain>/*.feature`
 4. present the domain and Gherkin changes for approval
 5. only after approval, invoke `nuxt-plan`
+6. do not advance to `nuxt-plan` with stale domain or Gherkin artifacts
+7. if state transitions changed, regenerate the affected `.feature` files before planning
 
 Treat `docs/domain/<domain>/` as the canonical specification bundle for the feature slice. If the request touches multiple independent domains, split them and close one domain at a time.
 
@@ -42,7 +44,7 @@ Treat `docs/domain/<domain>/` as the canonical specification bundle for the feat
    - what responsive layout shifts matter
    - what existing primitives, shells, or local patterns from `DESIGN.MD` must be preferred
    - what visual direction should guide the UI so it does not drift into generic output
-7. Produce the structured output below and stop. Do not write code.
+7. Produce the structured output below with the domain and Gherkin artifacts, present it for approval, and only then hand off to `nuxt-plan`. Do not write code.
 
 Read `reference/conventions.md` before proposing component splits.
 

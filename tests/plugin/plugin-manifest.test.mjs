@@ -84,7 +84,10 @@ test('shared specification skills document the domain-centered layout', () => {
   assert.match(think, /docs\/domain\/<domain>\//)
   assert.match(think, /create or update `docs\/domain\/<domain>\/domain\.md`/i)
   assert.match(think, /create or update `docs\/domain\/<domain>\/\*\.feature`/i)
+  assert.match(think, /present the domain and Gherkin changes for approval/i)
   assert.match(think, /only after approval, invoke `nuxt-plan`/i)
+  assert.match(think, /do not advance to `nuxt-plan` with stale domain or Gherkin artifacts/i)
+  assert.match(think, /if state transitions changed, regenerate the affected `\.feature` files before planning/i)
 })
 
 test('README documents backend-first core and prefixed NestJS and Nuxt skills', () => {
