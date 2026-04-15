@@ -18,10 +18,14 @@ Do NOT invoke any implementation skill, write any code, scaffold any project, or
 Before writing the implementation plan:
 
 1. identify the target business domain
-2. create or update `docs/domain/<domain>/domain.md`
-3. create or update `docs/domain/<domain>/*.feature`
-4. review the domain and Gherkin changes with the user
-5. only after approval, invoke `nestjs-plan`
+2. use `mapping-domain-states` to create or update `docs/domain/<domain>/domain.md`
+3. use `generating-gherkin-specs` to create or update `docs/domain/<domain>/*.feature`
+4. present the domain and Gherkin changes for approval
+5. do not advance to `nestjs-plan` with stale domain or Gherkin artifacts
+6. if state transitions changed, regenerate the affected `.feature` files before planning
+7. do not do the `domain.md` or `*.feature` work inline inside `nestjs-think`; delegate it to the shared spec skills
+8. if the request splits into multiple independent domains, split them and close one domain at a time
+9. only after approval, invoke `nestjs-plan`
 
 Treat the domain directory as the approved contract for backend planning, route coverage, and later test generation.
 
