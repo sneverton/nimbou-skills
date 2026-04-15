@@ -113,7 +113,9 @@ test('specification skills and think orchestrators document the domain-centered 
 test('platform test skills consume approved Gherkin and route backend audits', () => {
   const files = [
     'plugins/nimbou-skills/skills/nuxt-test/SKILL.md',
+    'plugins/nimbou-skills/skills/nuxt-test/reference/test-conventions.md',
     'plugins/nimbou-skills/skills/nestjs-test/SKILL.md',
+    'plugins/nimbou-skills/skills/nestjs-test/reference/test-conventions.md',
   ]
 
   for (const file of files) {
@@ -121,19 +123,34 @@ test('platform test skills consume approved Gherkin and route backend audits', (
   }
 
   const nuxtTest = read('plugins/nimbou-skills/skills/nuxt-test/SKILL.md')
+  const nuxtRules = read('plugins/nimbou-skills/skills/nuxt-test/reference/test-conventions.md')
   const nestjsTest = read('plugins/nimbou-skills/skills/nestjs-test/SKILL.md')
+  const nestjsRules = read('plugins/nimbou-skills/skills/nestjs-test/reference/test-conventions.md')
 
+  assert.match(nuxtTest, /Read `reference\/test-conventions\.md` before changing tests\./i)
   assert.match(nuxtTest, /turn approved Gherkin into bounded Playwright coverage/i)
   assert.match(nuxtTest, /approved Gherkin/i)
   assert.match(nuxtTest, /docs\/domain\/<domain>\/\*\.feature/)
   assert.match(nuxtTest, /explicit gap report/i)
+  assert.match(nuxtRules, /getByRole\(\)/)
+  assert.match(nuxtRules, /getByTestId\(\)/)
+  assert.match(nuxtRules, /waitForTimeout\(\)/)
+  assert.match(nuxtRules, /one critical happy path/i)
+  assert.match(nuxtRules, /meaningful non-happy-path state/i)
   assert.match(nestjsTest, /^---\nname: nestjs-test/m)
+  assert.match(nestjsTest, /Read `reference\/test-conventions\.md` before changing tests\./i)
   assert.match(nestjsTest, /approved Gherkin/i)
+  assert.match(nestjsTest, /Use this skill when the main job is:/i)
   assert.match(nestjsTest, /gherkin-driven mode/i)
   assert.match(nestjsTest, /audit mode/i)
   assert.match(nestjsTest, /stabilize mode/i)
+  assert.match(nestjsTest, /## Workflow/)
+  assert.match(nestjsTest, /bounded backend flow or persistence slice/i)
   assert.match(nestjsTest, /nestjs-http-test-auditor/i)
   assert.match(nestjsTest, /prisma-repository-test-auditor/i)
+  assert.match(nestjsRules, /bounded backend flow or persistence slice/i)
+  assert.match(nestjsRules, /explicit HTTP status, payload shape, and database state assertions/i)
+  assert.match(nestjsRules, /nestjs-debug/i)
 })
 
 test('README documents backend-first core and prefixed NestJS and Nuxt skills', () => {

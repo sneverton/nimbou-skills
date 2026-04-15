@@ -92,6 +92,10 @@ test('nuxt think and plan skills explain catalog-aware design and execution topo
 test('shared specification skills are shipped with the tree', () => {
   assert.ok(shippedSkills.includes('mapping-domain-states'))
   assert.ok(shippedSkills.includes('generating-gherkin-specs'))
+})
+
+test('platform test skills are shipped with the tree', () => {
+  assert.ok(shippedSkills.includes('nuxt-test'))
   assert.ok(shippedSkills.includes('nestjs-test'))
 })
 

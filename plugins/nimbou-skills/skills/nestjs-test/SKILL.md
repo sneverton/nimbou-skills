@@ -5,19 +5,34 @@ description: Stabilize and expand backend HTTP and persistence tests from approv
 
 # NestJS Test
 
+Read `reference/test-conventions.md` before changing tests.
+
 ## Purpose
 
 Own gherkin-driven backend test generation, audit dispatch, and stabilization for NestJS modules and Prisma repositories.
 
 ## When to Use
 
-Use this skill when approved Gherkin exists and a backend surface needs explicit HTTP, E2E, or persistence coverage.
+Use this skill when the main job is:
+- generate backend coverage from approved Gherkin
+- stabilize a fragile HTTP or persistence test
+- route audit work through the backend auditors
 
 ## Modes
 
 - **gherkin-driven mode** - use approved `docs/domain/<domain>/*.feature` files to add or expand backend coverage
 - **audit mode** - dispatch `nestjs-http-test-auditor` or `prisma-repository-test-auditor`
 - **stabilize mode** - tighten fragile backend tests without weakening observable contracts
+
+## Workflow
+
+1. Map one bounded backend flow or persistence slice.
+2. Run only the relevant backend tests.
+3. Build a small QA checklist for that flow.
+4. Diagnose whether each failure belongs to the test, the backend, the environment/setup, or more than one of these.
+5. Fix test-side problems first when the contract is already correct.
+6. Fix product code only when the test exposed a real backend defect.
+7. Add the missing tests for the bounded flow and rerun only that slice.
 
 ## Rules
 
