@@ -42,9 +42,10 @@ Use this skill when the user wants to build a feature and needs a disciplined pa
 2. Route to the local skills:
    - backend-only: `nestjs-think` then `nestjs-plan`
    - frontend-only: `nuxt-think` then `nuxt-plan`
-   - fullstack: `nestjs-think`, `nestjs-plan`, `nuxt-think`, `nuxt-plan`
-3. Do not let backend discovery redesign frontend UI structure or let frontend discovery redefine backend semantics.
-4. **Phase 4: Architecture and Design** is where the user picks the approach.
+   - fullstack: `fullstack-think`, then `nuxt-plan` and `nestjs-plan` in parallel after the shared contract is closed by `fullstack-think`
+3. Do not dispatch planning until the shared contract is closed by `fullstack-think`.
+4. Do not let backend discovery redesign frontend UI structure or let frontend discovery redefine backend semantics.
+5. **Phase 4: Architecture and Design** is where the user picks the approach.
 
 ## Phase 5: Implementation
 

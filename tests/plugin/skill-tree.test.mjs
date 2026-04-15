@@ -226,6 +226,18 @@ test('feature development command and agents describe the guided orchestration w
   assert.match(featureCommand, /fullstack/)
   assert.match(featureCommand, /nestjs-think/)
   assert.match(featureCommand, /nuxt-think/)
+  assert.match(featureCommand, /fullstack-think/)
+  assert.match(featureCommand, /shared contract is closed by `fullstack-think`/i)
+  assert.match(featureCommand, /`nuxt-plan` and `nestjs-plan` in parallel/i)
+  assert.match(featureCommand, /do not dispatch planning until the shared contract is closed by `fullstack-think`/i)
+  assert.doesNotMatch(
+    featureCommand,
+    /do not start `nuxt-think` when the frontend depends on an unsettled backend contract/i,
+  )
+  assert.doesNotMatch(
+    featureCommand,
+    /fullstack: `nestjs-think`, `nestjs-plan`, `nuxt-think`, `nuxt-plan`/i,
+  )
   assert.match(featureCommand, /code-explorer/)
   assert.match(featureCommand, /code-architect/)
   assert.match(featureCommand, /code-reviewer/)
@@ -233,6 +245,20 @@ test('feature development command and agents describe the guided orchestration w
   assert.match(featureCommand, /Phase 6: Quality Review/)
   assert.match(featureSkill, /^---\nname: feature-dev/m)
   assert.match(featureSkill, /Capture the current user request from the conversation/)
+  assert.match(featureSkill, /nestjs-think/)
+  assert.match(featureSkill, /nuxt-think/)
+  assert.match(featureSkill, /fullstack-think/)
+  assert.match(featureSkill, /shared contract is closed by `fullstack-think`/i)
+  assert.match(featureSkill, /`nuxt-plan` and `nestjs-plan` in parallel/i)
+  assert.match(featureSkill, /do not dispatch planning until the shared contract is closed by `fullstack-think`/i)
+  assert.doesNotMatch(
+    featureSkill,
+    /do not start `nuxt-think` when the frontend depends on an unsettled backend contract/i,
+  )
+  assert.doesNotMatch(
+    featureSkill,
+    /fullstack: `nestjs-think`, `nestjs-plan`, `nuxt-think`, `nuxt-plan`/i,
+  )
   assert.match(featureSkill, /Phase 4: Architecture and Design/)
 
   assert.match(designCommand, /^---\ndescription:/m)
