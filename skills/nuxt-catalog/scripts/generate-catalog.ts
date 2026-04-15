@@ -26,9 +26,9 @@ type CatalogEntry = {
   useWhen: string
   avoidWhen: string
   status: CatalogStatus
-  related: string[]
-  replaces: string | null
-  usedBy: string[]
+  related?: string[]       // derived by generate
+  replaces?: string | null // optional, defaults to null
+  usedBy?: string[]        // derived by generate
 }
 
 type OutputComponent = {
@@ -70,15 +70,26 @@ const domainFilter = rawArgs.find((arg) => !arg.startsWith('--')) ?? null
 function readCatalog(filePath: string): CatalogEntry {
   const source = readFileSync(filePath, 'utf8')
   const { descriptor } = parse(source, { filename: filePath })
-  const block = descriptor.customBlocks.find(
-    (candidate) => candidate.type === 'catalog' && candidate.lang === 'json',
+  const catalogBlocks = descriptor.customBlocks.filter(
+    (candidate) => candidate.type === 'catalog',
   )
 
+  if (catalogBlocks.length > 1) {
+    throw new Error(
+      `Multiple <catalog> blocks found in ${relative(projectRoot, filePath)}. Only one is allowed per component.`,
+    )
+  }
+
+  const block = catalogBlocks[0]
   if (!block) {
     throw new Error(`Missing <catalog lang="json"> block in ${relative(projectRoot, filePath)}`)
   }
 
-  return JSON.parse(block.content) as CatalogEntry
+  try {
+    return JSON.parse(block.content) as CatalogEntry
+  } catch {
+    throw new Error(`Invalid JSON in <catalog> block: ${relative(projectRoot, filePath)}`)
+  }
 }
 
 function readScriptSetupProps(filePath: string): OutputComponent['meta']['props'] {
@@ -145,28 +156,39 @@ function findDefinePropsCall(sourceFile: ts.SourceFile): ts.CallExpression | und
 
 function collectComponent(filePath: string): OutputComponent {
   const catalog = readCatalog(filePath)
-  const meta = checker.getComponentMeta(filePath)
   const name = basename(filePath, '.vue')
-  const props = meta.props.length > 0 ? meta.props.map((prop) => ({
-    name: prop.name,
-    type: prop.type ?? 'unknown',
-    required: Boolean(prop.required),
-    default: prop.default ?? null,
-  })) : readScriptSetupProps(filePath)
+
+  let meta: { props: OutputComponent['meta']['props']; emits: OutputComponent['meta']['emits']; slots: OutputComponent['meta']['slots']; exposed: OutputComponent['meta']['exposed'] }
+
+  try {
+    const rawMeta = checker.getComponentMeta(filePath)
+    const props = rawMeta.props
+      .filter((p) => !p.global)
+      .map((prop) => ({
+        name: prop.name,
+        type: prop.type ?? 'unknown',
+        required: Boolean(prop.required),
+        default: prop.default ?? null,
+      }))
+
+    meta = {
+      props: props.length > 0 ? props : readScriptSetupProps(filePath),
+      emits: rawMeta.events.map((event) => ({ name: event.name })),
+      slots: rawMeta.slots.map((slot) => ({
+        name: slot.name,
+        description: slot.description ?? '',
+      })),
+      exposed: rawMeta.exposed.map((item) => ({ name: item.name })),
+    }
+  } catch {
+    meta = { props: readScriptSetupProps(filePath), emits: [], slots: [], exposed: [] }
+  }
 
   return {
     name,
     file: relative(projectRoot, filePath).replaceAll('\\', '/'),
     catalog,
-    meta: {
-      props,
-      emits: meta.events.map((event) => ({ name: event.name })),
-      slots: meta.slots.map((slot) => ({
-        name: slot.name,
-        description: slot.description,
-      })),
-      exposed: meta.exposed.map((item) => ({ name: item.name })),
-    },
+    meta,
   }
 }
 
@@ -186,9 +208,6 @@ function validateCatalog(entry: CatalogValidationTarget, componentNames: Set<str
     'useWhen',
     'avoidWhen',
     'status',
-    'related',
-    'replaces',
-    'usedBy',
   ]
 
   for (const key of requiredKeys) {
@@ -244,43 +263,101 @@ function validateCatalog(entry: CatalogValidationTarget, componentNames: Set<str
     errors.push(`Invalid status "${entry.status}" in ${file}`)
   }
 
-  if (!isStringArray(entry.related)) {
-    errors.push(`Field "related" must be a string array in ${file}`)
-  }
-
-  if (!isStringArray(entry.usedBy)) {
-    errors.push(`Field "usedBy" must be a string array in ${file}`)
-  }
-
-  if (typeof entry.replaces !== 'string' && entry.replaces !== null) {
-    errors.push(`Field "replaces" must be a string or null in ${file}`)
-  }
-
-  if (!isStringArray(entry.related)) {
-    return errors
-  }
-
-  for (const related of entry.related) {
-    if (!componentNames.has(related)) {
-      errors.push(`Broken related reference: ${related} in ${file}`)
-    }
-  }
-
+  // replaces is optional — validate reference integrity only if authored
   if (typeof entry.replaces === 'string' && !componentNames.has(entry.replaces)) {
     errors.push(`Broken replaces reference: ${entry.replaces} in ${file}`)
   }
 
-  if (!isStringArray(entry.usedBy)) {
-    return errors
-  }
-
-  for (const usedBy of entry.usedBy) {
-    if (!componentNames.has(usedBy) && !usedBy.endsWith('Page')) {
-      errors.push(`Broken usedBy reference: ${usedBy} in ${file}`)
-    }
+  // Warn if related is manually declared (will be overwritten by generate)
+  if (isStringArray(entry.related) && entry.related.length > 0) {
+    console.warn(
+      `[WARN] ${file}: "related" declared manually will be ignored — generate derives it automatically.`,
+    )
   }
 
   return errors
+}
+
+function toKebabCase(name: string): string {
+  return name.replace(/([A-Z])/g, (_, char: string, offset: number) =>
+    offset === 0 ? char.toLowerCase() : `-${char.toLowerCase()}`,
+  )
+}
+
+function getPascalWords(name: string): string[] {
+  return name.match(/[A-Z][a-z0-9]*/g) ?? []
+}
+
+function getRelatedGroupKey(filePath: string): string {
+  const withoutPrefix = filePath.replace(/^components\//, '')
+  const withoutExt = withoutPrefix.replace(/\.vue$/, '')
+  const slashIdx = withoutExt.indexOf('/')
+  if (slashIdx !== -1) {
+    const folder = withoutExt.slice(0, slashIdx)
+    const filename = withoutExt.slice(slashIdx + 1)
+    const firstWord = getPascalWords(filename)[0] ?? filename
+    return `${folder}/${firstWord}`
+  }
+  const words = getPascalWords(withoutExt)
+  return words.slice(0, 2).join('') || withoutExt
+}
+
+function deriveRelated(components: OutputComponent[]): Map<string, string[]> {
+  const groups = new Map<string, OutputComponent[]>()
+  for (const comp of components) {
+    const key = getRelatedGroupKey(comp.file)
+    const group = groups.get(key) ?? []
+    group.push(comp)
+    groups.set(key, group)
+  }
+
+  const result = new Map<string, string[]>()
+  for (const comp of components) {
+    result.set(comp.name, [])
+  }
+
+  for (const members of groups.values()) {
+    if (members.length < 2) continue
+    for (const member of members) {
+      result.set(
+        member.name,
+        members.filter((m) => m.name !== member.name).map((m) => m.name).sort(),
+      )
+    }
+  }
+
+  return result
+}
+
+function deriveUsedBy(components: OutputComponent[], root: string): Map<string, string[]> {
+  const pageFiles = fg.sync('pages/**/*.vue', { cwd: root, absolute: true })
+  const allConsumers = [...componentFiles, ...pageFiles]
+
+  const contents = new Map<string, string>()
+  for (const file of allConsumers) {
+    contents.set(file, readFileSync(file, 'utf8'))
+  }
+
+  const result = new Map<string, string[]>()
+
+  for (const comp of components) {
+    const kebab = toKebabCase(comp.name)
+    const compAbsPath = resolve(root, comp.file)
+    const usedBy: string[] = []
+
+    for (const [file, content] of contents) {
+      if (file === compAbsPath) continue
+      const pascalRe = new RegExp(`<${comp.name}[^a-zA-Z0-9]`)
+      const kebabRe = new RegExp(`<${kebab}[^a-zA-Z0-9]`)
+      if (pascalRe.test(content) || kebabRe.test(content)) {
+        usedBy.push(relative(root, file))
+      }
+    }
+
+    result.set(comp.name, usedBy.sort())
+  }
+
+  return result
 }
 
 const collected = componentFiles.map((filePath) => {
@@ -399,6 +476,16 @@ const components = validatedComponents
 if (validateOnly) {
   console.log(`Validated ${collected.length} component files`)
   process.exit(0)
+}
+
+// Derive related and usedBy for all components
+const relatedMap = deriveRelated(components)
+const usedByMap = deriveUsedBy(components, projectRoot)
+
+for (const comp of components) {
+  comp.catalog.related = relatedMap.get(comp.name) ?? []
+  comp.catalog.usedBy = usedByMap.get(comp.name) ?? []
+  comp.catalog.replaces = comp.catalog.replaces ?? null
 }
 
 const aggregate = {

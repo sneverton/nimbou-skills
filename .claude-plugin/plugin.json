@@ -1,0 +1,5 @@
+{
+  "name": "nimbou-skills",
+  "version": "0.1.0",
+  "description": "Unified Claude Code skill library with NestJS backend core and Nuxt/Vuetify frontend skills"
+}

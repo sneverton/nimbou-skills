@@ -7,10 +7,7 @@
   "purpose": "Displays the lifecycle status of a project.",
   "useWhen": "Use in project lists, cards, and headers.",
   "avoidWhen": "Avoid for generic statuses; use StatusChip instead.",
-  "status": "stable",
-  "related": ["StatusChip"],
-  "replaces": null,
-  "usedBy": ["ProjectDetailsPage"]
+  "status": "stable"
 }
 </catalog>
 

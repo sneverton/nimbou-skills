@@ -13,14 +13,18 @@ Each Vue SFC may include:
   "useWhen": "Use in project lists, cards, and headers.",
   "avoidWhen": "Avoid for generic statuses; use StatusChip instead.",
   "status": "experimental",
-  "related": ["StatusChip"],
-  "replaces": null,
-  "usedBy": ["ProjectDetailsPage"]
+  "replaces": "OldStatusBadge"
 }
 </catalog>
 ~~~
 
-Required fields: `title`, `category`, `domain`, `tags`, `purpose`, `useWhen`, `avoidWhen`, `status`, `related`, `replaces`, `usedBy`.
+Required fields: `title`, `category`, `domain`, `tags`, `purpose`, `useWhen`, `avoidWhen`, `status`.
+
+Optional fields: `replaces` (string or null, defaults to `null`).
+
+Derived fields (computed by `nb-catalog generate`, not authored):
+- `related` — grouped by folder/prefix convention
+- `usedBy` — scanned from template references in components and pages
 
 Allowed `status` values: `draft`, `experimental`, `stable`, `deprecated`.
 
