@@ -17,6 +17,8 @@ Before closing decisions, locate the nearest `DESIGN.MD` in the target project f
 
 ## Domain Specification Gate
 
+Apply this gate during step 6 of `## Flow`, before considering the design step closed.
+
 Before closing design decisions:
 
 1. identify the target domain
