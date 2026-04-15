@@ -13,6 +13,18 @@ When the request is clearly frontend-first for Nuxt/Vuetify, use `nuxt-think` in
 Do NOT invoke any implementation skill, write any code, scaffold any project, or take any implementation action until you have presented a design and the user has approved it.
 </HARD-GATE>
 
+## Domain Specification Gate
+
+Before writing the implementation plan:
+
+1. identify the target business domain
+2. create or update `docs/domain/<domain>/domain.md`
+3. create or update `docs/domain/<domain>/*.feature`
+4. review the domain and Gherkin changes with the user
+5. only after approval, invoke `nestjs-plan`
+
+Treat the domain directory as the approved contract for backend planning, route coverage, and later test generation.
+
 ## Checklist
 
 You MUST create a task for each of these items and complete them in order:
@@ -24,7 +36,7 @@ You MUST create a task for each of these items and complete them in order:
 5. **Write design doc** — save to `docs/plans/YYYY-MM-DD-<topic>-design.md`
 6. **Spec self-review** — check placeholders, contradictions, ambiguity, and boundary drift
 7. **User reviews written spec** — ask the user to review the file before proceeding
-8. **Transition to implementation** — invoke `nestjs-plan`
+8. **Transition to implementation** — only after approval, invoke `nestjs-plan`
 
 ## Process Flow
 
