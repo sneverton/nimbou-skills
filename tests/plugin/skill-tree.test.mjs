@@ -28,7 +28,7 @@ test('nuxt catalog skill files exist and describe validate-then-generate mode', 
   const skill = read('plugins/nimbou-skills/skills/nuxt-catalog/SKILL.md')
   assert.match(skill, /validate -> generate/)
   assert.match(skill, /catalog:generate/)
-  assert.match(skill, /catalog:validate/)
+  assert.match(skill, /nb-catalog:validate/)
   assert.match(skill, /\/var\/www\/nimbou-skills\/install\.sh/)
   assert.match(skill, /nb-catalog validate/)
   assert.match(skill, /CATALOG_ROOT/)

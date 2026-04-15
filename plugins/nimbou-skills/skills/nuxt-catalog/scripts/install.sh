@@ -34,10 +34,10 @@ const packagePath = path.resolve(process.cwd(), 'package.json')
 const pkg = JSON.parse(fs.readFileSync(packagePath, 'utf8'))
 pkg.scripts ||= {}
 pkg.scripts.catalog ||= 'tsx .claude/skills/nuxt-catalog/scripts/generate-catalog.ts'
-pkg.scripts['catalog:validate'] ||= 'tsx .claude/skills/nuxt-catalog/scripts/generate-catalog.ts --validate'
+pkg.scripts['nb-catalog:validate'] ||= 'tsx .claude/skills/nuxt-catalog/scripts/generate-catalog.ts --validate'
 fs.writeFileSync(packagePath, `${JSON.stringify(pkg, null, 2)}\n`)
 NODE
-  echo "Added package scripts: catalog, catalog:validate"
+  echo "Added package scripts: catalog, nb-catalog:validate"
 else
   echo "Skipped package.json script injection because ADD_SCRIPTS=$ADD_SCRIPTS"
 fi

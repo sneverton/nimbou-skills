@@ -68,7 +68,7 @@ test('catalog command generates aggregate and per-component metadata', () => {
 
 test('catalog validate mode reports broken fixtures without writing output', () => {
   withFixtureProject((projectRoot) => {
-    const result = spawnSync('npm', ['run', 'catalog:validate'], {
+    const result = spawnSync('npm', ['run', 'nb-catalog:validate'], {
       cwd: root,
       env: { ...process.env, CATALOG_ROOT: projectRoot },
       encoding: 'utf8',

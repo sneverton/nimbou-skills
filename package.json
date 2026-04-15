@@ -13,11 +13,10 @@
   "scripts": {
     "test": "node --test",
     "catalog": "tsx plugins/nimbou-skills/skills/nuxt-catalog/scripts/generate-catalog.ts",
-    "catalog:validate": "tsx plugins/nimbou-skills/skills/nuxt-catalog/scripts/generate-catalog.ts --validate"
+    "nb-catalog:validate": "tsx plugins/nimbou-skills/skills/nuxt-catalog/scripts/generate-catalog.ts --validate"
   },
   "keywords": [
     "claude",
-    "codex",
     "nestjs",
     "prisma",
     "clean-architecture",
