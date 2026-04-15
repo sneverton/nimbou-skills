@@ -154,9 +154,19 @@ function findDefinePropsCall(sourceFile: ts.SourceFile): ts.CallExpression | und
   return match
 }
 
+function nuxtComponentName(filePath: string): string {
+  const componentsDir = join(projectRoot, 'components')
+  const relPath = relative(componentsDir, filePath).replace(/\.vue$/, '')
+  return relPath
+    .split(/[/\\]/)
+    .flatMap((part) => part.split('-'))
+    .map((segment) => segment.charAt(0).toUpperCase() + segment.slice(1))
+    .join('')
+}
+
 function collectComponent(filePath: string): OutputComponent {
   const catalog = readCatalog(filePath)
-  const name = basename(filePath, '.vue')
+  const name = nuxtComponentName(filePath)
 
   let meta: { props: OutputComponent['meta']['props']; emits: OutputComponent['meta']['emits']; slots: OutputComponent['meta']['slots']; exposed: OutputComponent['meta']['exposed'] }
 
