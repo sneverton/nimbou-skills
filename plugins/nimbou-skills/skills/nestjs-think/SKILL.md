@@ -8,6 +8,7 @@ description: "Use before backend design or implementation work. Drive NestJS, Pr
 Turn backend requests into concrete NestJS-first designs before code changes. This skill is not stack-neutral: default to `NestJS + Prisma + Clean Architecture + SOLID`.
 
 When the request is clearly frontend-first for Nuxt/Vuetify, use `nuxt-think` instead of forcing this workflow.
+Use `fullstack-think` when the request changes both frontend and backend or when the frontend depends on a new backend contract.
 
 <HARD-GATE>
 Do NOT invoke any implementation skill, write any code, scaffold any project, or take any implementation action until you have presented a design and the user has approved it.

@@ -10,6 +10,7 @@ description: Explore Nuxt 4 + Vuetify 3 frontend requests, reuse the catalog whe
 Clarify what to build before frontend implementation. Consult `components.meta.json` when it exists, or `.generated/component-catalog/components.meta.json` when the project ships the slim catalog mirror, ask only the minimum useful questions, and challenge weak component boundaries.
 
 Use this skill instead of `nestjs-think` when the request is clearly Nuxt/Vuetify-first.
+Use `fullstack-think` when the request changes both frontend and backend or depends on a new backend contract.
 
 This skill owns discovery and design closure for frontend work. Resolve UI structure, reuse choices, state ownership, user interactions, and responsive behavior here so `nuxt-plan` can stay focused on execution topology.
 

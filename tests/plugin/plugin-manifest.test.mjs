@@ -99,6 +99,7 @@ test('specification skills and think orchestrators document the domain-centered 
   assert.match(nuxtThink, /if state transitions changed, regenerate the affected `\.feature` files before planning/i)
   assert.match(nuxtThink, /`docs\/domain\/<domain>\/domain\.md` approved\./i)
   assert.match(nuxtThink, /`docs\/domain\/<domain>\/\*\.feature` approved\./i)
+  assert.match(nuxtThink, /use `fullstack-think` when the request changes both frontend and backend/i)
 
   assert.match(nestjsThink, /docs\/domain\/<domain>\//)
   assert.match(nestjsThink, /use `mapping-domain-states` to create or update `docs\/domain\/<domain>\/domain\.md`/i)
@@ -112,6 +113,7 @@ test('specification skills and think orchestrators document the domain-centered 
   assert.match(nestjsThink, /only after approval, invoke `nestjs-plan`/i)
   assert.match(nestjsThink, /`docs\/domain\/<domain>\/domain\.md` approved\./i)
   assert.match(nestjsThink, /`docs\/domain\/<domain>\/\*\.feature` approved\./i)
+  assert.match(nestjsThink, /use `fullstack-think` when the request changes both frontend and backend/i)
 
   assert.match(fullstackThink, /^---\nname: fullstack-think/m)
   assert.match(fullstackThink, /mixed frontend and backend requests/i)
