@@ -15,6 +15,18 @@ This skill owns discovery and design closure for frontend work. Resolve UI struc
 
 Before closing decisions, locate the nearest `DESIGN.MD` in the target project for the feature area you are shaping. Start from the likely ownership directory for the route, page, or domain component, then walk upward. Prefer the closest file. In a monorepo, the relevant app-level `DESIGN.MD` is the default baseline and a closer feature-level file can override it.
 
+## Domain Specification Gate
+
+Before closing design decisions:
+
+1. identify the target domain
+2. create or update `docs/domain/<domain>/domain.md`
+3. create or update `docs/domain/<domain>/*.feature`
+4. present the domain and Gherkin changes for approval
+5. only after approval, invoke `nuxt-plan`
+
+Treat `docs/domain/<domain>/` as the canonical specification bundle for the feature slice. If the request touches multiple independent domains, split them and close one domain at a time.
+
 ## Flow
 
 1. Read `components.meta.json` when available. Fall back to `.generated/component-catalog/components.meta.json` when the project exposes only the slim catalog.

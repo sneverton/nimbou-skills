@@ -66,6 +66,7 @@ test('shared specification skills document the domain-centered layout', () => {
   const files = [
     'plugins/nimbou-skills/skills/mapping-domain-states/SKILL.md',
     'plugins/nimbou-skills/skills/generating-gherkin-specs/SKILL.md',
+    'plugins/nimbou-skills/skills/nuxt-think/SKILL.md',
   ]
 
   for (const file of files) {
@@ -74,11 +75,16 @@ test('shared specification skills document the domain-centered layout', () => {
 
   const domainSkill = read('plugins/nimbou-skills/skills/mapping-domain-states/SKILL.md')
   const gherkinSkill = read('plugins/nimbou-skills/skills/generating-gherkin-specs/SKILL.md')
+  const think = read('plugins/nimbou-skills/skills/nuxt-think/SKILL.md')
 
   assert.match(domainSkill, /docs\/domain\/<domain>\/domain\.md/)
   assert.match(domainSkill, /domain-centered/i)
   assert.match(gherkinSkill, /docs\/domain\/<domain>\/\*\.feature/)
   assert.match(gherkinSkill, /shared specification layer/i)
+  assert.match(think, /docs\/domain\/<domain>\//)
+  assert.match(think, /create or update `docs\/domain\/<domain>\/domain\.md`/i)
+  assert.match(think, /create or update `docs\/domain\/<domain>\/\*\.feature`/i)
+  assert.match(think, /only after approval, invoke `nuxt-plan`/i)
 })
 
 test('README documents backend-first core and prefixed NestJS and Nuxt skills', () => {
