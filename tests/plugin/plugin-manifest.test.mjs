@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url'
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..')
 
 test('skills tree ships the unified skill set directly', () => {
-  const skillsRoot = resolve(root, 'skills')
+  const skillsRoot = resolve(root, 'plugins/nimbou-skills/skills')
   const shippedSkills = readdirSync(skillsRoot, { withFileTypes: true })
     .filter((entry) => entry.isDirectory())
     .map((entry) => entry.name)
@@ -34,20 +34,20 @@ test('skills tree ships the unified skill set directly', () => {
     assert.match(readFileSync(skillFile, 'utf8'), /^---\nname: /, `Missing frontmatter in ${skillFile}`)
   }
 
-  assert.equal(existsSync(resolve(root, '.claude-plugin')), false)
+  assert.equal(existsSync(resolve(root, '.claude-plugin/marketplace.json')), true)
 })
 
 test('command and agent scaffolds exist for guided feature development', () => {
   const files = [
-    'commands/feature-dev.md',
-    'commands/design-md.md',
-    'commands/merge-pr.md',
-    'agents/code-explorer.md',
-    'agents/code-architect.md',
-    'agents/code-reviewer.md',
-    'agents/guidelines-gap-analyzer.md',
-    'agents/e2e-quality-auditor.md',
-    'skills/nuxt-audit/reference/design-md-template.md',
+    'plugins/nimbou-skills/commands/feature-dev.md',
+    'plugins/nimbou-skills/commands/design-md.md',
+    'plugins/nimbou-skills/commands/merge-pr.md',
+    'plugins/nimbou-skills/agents/code-explorer.md',
+    'plugins/nimbou-skills/agents/code-architect.md',
+    'plugins/nimbou-skills/agents/code-reviewer.md',
+    'plugins/nimbou-skills/agents/guidelines-gap-analyzer.md',
+    'plugins/nimbou-skills/agents/e2e-quality-auditor.md',
+    'plugins/nimbou-skills/skills/nuxt-audit/reference/design-md-template.md',
   ]
 
   for (const file of files) {
@@ -83,8 +83,8 @@ test('README documents backend-first core and prefixed NestJS and Nuxt skills', 
   assert.match(readme, /design-md-template\.md/i)
   assert.match(readme, /\/var\/www\/nimbou-skills/)
   assert.match(readme, /\.\/install\.sh/)
-  assert.match(readme, /~\/\.claude\/commands\/nimbou-skills/)
-  assert.match(readme, /~\/\.claude\/skills\/nimbou-skills/)
+  assert.match(readme, /claude plugin marketplace add/)
+  assert.match(readme, /claude plugin install/)
   assert.match(readme, /~\/\.agents\/skills\/nimbou-skills/)
   assert.match(readme, /nb-catalog/)
   assert.match(readme, /single review pass/i)

@@ -11,20 +11,20 @@ function read(relativePath) {
 
 test('nuxt catalog skill files exist and describe validate-then-generate mode', () => {
   const files = [
-    'skills/nuxt-catalog/SKILL.md',
+    'plugins/nimbou-skills/skills/nuxt-catalog/SKILL.md',
     'bin/nb-catalog',
     'install.sh',
-    'skills/nuxt-catalog/scripts/generate-catalog.ts',
-    'skills/nuxt-catalog/scripts/install.sh',
-    'skills/nuxt-catalog/reference/catalog-schema.md',
-    'skills/nuxt-catalog/reference/taxonomy.md',
+    'plugins/nimbou-skills/skills/nuxt-catalog/scripts/generate-catalog.ts',
+    'plugins/nimbou-skills/skills/nuxt-catalog/scripts/install.sh',
+    'plugins/nimbou-skills/skills/nuxt-catalog/reference/catalog-schema.md',
+    'plugins/nimbou-skills/skills/nuxt-catalog/reference/taxonomy.md',
   ]
 
   for (const file of files) {
     assert.equal(existsSync(resolve(root, file)), true, `${file} should exist`)
   }
 
-  const skill = read('skills/nuxt-catalog/SKILL.md')
+  const skill = read('plugins/nimbou-skills/skills/nuxt-catalog/SKILL.md')
   assert.match(skill, /validate -> generate/)
   assert.match(skill, /catalog:generate/)
   assert.match(skill, /catalog:validate/)
@@ -44,19 +44,19 @@ test('nuxt catalog skill files exist and describe validate-then-generate mode', 
 
 test('nuxt think and plan skills explain catalog-aware design and execution topology', () => {
   const files = [
-    'skills/nuxt-think/SKILL.md',
-    'skills/nuxt-think/reference/conventions.md',
-    'skills/nuxt-plan/SKILL.md',
-    'skills/nuxt-plan/reference/plan-format.md',
-    'skills/nuxt-audit/reference/design-md-template.md',
+    'plugins/nimbou-skills/skills/nuxt-think/SKILL.md',
+    'plugins/nimbou-skills/skills/nuxt-think/reference/conventions.md',
+    'plugins/nimbou-skills/skills/nuxt-plan/SKILL.md',
+    'plugins/nimbou-skills/skills/nuxt-plan/reference/plan-format.md',
+    'plugins/nimbou-skills/skills/nuxt-audit/reference/design-md-template.md',
   ]
 
   for (const file of files) {
     assert.equal(existsSync(resolve(root, file)), true, `${file} should exist`)
   }
 
-  const think = read('skills/nuxt-think/SKILL.md')
-  const plan = read('skills/nuxt-plan/SKILL.md')
+  const think = read('plugins/nimbou-skills/skills/nuxt-think/SKILL.md')
+  const plan = read('plugins/nimbou-skills/skills/nuxt-plan/SKILL.md')
 
   assert.match(think, /components\.meta\.json/)
   assert.match(think, /\.generated\/component-catalog\/components\.meta\.json/)
@@ -85,37 +85,37 @@ test('nuxt think and plan skills explain catalog-aware design and execution topo
 
 test('core and audit skills document their new guardrails', () => {
   const files = [
-    'skills/nestjs-think/SKILL.md',
-    'skills/nestjs-plan/SKILL.md',
-    'skills/executing-plans/SKILL.md',
-    'skills/e2e-test-quality/SKILL.md',
-    'skills/nestjs-debug/SKILL.md',
-    'skills/nestjs-audit-http-tests/SKILL.md',
-    'skills/nestjs-audit-prisma-repositories/SKILL.md',
-    'skills/nuxt-audit/SKILL.md',
-    'skills/nuxt-audit/reference/quality-rules.md',
-    'skills/nuxt-test/SKILL.md',
-    'skills/nuxt-test/reference/test-conventions.md',
-    'skills/nuxt-debug/SKILL.md',
+    'plugins/nimbou-skills/skills/nestjs-think/SKILL.md',
+    'plugins/nimbou-skills/skills/nestjs-plan/SKILL.md',
+    'plugins/nimbou-skills/skills/executing-plans/SKILL.md',
+    'plugins/nimbou-skills/skills/e2e-test-quality/SKILL.md',
+    'plugins/nimbou-skills/skills/nestjs-debug/SKILL.md',
+    'plugins/nimbou-skills/skills/nestjs-audit-http-tests/SKILL.md',
+    'plugins/nimbou-skills/skills/nestjs-audit-prisma-repositories/SKILL.md',
+    'plugins/nimbou-skills/skills/nuxt-audit/SKILL.md',
+    'plugins/nimbou-skills/skills/nuxt-audit/reference/quality-rules.md',
+    'plugins/nimbou-skills/skills/nuxt-test/SKILL.md',
+    'plugins/nimbou-skills/skills/nuxt-test/reference/test-conventions.md',
+    'plugins/nimbou-skills/skills/nuxt-debug/SKILL.md',
   ]
 
   for (const file of files) {
     assert.equal(existsSync(resolve(root, file)), true, `${file} should exist`)
   }
 
-  const nestjsThink = read('skills/nestjs-think/SKILL.md')
-  const nestjsPlan = read('skills/nestjs-plan/SKILL.md')
-  const execute = read('skills/executing-plans/SKILL.md')
-  const e2eQuality = read('skills/e2e-test-quality/SKILL.md')
-  const systematic = read('skills/nestjs-debug/SKILL.md')
-  const nestHttpAudit = read('skills/nestjs-audit-http-tests/SKILL.md')
-  const prismaAudit = read('skills/nestjs-audit-prisma-repositories/SKILL.md')
-  const nuxtAudit = read('skills/nuxt-audit/SKILL.md')
-  const qualityRules = read('skills/nuxt-audit/reference/quality-rules.md')
-  const testSkill = read('skills/nuxt-test/SKILL.md')
-  const testRules = read('skills/nuxt-test/reference/test-conventions.md')
-  const nuxtDebug = read('skills/nuxt-debug/SKILL.md')
-  const designMdTemplate = read('skills/nuxt-audit/reference/design-md-template.md')
+  const nestjsThink = read('plugins/nimbou-skills/skills/nestjs-think/SKILL.md')
+  const nestjsPlan = read('plugins/nimbou-skills/skills/nestjs-plan/SKILL.md')
+  const execute = read('plugins/nimbou-skills/skills/executing-plans/SKILL.md')
+  const e2eQuality = read('plugins/nimbou-skills/skills/e2e-test-quality/SKILL.md')
+  const systematic = read('plugins/nimbou-skills/skills/nestjs-debug/SKILL.md')
+  const nestHttpAudit = read('plugins/nimbou-skills/skills/nestjs-audit-http-tests/SKILL.md')
+  const prismaAudit = read('plugins/nimbou-skills/skills/nestjs-audit-prisma-repositories/SKILL.md')
+  const nuxtAudit = read('plugins/nimbou-skills/skills/nuxt-audit/SKILL.md')
+  const qualityRules = read('plugins/nimbou-skills/skills/nuxt-audit/reference/quality-rules.md')
+  const testSkill = read('plugins/nimbou-skills/skills/nuxt-test/SKILL.md')
+  const testRules = read('plugins/nimbou-skills/skills/nuxt-test/reference/test-conventions.md')
+  const nuxtDebug = read('plugins/nimbou-skills/skills/nuxt-debug/SKILL.md')
+  const designMdTemplate = read('plugins/nimbou-skills/skills/nuxt-audit/reference/design-md-template.md')
   assert.match(nestjsThink, /^---\nname: nestjs-think/m)
   assert.match(nestjsThink, /NestJS/)
   assert.match(nestjsThink, /Prisma/)
@@ -177,14 +177,14 @@ test('core and audit skills document their new guardrails', () => {
 })
 
 test('feature development command and agents describe the guided orchestration workflow', () => {
-  const featureCommand = read('commands/feature-dev.md')
-  const designCommand = read('commands/design-md.md')
-  const mergeCommand = read('commands/merge-pr.md')
-  const explorer = read('agents/code-explorer.md')
-  const architect = read('agents/code-architect.md')
-  const reviewer = read('agents/code-reviewer.md')
-  const guidelinesAnalyzer = read('agents/guidelines-gap-analyzer.md')
-  const e2eAuditor = read('agents/e2e-quality-auditor.md')
+  const featureCommand = read('plugins/nimbou-skills/commands/feature-dev.md')
+  const designCommand = read('plugins/nimbou-skills/commands/design-md.md')
+  const mergeCommand = read('plugins/nimbou-skills/commands/merge-pr.md')
+  const explorer = read('plugins/nimbou-skills/agents/code-explorer.md')
+  const architect = read('plugins/nimbou-skills/agents/code-architect.md')
+  const reviewer = read('plugins/nimbou-skills/agents/code-reviewer.md')
+  const guidelinesAnalyzer = read('plugins/nimbou-skills/agents/guidelines-gap-analyzer.md')
+  const e2eAuditor = read('plugins/nimbou-skills/agents/e2e-quality-auditor.md')
 
   assert.match(featureCommand, /^---\ndescription:/m)
   assert.match(featureCommand, /backend-only/)

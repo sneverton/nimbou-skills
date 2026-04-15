@@ -48,13 +48,15 @@ This repository is no longer an upstream mirror. It is the canonical repository 
 
 ## Repository Layout
 
-- `skills/` contains the unified skill library exposed to Claude and Codex
-- `agents/` contains auxiliary review and auditing agents
-  including `code-explorer`, `code-architect`, `code-reviewer`, `guidelines-gap-analyzer`, and `e2e-quality-auditor`
-- `commands/` contains Claude command entrypoints such as `/feature-dev`, `/design-md`, and `/merge-pr`
-- `skills/nuxt-audit/reference/design-md-template.md` is the template for project- or feature-level `DESIGN.MD` files used by Nuxt planning and audit flows
+- `plugins/nimbou-skills/` is the Claude Code plugin containing all components:
+  - `skills/` — the unified skill library
+  - `agents/` — auxiliary review and auditing agents
+    including `code-explorer`, `code-architect`, `code-reviewer`, `guidelines-gap-analyzer`, and `e2e-quality-auditor`
+  - `commands/` — Claude command entrypoints such as `/feature-dev`, `/design-md`, and `/merge-pr`
+  - `skills/nuxt-audit/reference/design-md-template.md` is the template for `DESIGN.MD` files
+  - `skills/nuxt-catalog/scripts/generate-catalog.ts` provides the bundled Nuxt component catalog generator
+- `.claude-plugin/marketplace.json` — marketplace manifest for `claude plugin marketplace add`
 - `docs/plans/` is the default location for generated plans and design artifacts
-- `skills/nuxt-catalog/scripts/generate-catalog.ts` provides the bundled Nuxt component catalog generator
 - `tests/` covers the skill tree layout, install flow documentation, and the catalog generator
 
 ## Installation
@@ -70,12 +72,12 @@ cd /var/www/nimbou-skills
 
 The bootstrap script does all required machine setup:
 - runs `pnpm install`
-- links `skills/` into `~/.agents/skills/nimbou-skills` for Codex
-- links `skills/` into `~/.claude/skills/nimbou-skills` for Claude Code
-- links `commands/` into `~/.claude/commands/nimbou-skills` for Claude Code
-- runs `pnpm link --global` to publish `nb-catalog`
+- registers the GitHub repo as a Claude Code marketplace via `claude plugin marketplace add`
+- installs the plugin via `claude plugin install`
+- links skills into `~/.agents/skills/nimbou-skills` for Codex
+- runs `npm link` to publish the `nb-catalog` CLI
 
-After the bootstrap finishes, restart Claude Code and Codex so they pick up the new symlinks.
+After the bootstrap finishes, restart Claude Code so it picks up the new plugin.
 
 ## Nuxt Catalog Workflow
 

@@ -12,8 +12,8 @@
   },
   "scripts": {
     "test": "node --test",
-    "catalog": "tsx skills/nuxt-catalog/scripts/generate-catalog.ts",
-    "catalog:validate": "tsx skills/nuxt-catalog/scripts/generate-catalog.ts --validate"
+    "catalog": "tsx plugins/nimbou-skills/skills/nuxt-catalog/scripts/generate-catalog.ts",
+    "catalog:validate": "tsx plugins/nimbou-skills/skills/nuxt-catalog/scripts/generate-catalog.ts --validate"
   },
   "keywords": [
     "claude",
