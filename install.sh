@@ -43,7 +43,7 @@ link_path "$REPO_ROOT/skills" "$CLAUDE_SKILLS_DIR/nimbou-skills"
 link_path "$REPO_ROOT/commands" "$CLAUDE_COMMANDS_DIR/nimbou-skills"
 
 echo "Linking nb-catalog globally..."
-pnpm link --global --dir "$REPO_ROOT"
+sudo npm link
 
 if ! command -v nb-catalog >/dev/null 2>&1; then
   echo "nb-catalog was not found in PATH after linking. Check your pnpm global bin configuration." >&2
