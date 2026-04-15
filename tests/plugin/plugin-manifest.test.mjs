@@ -22,6 +22,7 @@ test('skills tree ships the unified skill set directly', () => {
   assert.ok(shippedSkills.includes('nestjs-plan'))
   assert.ok(shippedSkills.includes('executing-plans'))
   assert.ok(shippedSkills.includes('e2e-test-quality'))
+  assert.ok(shippedSkills.includes('fullstack-think'))
   assert.ok(shippedSkills.includes('nuxt-think'))
   assert.ok(shippedSkills.includes('nuxt-plan'))
   assert.ok(shippedSkills.includes('nuxt-catalog'))
@@ -69,6 +70,7 @@ test('specification skills and think orchestrators document the domain-centered 
     'plugins/nimbou-skills/skills/generating-gherkin-specs/SKILL.md',
     'plugins/nimbou-skills/skills/nuxt-think/SKILL.md',
     'plugins/nimbou-skills/skills/nestjs-think/SKILL.md',
+    'plugins/nimbou-skills/skills/fullstack-think/SKILL.md',
   ]
 
   for (const file of files) {
@@ -79,6 +81,7 @@ test('specification skills and think orchestrators document the domain-centered 
   const gherkinSkill = read('plugins/nimbou-skills/skills/generating-gherkin-specs/SKILL.md')
   const nuxtThink = read('plugins/nimbou-skills/skills/nuxt-think/SKILL.md')
   const nestjsThink = read('plugins/nimbou-skills/skills/nestjs-think/SKILL.md')
+  const fullstackThink = read('plugins/nimbou-skills/skills/fullstack-think/SKILL.md')
 
   assert.match(domainSkill, /docs\/domain\/<domain>\/domain\.md/)
   assert.match(domainSkill, /domain-centered/i)
@@ -109,6 +112,13 @@ test('specification skills and think orchestrators document the domain-centered 
   assert.match(nestjsThink, /only after approval, invoke `nestjs-plan`/i)
   assert.match(nestjsThink, /`docs\/domain\/<domain>\/domain\.md` approved\./i)
   assert.match(nestjsThink, /`docs\/domain\/<domain>\/\*\.feature` approved\./i)
+
+  assert.match(fullstackThink, /^---\nname: fullstack-think/m)
+  assert.match(fullstackThink, /mixed frontend and backend requests/i)
+  assert.match(fullstackThink, /use `mapping-domain-states`/i)
+  assert.match(fullstackThink, /use `generating-gherkin-specs`/i)
+  assert.match(fullstackThink, /`nuxt-plan` and `nestjs-plan` in parallel/i)
+  assert.match(fullstackThink, /reconcile/i)
 })
 
 test('platform test skills consume approved Gherkin and route backend audits', () => {
