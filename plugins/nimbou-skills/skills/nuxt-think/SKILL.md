@@ -20,12 +20,13 @@ Before closing decisions, locate the nearest `DESIGN.MD` in the target project f
 Before closing design decisions:
 
 1. identify the target domain
-2. create or update `docs/domain/<domain>/domain.md`
-3. create or update `docs/domain/<domain>/*.feature`
+2. use `mapping-domain-states` to create or update `docs/domain/<domain>/domain.md`
+3. use `generating-gherkin-specs` to create or update `docs/domain/<domain>/*.feature`
 4. present the domain and Gherkin changes for approval
 5. only after approval, invoke `nuxt-plan`
 6. do not advance to `nuxt-plan` with stale domain or Gherkin artifacts
 7. if state transitions changed, regenerate the affected `.feature` files before planning
+8. do not do the `domain.md` or `*.feature` work inline inside `nuxt-think`; delegate it to the shared spec skills
 
 Treat `docs/domain/<domain>/` as the canonical specification bundle for the feature slice. If the request touches multiple independent domains, split them and close one domain at a time.
 
@@ -91,5 +92,7 @@ Describe the requested page, flow, or component in one sentence.
 ### Pronto para planejar
 
 - Route ownership, reuse decisions, state behavior, and responsive behavior are closed.
+- `docs/domain/<domain>/domain.md` approved.
+- `docs/domain/<domain>/*.feature` approved.
 - The relevant `DESIGN.MD` constraints and visual direction are closed.
 - `nuxt-plan` should only turn this into exact file paths, dependency order, and execution groups.
