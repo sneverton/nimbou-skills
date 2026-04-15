@@ -18,6 +18,8 @@ Use this skill when the main job is:
 - stabilize a fragile HTTP or persistence test
 - route audit work through the backend auditors
 
+Do not use this skill as the default runtime investigation workflow. Use `nestjs-debug` when the main task is to investigate runtime behavior before deciding how to test it.
+
 ## Modes
 
 - **gherkin-driven mode** - use approved `docs/domain/<domain>/*.feature` files to add or expand backend coverage

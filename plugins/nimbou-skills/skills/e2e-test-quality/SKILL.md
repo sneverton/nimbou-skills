@@ -17,9 +17,9 @@ Use this skill when:
 - a critical flow needs bounded E2E coverage without turning the suite into a timing lottery
 - you need to determine whether an E2E failure is test-side, environment-side, product-side, or mixed
 
-Do not use this skill for controller or module-level HTTP confidence. Use `nestjs-audit-http-tests` for that.
+Do not use this skill for controller or module-level HTTP confidence. Use `nestjs-test` for that.
 
-Do not use this skill for repository or persistence confidence. Use `nestjs-audit-prisma-repositories` for that.
+Do not use this skill for repository or persistence confidence. Use `nestjs-test` for that.
 
 Do not use this skill for Nuxt/Vuetify module-local Playwright work when `nuxt-test` already fits the request and the problem is not broader E2E flow reliability.
 

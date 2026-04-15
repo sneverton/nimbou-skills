@@ -97,6 +97,8 @@ test('shared specification skills are shipped with the tree', () => {
 test('platform test skills are shipped with the tree', () => {
   assert.ok(shippedSkills.includes('nuxt-test'))
   assert.ok(shippedSkills.includes('nestjs-test'))
+  assert.equal(shippedSkills.includes('nestjs-audit-http-tests'), false)
+  assert.equal(shippedSkills.includes('nestjs-audit-prisma-repositories'), false)
 })
 
 test('core and audit skills document their new guardrails', () => {
@@ -106,12 +108,12 @@ test('core and audit skills document their new guardrails', () => {
     'plugins/nimbou-skills/skills/executing-plans/SKILL.md',
     'plugins/nimbou-skills/skills/e2e-test-quality/SKILL.md',
     'plugins/nimbou-skills/skills/nestjs-debug/SKILL.md',
-    'plugins/nimbou-skills/skills/nestjs-audit-http-tests/SKILL.md',
-    'plugins/nimbou-skills/skills/nestjs-audit-prisma-repositories/SKILL.md',
     'plugins/nimbou-skills/skills/nuxt-audit/SKILL.md',
     'plugins/nimbou-skills/skills/nuxt-audit/reference/quality-rules.md',
     'plugins/nimbou-skills/skills/nuxt-test/SKILL.md',
     'plugins/nimbou-skills/skills/nuxt-test/reference/test-conventions.md',
+    'plugins/nimbou-skills/skills/nestjs-test/SKILL.md',
+    'plugins/nimbou-skills/skills/nestjs-test/reference/test-conventions.md',
     'plugins/nimbou-skills/skills/nuxt-debug/SKILL.md',
   ]
 
@@ -124,12 +126,12 @@ test('core and audit skills document their new guardrails', () => {
   const execute = read('plugins/nimbou-skills/skills/executing-plans/SKILL.md')
   const e2eQuality = read('plugins/nimbou-skills/skills/e2e-test-quality/SKILL.md')
   const systematic = read('plugins/nimbou-skills/skills/nestjs-debug/SKILL.md')
-  const nestHttpAudit = read('plugins/nimbou-skills/skills/nestjs-audit-http-tests/SKILL.md')
-  const prismaAudit = read('plugins/nimbou-skills/skills/nestjs-audit-prisma-repositories/SKILL.md')
   const nuxtAudit = read('plugins/nimbou-skills/skills/nuxt-audit/SKILL.md')
   const qualityRules = read('plugins/nimbou-skills/skills/nuxt-audit/reference/quality-rules.md')
   const testSkill = read('plugins/nimbou-skills/skills/nuxt-test/SKILL.md')
   const testRules = read('plugins/nimbou-skills/skills/nuxt-test/reference/test-conventions.md')
+  const nestjsTest = read('plugins/nimbou-skills/skills/nestjs-test/SKILL.md')
+  const nestjsTestRules = read('plugins/nimbou-skills/skills/nestjs-test/reference/test-conventions.md')
   const nuxtDebug = read('plugins/nimbou-skills/skills/nuxt-debug/SKILL.md')
   const designMdTemplate = read('plugins/nimbou-skills/skills/nuxt-audit/reference/design-md-template.md')
   assert.match(nestjsThink, /^---\nname: nestjs-think/m)
@@ -149,13 +151,12 @@ test('core and audit skills document their new guardrails', () => {
   assert.match(e2eQuality, /Cypress/)
   assert.match(e2eQuality, /bounded user flow/i)
   assert.match(e2eQuality, /nuxt-test/)
+  assert.match(e2eQuality, /nestjs-test/)
   assert.match(systematic, /^---\nname: nestjs-debug/m)
   assert.match(systematic, /NestJS/)
   assert.match(systematic, /Prisma/)
   assert.match(systematic, /Clean Architecture/)
   assert.match(systematic, /request, module, use-case, repository, Prisma flow/i)
-  assert.match(nestHttpAudit, /^---\nname: nestjs-audit-http-tests/m)
-  assert.match(prismaAudit, /^---\nname: nestjs-audit-prisma-repositories/m)
   assert.match(nuxtAudit, /^---\nname: nuxt-audit/m)
   assert.match(nuxtAudit, /single frontend review pass/i)
   assert.match(nuxtAudit, /nearest `DESIGN\.MD`/i)
@@ -177,6 +178,19 @@ test('core and audit skills document their new guardrails', () => {
   assert.match(testRules, /getByRole\(\)/)
   assert.match(testRules, /getByTestId\(\)/)
   assert.match(testRules, /waitForTimeout\(\)/)
+  assert.match(nestjsTest, /^---\nname: nestjs-test/m)
+  assert.match(nestjsTest, /Read `reference\/test-conventions\.md` before changing tests\./i)
+  assert.match(nestjsTest, /use `nestjs-debug` when the main task is to investigate runtime behavior before deciding how to test it/i)
+  assert.match(nestjsTest, /Use this skill when the main job is:/i)
+  assert.match(nestjsTest, /gherkin-driven mode/i)
+  assert.match(nestjsTest, /audit mode/i)
+  assert.match(nestjsTest, /stabilize mode/i)
+  assert.match(nestjsTest, /## Workflow/)
+  assert.match(nestjsTest, /nestjs-http-test-auditor/i)
+  assert.match(nestjsTest, /prisma-repository-test-auditor/i)
+  assert.match(nestjsTestRules, /bounded backend flow or persistence slice/i)
+  assert.match(nestjsTestRules, /explicit HTTP status, payload shape, and database state assertions/i)
+  assert.match(nestjsTestRules, /nestjs-debug/i)
   assert.match(nuxtDebug, /^---\nname: nuxt-debug/m)
   assert.match(nuxtDebug, /Chrome DevTools MCP/i)
   assert.match(nuxtDebug, /Playwright/)

@@ -33,8 +33,7 @@ This fork consolidates:
 
 ### NestJS-specific skills
 
-- `nestjs-audit-http-tests`
-- `nestjs-audit-prisma-repositories`
+- `nestjs-test`
 
 ### Nuxt-specific skills
 
@@ -101,6 +100,7 @@ If a project wants a copied local fallback instead of depending on `/var/www/nim
 
 - `/feature-dev`, `/design-md`, and `/merge-pr` stay as Claude commands, with matching Codex mirrors in `.codex/skills/`.
 - `nestjs-think` and `nestjs-plan` stay backend-first; `nuxt-think` and `nuxt-plan` cover Nuxt planning.
+- `nestjs-test` handles Gherkin-driven backend coverage, audit routing, and backend test stabilization.
 - `nestjs-debug` handles NestJS, Prisma, and boundary failures across controller, use-case, repository, and transaction layers.
 - `nuxt-debug` is the Codex browser-debugging flow; `nuxt-test` turns the result into bounded coverage.
 - `nuxt-audit` is the single frontend review pass; `executing-plans` handles explicit execution groups.
