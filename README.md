@@ -16,6 +16,7 @@ This fork consolidates:
 
 ### Core workflow skills
 
+- `fullstack-think`
 - `nestjs-think`
 - `nestjs-plan`
 - `executing-plans`
@@ -99,6 +100,7 @@ If a project wants a copied local fallback instead of depending on `/var/www/nim
 ## Notes
 
 - `/feature-dev`, `/design-md`, and `/merge-pr` stay as Claude commands, with matching Codex mirrors in `.codex/skills/`.
+- `fullstack-think` is the mixed-request entry point. Frontend-only requests stay in `nuxt-think`; backend-only requests stay in `nestjs-think`.
 - `nestjs-think` and `nestjs-plan` stay backend-first; `nuxt-think` and `nuxt-plan` cover Nuxt planning.
 - `nestjs-test` handles Gherkin-driven backend coverage, audit routing, and backend test stabilization.
 - `nestjs-debug` handles NestJS, Prisma, and boundary failures across controller, use-case, repository, and transaction layers.
