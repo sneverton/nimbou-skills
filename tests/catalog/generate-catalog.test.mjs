@@ -83,9 +83,9 @@ test('catalog validate mode reports broken fixtures without writing output', () 
   }, { includeBroken: true })
 })
 
-test('catalog bin validates the current project root via bundled tsx wrapper', () => {
+test('nb-catalog validates the current project root via bundled tsx wrapper', () => {
   withFixtureProject((projectRoot) => {
-    const result = spawnSync(resolve(root, 'bin', 'catalog'), ['validate'], {
+    const result = spawnSync(resolve(root, 'bin', 'nb-catalog'), ['validate'], {
       cwd: projectRoot,
       encoding: 'utf8',
     })

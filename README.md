@@ -2,7 +2,7 @@
 
 `nimbou-skills` is a unified skill library for `Claude Code` and `Codex`. It keeps a backend-first workflow for `NestJS`, `Prisma`, `Clean Architecture`, and `SOLID`, while also shipping a prefixed Nuxt/Vuetify skill set for frontend-specific work.
 
-This repository is no longer an upstream mirror. It is the canonical plugin that now consolidates:
+This repository is no longer an upstream mirror. It is the canonical repository that now consolidates:
 - a backend-first workflow core
 - NestJS-specific auditing skills
 - Nuxt/Vuetify-specific prefixed skills
@@ -52,61 +52,54 @@ This repository is no longer an upstream mirror. It is the canonical plugin that
 - `agents/` contains auxiliary review and auditing agents
   including `code-explorer`, `code-architect`, `code-reviewer`, `guidelines-gap-analyzer`, and `e2e-quality-auditor`
 - `commands/` contains Claude command entrypoints such as `/feature-dev`, `/design-md`, and `/merge-pr`
-- `.claude-plugin/` exposes the skill library to Claude Code
-- `.codex/INSTALL.md` documents the Codex setup path
 - `skills/nuxt-audit/reference/design-md-template.md` is the template for project- or feature-level `DESIGN.MD` files used by Nuxt planning and audit flows
 - `docs/plans/` is the default location for generated plans and design artifacts
 - `skills/nuxt-catalog/scripts/generate-catalog.ts` provides the bundled Nuxt component catalog generator
-- `tests/` covers manifests, skill tree layout, and the catalog generator
+- `tests/` covers the skill tree layout, install flow documentation, and the catalog generator
 
-## Codex Setup
+## Installation
 
-Clone your fork and expose the skills through Codex native discovery:
+Clone the repository once into `/var/www` and run the single bootstrap script:
 
 ```bash
- git clone <your-fork-url> ~/.codex/nimbou-skills
-mkdir -p ~/.agents/skills
- ln -s ~/.codex/nimbou-skills/skills ~/.agents/skills/nimbou-skills
+cd /var/www
+git clone <your-fork-url> nimbou-skills
+cd /var/www/nimbou-skills
+./install.sh
 ```
 
-Then restart Codex.
+The bootstrap script does all required machine setup:
+- runs `pnpm install`
+- links `skills/` into `~/.agents/skills/nimbou-skills` for Codex
+- links `skills/` into `~/.claude/skills/nimbou-skills` for Claude Code
+- links `commands/` into `~/.claude/commands/nimbou-skills` for Claude Code
+- runs `pnpm link --global` to publish `nb-catalog`
 
-## Claude Code Setup
-
-This repository keeps the files needed for a local Claude plugin workflow:
-
-- `.claude-plugin/plugin.json`
-- `commands/feature-dev.md`
-- `commands/design-md.md`
-- `commands/merge-pr.md`
-
-Point your Claude local plugin setup at this repository. The plugin manifest exposes `./skills` directly, without bootstrap hooks.
+After the bootstrap finishes, restart Claude Code and Codex so they pick up the new symlinks.
 
 ## Nuxt Catalog Workflow
 
-The Nuxt domain ships a local catalog workflow:
+The Nuxt domain ships a shared machine-level catalog workflow:
 
 ```bash
-npm install
-npm run catalog:validate
-npm run catalog
+cd /path/to/project
+nb-catalog validate
+nb-catalog generate
+```
+
+Optional domain filtering stays available:
+
+```bash
+nb-catalog generate projects
 ```
 
 This fallback workflow writes:
 - `components.meta.json`
 - `.generated/component-catalog/components.meta.json`
 
-The `nuxt-catalog` skill should default to `validate -> generate` and can run the bundled generator from this repository against another project via `CATALOG_ROOT`, without requiring catalog scripts in the target project.
+The `nuxt-catalog` skill should default to `validate -> generate` and runs the bundled generator from this repository against the current project via `CATALOG_ROOT`, without requiring catalog scripts in the target project.
 
-If a project wants to embed the skill locally instead of depending on this checkout at runtime, copy `skills/nuxt-catalog/` into `.claude/skills/nuxt-catalog/` and run `.claude/skills/nuxt-catalog/scripts/install.sh <project-root>`.
-
-If you want a machine-level CLI instead, run `pnpm link --global` from this repository and use:
-
-```bash
-catalog validate
-catalog generate
-catalog generate projects
-```
+If a project explicitly wants a copied local fallback instead of depending on `/var/www/nimbou-skills` at runtime, copy `skills/nuxt-catalog/` into `.claude/skills/nuxt-catalog/` and run `.claude/skills/nuxt-catalog/scripts/install.sh <project-root>`.
 
 ## Notes
 

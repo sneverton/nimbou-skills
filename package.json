@@ -5,7 +5,7 @@
   "description": "Unified Claude Code and Codex skill library with a NestJS backend core and prefixed Nuxt/Vuetify frontend skills",
   "type": "module",
   "bin": {
-    "catalog": "./bin/catalog"
+    "nb-catalog": "./bin/nb-catalog"
   },
   "engines": {
     "node": ">=20"

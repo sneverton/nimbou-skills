@@ -10,7 +10,9 @@ const tsxCli = resolve(repoRoot, 'node_modules', 'tsx', 'dist', 'cli.mjs')
 const generatorScript = resolve(repoRoot, 'skills', 'nuxt-catalog', 'scripts', 'generate-catalog.ts')
 
 if (!existsSync(tsxCli)) {
-  console.error(`Missing tsx runtime at ${tsxCli}. Run install in ${repoRoot} first.`)
+  console.error(
+    `Missing local runtime at ${tsxCli}. Run "cd ${repoRoot} && ./install.sh" first.`,
+  )
   process.exit(1)
 }
 
@@ -18,8 +20,8 @@ const [command, ...rest] = process.argv.slice(2)
 
 if (!command || command === '--help' || command === '-h' || command === 'help') {
   console.log(`Usage:
-  catalog validate
-  catalog generate [domain]
+  nb-catalog validate
+  nb-catalog generate [domain]
 
 Runs the bundled nuxt-catalog generator against the current working directory.`)
   process.exit(0)
@@ -35,7 +37,7 @@ switch (command) {
     generatorArgs = rest
     break
   default:
-    console.error(`Unknown catalog command: ${command}`)
+    console.error(`Unknown nb-catalog command: ${command}`)
     console.error('Expected "validate" or "generate".')
     process.exit(1)
 }

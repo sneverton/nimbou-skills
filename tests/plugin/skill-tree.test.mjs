@@ -12,7 +12,8 @@ function read(relativePath) {
 test('nuxt catalog skill files exist and describe validate-then-generate mode', () => {
   const files = [
     'skills/nuxt-catalog/SKILL.md',
-    'bin/catalog',
+    'bin/nb-catalog',
+    'install.sh',
     'skills/nuxt-catalog/scripts/generate-catalog.ts',
     'skills/nuxt-catalog/scripts/install.sh',
     'skills/nuxt-catalog/reference/catalog-schema.md',
@@ -27,17 +28,18 @@ test('nuxt catalog skill files exist and describe validate-then-generate mode', 
   assert.match(skill, /validate -> generate/)
   assert.match(skill, /catalog:generate/)
   assert.match(skill, /catalog:validate/)
-  assert.match(skill, /pnpm link --global/)
-  assert.match(skill, /catalog validate/)
+  assert.match(skill, /\/var\/www\/nimbou-skills\/install\.sh/)
+  assert.match(skill, /nb-catalog validate/)
   assert.match(skill, /CATALOG_ROOT/)
   assert.match(skill, /npm --prefix/)
   assert.match(skill, /\.claude\/skills\/nuxt-catalog/)
   assert.match(skill, /install\.sh/)
-  assert.match(skill, /fallback/)
+  assert.match(skill, /Machine Bootstrap/)
+  assert.match(skill, /machine-level/i)
   assert.match(skill, /skills\/nuxt-catalog\/scripts\/generate-catalog\.ts/)
   assert.match(skill, /components\.meta\.json/)
   assert.match(skill, /\.generated\/component-catalog\/components\.meta\.json/)
-  assert.doesNotMatch(skill, /\/catalog --validate/)
+  assert.doesNotMatch(skill, /(^|\n)\s*catalog validate/m)
 })
 
 test('nuxt think and plan skills explain catalog-aware design and execution topology', () => {
