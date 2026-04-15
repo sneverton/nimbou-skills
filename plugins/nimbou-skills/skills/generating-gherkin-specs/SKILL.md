@@ -9,6 +9,10 @@ description: Generate or refresh domain-local Gherkin files from an approved dom
 
 Create or update `docs/domain/<domain>/*.feature` from `docs/domain/<domain>/domain.md`.
 
+## When to Use
+
+Use this from `nuxt-think` and `nestjs-think` during specification, before any plan is written.
+
 ## Output
 
 - `docs/domain/<domain>/<feature-slice>.feature`

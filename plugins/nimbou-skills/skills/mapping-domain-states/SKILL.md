@@ -1,6 +1,6 @@
 ---
 name: mapping-domain-states
-description: Map one business domain into a compact glossary, entities, states, transitions, and derived statuses before planning or test generation.
+description: Map one business domain into NestJS and Prisma local architecture terms, states, transitions, and derived statuses before planning or test generation.
 ---
 
 # Mapping Domain States
@@ -8,6 +8,10 @@ description: Map one business domain into a compact glossary, entities, states, 
 ## Purpose
 
 Create or update `docs/domain/<domain>/domain.md` as the shared source of truth for domain terms, entities, states, transitions, and derived statuses.
+
+## When to Use
+
+Use this from `nuxt-think` and `nestjs-think` during specification, before any plan is written.
 
 ## Output
 
