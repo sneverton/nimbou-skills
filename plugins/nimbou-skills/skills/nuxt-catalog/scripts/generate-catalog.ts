@@ -1,5 +1,5 @@
 import { mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
-import { basename, dirname, join, relative, resolve } from 'node:path'
+import { dirname, join, relative, resolve } from 'node:path'
 import fg from 'fast-glob'
 import { parse } from '@vue/compiler-sfc'
 import ts from 'typescript'
@@ -157,8 +157,7 @@ function findDefinePropsCall(sourceFile: ts.SourceFile): ts.CallExpression | und
 function nuxtComponentName(filePath: string): string {
   const componentsDir = join(projectRoot, 'components')
   const relPath = relative(componentsDir, filePath).replace(/\.vue$/, '')
-  const baseName = basename(relPath)
-  return baseName
+  return relPath
     .split(/[/\\]/)
     .flatMap((part) => part.split('-'))
     .map((segment) => segment.charAt(0).toUpperCase() + segment.slice(1))
