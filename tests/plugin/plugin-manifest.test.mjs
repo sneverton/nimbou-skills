@@ -181,7 +181,10 @@ test('README documents backend-first core and prefixed NestJS and Nuxt skills', 
   assert.match(readme, /merge-pr/)
   assert.match(readme, /\.codex\/skills\//)
   assert.match(readme, /e2e-test-quality/)
-  assert.match(readme, /fullstack-think/)
+  assert.match(
+    readme,
+    /### Core workflow skills[\s\S]*- `fullstack-think`[\s\S]*?### NestJS-specific skills/s,
+  )
   assert.match(readme, /nestjs-think/)
   assert.match(readme, /nestjs-plan/)
   assert.match(readme, /nestjs-test/)
@@ -192,6 +195,9 @@ test('README documents backend-first core and prefixed NestJS and Nuxt skills', 
   assert.match(readme, /nuxt-test/)
   assert.match(readme, /nuxt-debug/)
   assert.match(readme, /mixed-request entry point/i)
+  assert.match(readme, /closes the shared specification first/i)
+  assert.match(readme, /dispatches `nuxt-plan` and `nestjs-plan` in parallel/i)
+  assert.match(readme, /reconciles the result before execution/i)
   assert.match(readme, /frontend-only requests stay in `nuxt-think`/i)
   assert.match(readme, /backend-only requests stay in `nestjs-think`/i)
   assert.doesNotMatch(readme, /nestjs-audit-http-tests/)
