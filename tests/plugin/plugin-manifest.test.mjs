@@ -6,6 +6,10 @@ import { fileURLToPath } from 'node:url'
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..')
 
+function read(relativePath) {
+  return readFileSync(resolve(root, relativePath), 'utf8')
+}
+
 test('skills tree ships the unified skill set directly', () => {
   const skillsRoot = resolve(root, 'plugins/nimbou-skills/skills')
   const shippedSkills = readdirSync(skillsRoot, { withFileTypes: true })
@@ -56,6 +60,25 @@ test('command and agent scaffolds exist for guided feature development', () => {
   for (const file of files) {
     assert.equal(existsSync(resolve(root, file)), true, `${file} should exist`)
   }
+})
+
+test('shared specification skills document the domain-centered layout', () => {
+  const files = [
+    'plugins/nimbou-skills/skills/mapping-domain-states/SKILL.md',
+    'plugins/nimbou-skills/skills/generating-gherkin-specs/SKILL.md',
+  ]
+
+  for (const file of files) {
+    assert.equal(existsSync(resolve(root, file)), true, `${file} should exist`)
+  }
+
+  const domainSkill = read('plugins/nimbou-skills/skills/mapping-domain-states/SKILL.md')
+  const gherkinSkill = read('plugins/nimbou-skills/skills/generating-gherkin-specs/SKILL.md')
+
+  assert.match(domainSkill, /docs\/domain\/<domain>\/domain\.md/)
+  assert.match(domainSkill, /domain-centered/i)
+  assert.match(gherkinSkill, /docs\/domain\/<domain>\/\*\.feature/)
+  assert.match(gherkinSkill, /shared specification layer/i)
 })
 
 test('README documents backend-first core and prefixed NestJS and Nuxt skills', () => {

@@ -1,9 +1,14 @@
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { existsSync, readFileSync } from 'node:fs'
+import { existsSync, readFileSync, readdirSync } from 'node:fs'
 import { resolve } from 'node:path'
 
 const root = resolve(import.meta.dirname, '..', '..')
+const skillsRoot = resolve(root, 'plugins/nimbou-skills/skills')
+const shippedSkills = readdirSync(skillsRoot, { withFileTypes: true })
+  .filter((entry) => entry.isDirectory())
+  .map((entry) => entry.name)
+  .sort()
 
 function read(relativePath) {
   return readFileSync(resolve(root, relativePath), 'utf8')
@@ -82,6 +87,11 @@ test('nuxt think and plan skills explain catalog-aware design and execution topo
   assert.match(plan, /validate -> generate/)
   assert.match(plan, /wait for user approval/i)
   assert.match(plan, /executing-plans/)
+})
+
+test('shared specification skills are shipped with the tree', () => {
+  assert.ok(shippedSkills.includes('mapping-domain-states'))
+  assert.ok(shippedSkills.includes('generating-gherkin-specs'))
 })
 
 test('core and audit skills document their new guardrails', () => {
