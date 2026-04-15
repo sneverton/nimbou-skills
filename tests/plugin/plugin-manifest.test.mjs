@@ -110,6 +110,32 @@ test('specification skills and think orchestrators document the domain-centered 
   assert.match(nestjsThink, /`docs\/domain\/<domain>\/\*\.feature` approved\./i)
 })
 
+test('platform test skills consume approved Gherkin and route backend audits', () => {
+  const files = [
+    'plugins/nimbou-skills/skills/nuxt-test/SKILL.md',
+    'plugins/nimbou-skills/skills/nestjs-test/SKILL.md',
+  ]
+
+  for (const file of files) {
+    assert.equal(existsSync(resolve(root, file)), true, `${file} should exist`)
+  }
+
+  const nuxtTest = read('plugins/nimbou-skills/skills/nuxt-test/SKILL.md')
+  const nestjsTest = read('plugins/nimbou-skills/skills/nestjs-test/SKILL.md')
+
+  assert.match(nuxtTest, /turn approved Gherkin into bounded Playwright coverage/i)
+  assert.match(nuxtTest, /approved Gherkin/i)
+  assert.match(nuxtTest, /docs\/domain\/<domain>\/\*\.feature/)
+  assert.match(nuxtTest, /explicit gap report/i)
+  assert.match(nestjsTest, /^---\nname: nestjs-test/m)
+  assert.match(nestjsTest, /approved Gherkin/i)
+  assert.match(nestjsTest, /gherkin-driven mode/i)
+  assert.match(nestjsTest, /audit mode/i)
+  assert.match(nestjsTest, /stabilize mode/i)
+  assert.match(nestjsTest, /nestjs-http-test-auditor/i)
+  assert.match(nestjsTest, /prisma-repository-test-auditor/i)
+})
+
 test('README documents backend-first core and prefixed NestJS and Nuxt skills', () => {
   const readme = readFileSync(resolve(root, 'README.md'), 'utf8')
   const install = readFileSync(resolve(root, 'install.sh'), 'utf8')

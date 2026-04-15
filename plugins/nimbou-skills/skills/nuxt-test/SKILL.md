@@ -16,10 +16,19 @@ Map a bounded route, page, or feature slice, run only its relevant E2E coverage,
 Use this skill when the main job is:
 - make a flaky bounded suite trustworthy
 - add coverage for a critical user flow
+- turn approved Gherkin into bounded Playwright coverage
 - separate test defects from product defects
 - tighten auth, seed, reset, and wait assumptions
 
 Do not use this skill as the default browser debugging workflow. Use `nimbou-skills:nuxt-debug` when the main job is to investigate a frontend bug live in the browser before deciding how to test it.
+
+## Gherkin-Driven Coverage
+
+When `docs/domain/<domain>/*.feature` exists and is approved, treat it as the canonical source for missing or stale Playwright coverage.
+
+- convert each approved `Scenario` into one bounded Playwright test or one explicit gap report
+- do not invent scenarios outside the approved `.feature` files
+- keep selectors, waits, auth setup, and visible assertions aligned with the existing `nuxt-test` rules
 
 ## Workflow
 
