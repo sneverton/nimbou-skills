@@ -19,16 +19,33 @@ Before planning:
 3. use `generating-gherkin-specs` to create or update `docs/domain/<domain>/*.feature`
 4. present the domain and Gherkin changes for approval
 5. close the shared HTTP, event, or state contract that both plans need
-6. do not advance with stale domain or Gherkin artifacts
+6. close the frontend design decisions that `nuxt-plan` expects
+7. close the backend design decisions that `nestjs-plan` expects
+8. do not advance with stale domain or Gherkin artifacts
+
+Frontend design decisions to close:
+
+- route or page ownership
+- reusable components and local state
+- loading, empty, error, and success behavior
+- responsive behavior
+
+Backend design decisions to close:
+
+- module and use-case boundaries
+- transport and contract shape
+- repository ownership and Prisma boundaries
+- validation and persistence behavior
 
 ## Planning Flow
 
 1. confirm the request is genuinely mixed
 2. close shared specification and contract decisions
-3. split the work into a frontend slice and a backend slice
-4. dispatch `nuxt-plan` and `nestjs-plan` in parallel
-5. reconcile the plans for contract, naming, ordering, and dependency alignment
-6. block execution if the two plans disagree on the same feature contract
+3. close the platform-specific design decisions listed above
+4. split the work into a frontend slice and a backend slice
+5. dispatch `nuxt-plan` and `nestjs-plan` in parallel
+6. reconcile the plans for contract, naming, ordering, and dependency alignment
+7. block execution if the two plans disagree on the same feature contract
 
 ## Reconciliation Output
 

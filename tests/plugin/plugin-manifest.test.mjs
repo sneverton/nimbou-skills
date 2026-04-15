@@ -117,6 +117,8 @@ test('specification skills and think orchestrators document the domain-centered 
   assert.match(fullstackThink, /mixed frontend and backend requests/i)
   assert.match(fullstackThink, /use `mapping-domain-states`/i)
   assert.match(fullstackThink, /use `generating-gherkin-specs`/i)
+  assert.match(fullstackThink, /close the frontend design decisions that `nuxt-plan` expects/i)
+  assert.match(fullstackThink, /close the backend design decisions that `nestjs-plan` expects/i)
   assert.match(fullstackThink, /`nuxt-plan` and `nestjs-plan` in parallel/i)
   assert.match(fullstackThink, /reconcile/i)
 })
