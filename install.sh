@@ -9,6 +9,8 @@ PLUGIN_NAME="nimbou-skills"
 CODEX_SKILLS_DIR="$HOME/.agents/skills"
 CODEX_SKILL_ROOT="$CODEX_SKILLS_DIR/$PLUGIN_NAME"
 CODEX_WRAPPER_SCRIPT="$REPO_ROOT/scripts/setup-codex-full-wrapper.sh"
+PLUGIN_MANIFEST="$REPO_ROOT/plugins/$PLUGIN_NAME/.claude-plugin/plugin.json"
+PLUGIN_ID="$PLUGIN_NAME@$PLUGIN_NAME"
 NODE_MIN_MAJOR=20
 
 require_cmd() {
@@ -42,6 +44,31 @@ link_skill_tree() {
   done
 }
 
+read_plugin_version() {
+  node --input-type=module -e '
+    import { readFileSync } from "node:fs";
+
+    const manifestPath = process.argv[1];
+    const manifest = JSON.parse(readFileSync(manifestPath, "utf8"));
+    process.stdout.write(`${manifest.version}\n`);
+  ' "$PLUGIN_MANIFEST"
+}
+
+get_installed_plugin_version() {
+  claude plugin list --json | node --input-type=module -e '
+    import fs from "node:fs";
+
+    const [pluginId, scope] = process.argv.slice(1);
+    const plugins = JSON.parse(fs.readFileSync(0, "utf8"));
+    const match = plugins.find((plugin) => plugin.id === pluginId && plugin.scope === scope)
+      ?? plugins.find((plugin) => plugin.id === pluginId);
+
+    if (match?.version) {
+      process.stdout.write(`${match.version}\n`);
+    }
+  ' "$PLUGIN_ID" "user"
+}
+
 require_cmd node
 require_cmd claude
 
@@ -53,6 +80,9 @@ fi
 
 echo "Installing local dependencies in $REPO_ROOT..."
 pnpm install --dir "$REPO_ROOT"
+
+EXPECTED_PLUGIN_VERSION="$(read_plugin_version)"
+INSTALLED_PLUGIN_VERSION="$(get_installed_plugin_version)"
 
 # Codex support
 rm -rf "$CODEX_SKILL_ROOT"
@@ -66,10 +96,14 @@ claude plugin marketplace add "$MARKETPLACE_REPO" 2>/dev/null \
   && echo "Marketplace added: $MARKETPLACE_REPO" \
   || echo "Marketplace already registered or updated."
 
-echo "Installing Claude Code plugin..."
-claude plugin install "$PLUGIN_NAME" --scope user 2>/dev/null \
-  && echo "Plugin installed: $PLUGIN_NAME" \
-  || echo "Plugin already installed."
+if [ "$INSTALLED_PLUGIN_VERSION" = "$EXPECTED_PLUGIN_VERSION" ]; then
+  echo "Claude Code plugin already installed at version $INSTALLED_PLUGIN_VERSION; skipping reinstall."
+else
+  echo "Installing Claude Code plugin version $EXPECTED_PLUGIN_VERSION..."
+  claude plugin install "$PLUGIN_NAME" --scope user 2>/dev/null \
+    && echo "Plugin installed: $PLUGIN_NAME@$EXPECTED_PLUGIN_VERSION" \
+    || echo "Plugin already installed or updated."
+fi
 
 # nb-catalog CLI
 echo "Linking nb-catalog globally..."

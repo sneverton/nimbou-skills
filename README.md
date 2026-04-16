@@ -69,6 +69,7 @@ cd /var/www/nimbou-skills
 The bootstrap script:
 - runs `pnpm install`
 - registers and installs the Claude Code plugin
+- compares the installed Claude Code plugin version against `plugins/nimbou-skills/.claude-plugin/plugin.json` and skips reinstall when it already matches
 - links shared skills plus `.codex/skills/` into `~/.agents/skills/nimbou-skills`
 - runs `npm link` for `nb-catalog`
 - creates `~/.local/bin/codex-full` when missing, wired to `codex --dangerously-bypass-approvals-and-sandbox`
