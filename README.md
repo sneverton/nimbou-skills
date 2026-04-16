@@ -51,6 +51,7 @@ This fork consolidates:
 - `plugins/nimbou-skills/agents/` — auxiliary review and auditing agents
 - `plugins/nimbou-skills/commands/` — Claude command entrypoints such as `/feature-dev`, `/design-md`, and `/merge-pr`
 - `.codex/skills/` — Codex-only mirrors for the Claude command workflows
+- `.agents/plugins/marketplace.json` — repo-scoped Codex marketplace catalog
 - `.claude-plugin/marketplace.json` — marketplace manifest for `claude plugin marketplace add`
 - `docs/plans/` — generated plans and design artifacts
 - `tests/` — skill tree, install flow, and catalog coverage
@@ -70,9 +71,12 @@ The bootstrap script:
 - runs `pnpm install`
 - registers and installs the Claude Code plugin
 - compares the installed Claude Code plugin version against `plugins/nimbou-skills/.claude-plugin/plugin.json` and skips reinstall when it already matches
-- links shared skills plus `.codex/skills/` into `~/.agents/skills/nimbou-skills`
+- requires Codex `rust-v0.121.0+` or newer for marketplace installation
+- registers the Codex marketplace from `.agents/plugins/marketplace.json`
 - runs `npm link` for `nb-catalog`
 - creates `~/.local/bin/codex-full` when missing, wired to `codex --dangerously-bypass-approvals-and-sandbox`
+
+If your installed Codex build does not support `codex marketplace add`, upgrade to `rust-v0.121.0+` or newer and rerun `./install.sh`.
 
 After the bootstrap finishes, restart Claude Code so it picks up the new plugin.
 

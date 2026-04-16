@@ -48,6 +48,12 @@ test('nuxt catalog skill files exist and describe validate-then-generate mode', 
   assert.doesNotMatch(skill, /(^|\n)\s*catalog validate/m)
 })
 
+test('distribution manifests exist for Claude and Codex packaging', () => {
+  assert.equal(existsSync(resolve(root, '.claude-plugin/marketplace.json')), true)
+  assert.equal(existsSync(resolve(root, 'plugins/nimbou-skills/.codex-plugin/plugin.json')), true)
+  assert.equal(existsSync(resolve(root, '.agents/plugins/marketplace.json')), true)
+})
+
 test('nuxt think and plan skills explain catalog-aware design and execution topology', () => {
   const files = [
     'plugins/nimbou-skills/skills/nuxt-think/SKILL.md',
