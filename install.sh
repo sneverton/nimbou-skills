@@ -6,9 +6,11 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$SCRIPT_DIR"
 MARKETPLACE_REPO="sneverton/nimbou-skills"
 PLUGIN_NAME="nimbou-skills"
+COPILOT_PLUGIN_SOURCE="$REPO_ROOT/plugins/$PLUGIN_NAME"
 CODEX_WRAPPER_SCRIPT="$REPO_ROOT/scripts/setup-codex-full-wrapper.sh"
 CHROME_DEVTOOLS_WRAPPER_SCRIPT="$REPO_ROOT/scripts/setup-chrome-devtools-wrapper.sh"
 PLUGIN_MANIFEST="$REPO_ROOT/plugins/$PLUGIN_NAME/.claude-plugin/plugin.json"
+CODEX_MARKETPLACE_DIR="$REPO_ROOT"
 CODEX_MARKETPLACE_FILE="$REPO_ROOT/.agents/plugins/marketplace.json"
 PLUGIN_ID="$PLUGIN_NAME@$PLUGIN_NAME"
 NODE_MIN_MAJOR=20
@@ -45,6 +47,21 @@ get_installed_plugin_version() {
   ' "$PLUGIN_ID" "user"
 }
 
+get_installed_copilot_plugin_version() {
+  copilot plugin list | node --input-type=module -e '
+    import fs from "node:fs";
+
+    const pluginName = process.argv[1];
+    const lines = fs.readFileSync(0, "utf8").split(/\r?\n/);
+    const pattern = new RegExp(`^\\s*[•-]\\s*${pluginName}(?:@[^ ]+)?\\s+\\(v([^)]*)\\)`);
+    const match = lines.map((line) => line.match(pattern)).find(Boolean);
+
+    if (match?.[1]) {
+      process.stdout.write(`${match[1]}\n`);
+    }
+  ' "$PLUGIN_NAME"
+}
+
 require_codex_marketplace_support() {
   if ! command -v codex >/dev/null 2>&1; then
     echo "Codex CLI not found. Install Codex rust-v0.121.0+ or newer, then rerun install.sh." >&2
@@ -59,6 +76,7 @@ require_codex_marketplace_support() {
 
 require_cmd node
 require_cmd claude
+require_cmd copilot
 
 NODE_MAJOR="$(node -p "process.versions.node.split('.')[0]")"
 if [ "$NODE_MAJOR" -lt "$NODE_MIN_MAJOR" ]; then
@@ -73,9 +91,10 @@ pnpm install --dir "$REPO_ROOT"
 
 EXPECTED_PLUGIN_VERSION="$(read_plugin_version)"
 INSTALLED_PLUGIN_VERSION="$(get_installed_plugin_version)"
+INSTALLED_COPILOT_PLUGIN_VERSION="$(get_installed_copilot_plugin_version)"
 
-codex marketplace add "$CODEX_MARKETPLACE_FILE" \
-  && echo "Codex marketplace added: $CODEX_MARKETPLACE_FILE" \
+codex marketplace add "$CODEX_MARKETPLACE_DIR" \
+  && echo "Codex marketplace added: $CODEX_MARKETPLACE_DIR" \
   || {
     echo "Failed to register the Codex marketplace. Install Codex rust-v0.121.0+ or newer and rerun install.sh." >&2
     exit 1
@@ -96,9 +115,19 @@ else
     || echo "Plugin already installed or updated."
 fi
 
+# GitHub Copilot plugin
+if [ "$INSTALLED_COPILOT_PLUGIN_VERSION" = "$EXPECTED_PLUGIN_VERSION" ]; then
+  echo "Copilot plugin already installed at version $INSTALLED_COPILOT_PLUGIN_VERSION; skipping reinstall."
+else
+  echo "Installing Copilot plugin version $EXPECTED_PLUGIN_VERSION..."
+  copilot plugin install "$COPILOT_PLUGIN_SOURCE" \
+    && echo "Plugin installed: $PLUGIN_NAME@$EXPECTED_PLUGIN_VERSION" \
+    || echo "Plugin already installed or updated."
+fi
+
 # nb-catalog CLI
 echo "Linking nb-catalog globally..."
-sudo npm link
+npm_config_prefix="$HOME/.local" npm link
 
 if ! command -v nb-catalog >/dev/null 2>&1; then
   echo "nb-catalog was not found in PATH after linking." >&2
@@ -113,8 +142,9 @@ bash "$CHROME_DEVTOOLS_WRAPPER_SCRIPT"
 
 echo ""
 echo "Installation complete."
-echo "  Codex marketplace: $CODEX_MARKETPLACE_FILE"
+echo "  Codex marketplace: $CODEX_MARKETPLACE_DIR"
 echo "  Claude plugin: $PLUGIN_NAME@$MARKETPLACE_REPO"
+echo "  Copilot plugin:  $COPILOT_PLUGIN_SOURCE"
 echo "  CLI:           $(command -v nb-catalog)"
 echo "  Wrapper:       ${CODEX_WRAPPER_PATH:-$HOME/.local/bin/codex-full}"
 echo "  DevTools MCP:  ${CHROME_DEVTOOLS_MCP_WRAPPER_PATH:-$HOME/.local/bin/chrome-devtools-mcp-wayland}"

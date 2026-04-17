@@ -70,9 +70,10 @@ cd /var/www/nimbou-skills
 The bootstrap script:
 - runs `pnpm install`
 - registers and installs the Claude Code plugin
+- installs the same plugin into GitHub Copilot CLI from the local repo path
 - compares the installed Claude Code plugin version against `plugins/nimbou-skills/.claude-plugin/plugin.json` and skips reinstall when it already matches
 - requires Codex `rust-v0.121.0+` or newer for marketplace installation
-- registers the Codex marketplace from `.agents/plugins/marketplace.json`
+- registers the Codex marketplace from the repository root, backed by `.agents/plugins/marketplace.json`
 - runs `npm link` for `nb-catalog`
 - creates `~/.local/bin/codex-full` when missing, wired to `codex --dangerously-bypass-approvals-and-sandbox`
 - creates `~/.local/bin/chrome-devtools-mcp-wayland` and rewrites `~/.codex/config.toml` so the `chrome-devtools` MCP inherits the local X/Wayland session automatically
