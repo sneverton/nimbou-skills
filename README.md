@@ -75,10 +75,11 @@ The bootstrap script:
 - registers the Codex marketplace from `.agents/plugins/marketplace.json`
 - runs `npm link` for `nb-catalog`
 - creates `~/.local/bin/codex-full` when missing, wired to `codex --dangerously-bypass-approvals-and-sandbox`
+- creates `~/.local/bin/chrome-devtools-mcp-wayland` and rewrites `~/.codex/config.toml` so the `chrome-devtools` MCP inherits the local X/Wayland session automatically
 
 If your installed Codex build does not support `codex marketplace add`, upgrade to `rust-v0.121.0+` or newer and rerun `./install.sh`.
 
-After the bootstrap finishes, restart Claude Code so it picks up the new plugin.
+After the bootstrap finishes, restart Claude Code and Codex so they pick up the updated plugin and MCP configuration.
 
 ## Nuxt Catalog Workflow
 

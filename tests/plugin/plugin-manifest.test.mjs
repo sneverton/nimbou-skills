@@ -62,6 +62,7 @@ test('command and agent scaffolds exist for guided feature development', () => {
     '.codex/skills/feature-dev/SKILL.md',
     '.codex/skills/design-md/SKILL.md',
     '.codex/skills/merge-pr/SKILL.md',
+    'scripts/setup-chrome-devtools-wrapper.sh',
     'plugins/nimbou-skills/agents/code-explorer.md',
     'plugins/nimbou-skills/agents/code-architect.md',
     'plugins/nimbou-skills/agents/code-reviewer.md',
@@ -227,8 +228,12 @@ test('README documents backend-first core and prefixed NestJS and Nuxt skills', 
   assert.match(readme, /Codex `rust-v0\.121\.0\+` or newer/i)
   assert.match(readme, /does not support `codex marketplace add`/i)
   assert.match(readme, /runs `npm link` for `nb-catalog`/)
+  assert.match(readme, /chrome-devtools-mcp-wayland/)
+  assert.match(readme, /rewrites `~\/\.codex\/config\.toml`/)
   assert.match(install, /setup-codex-full-wrapper\.sh/)
+  assert.match(install, /setup-chrome-devtools-wrapper\.sh/)
   assert.match(install, /CODEX_WRAPPER_PATH/)
+  assert.match(install, /CHROME_DEVTOOLS_MCP_WRAPPER_PATH/)
   assert.match(install, /\.claude-plugin\/plugin\.json/)
   assert.match(install, /claude plugin list --json/)
   assert.match(install, /Claude Code plugin already installed at version/)
