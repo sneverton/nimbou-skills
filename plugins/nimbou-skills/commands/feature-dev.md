@@ -69,9 +69,9 @@ Actions:
 4. Route to the local skills:
    - backend-only: `nestjs-think` then `nestjs-plan`
    - frontend-only: `nuxt-think` then `nuxt-plan`
-   - fullstack: `fullstack-think`, then `nuxt-plan` and `nestjs-plan` in parallel after the shared contract is closed by `fullstack-think`
+   - fullstack: invoke the `fullstack-think` skill — it closes the shared contract, then invokes `nestjs-plan` followed by `nuxt-plan` sequentially
 5. Hard rules:
-   - do not dispatch planning until the shared contract is closed by `fullstack-think`
+   - do not advance to planning until the shared contract is closed by `fullstack-think`
    - do not let backend discovery redesign frontend UI structure
    - do not let frontend discovery redefine backend rules or persistence semantics
 
