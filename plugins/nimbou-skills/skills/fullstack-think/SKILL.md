@@ -1,6 +1,6 @@
 ---
 name: fullstack-think
-description: Use for mixed frontend and backend requests. Close shared domain and integration decisions once, then dispatch `nuxt-plan` and `nestjs-plan` in parallel and reconcile the resulting plans.
+description: Use for mixed frontend and backend requests. Close shared domain and integration decisions once, then invoke `nestjs-plan` (defines the contract) followed by `nuxt-plan` (consumes the contract), and reconcile the resulting plans.
 ---
 
 # Fullstack Think
@@ -43,9 +43,10 @@ Backend design decisions to close:
 2. close shared specification and contract decisions
 3. close the platform-specific design decisions listed above
 4. split the work into a frontend slice and a backend slice
-5. dispatch `nuxt-plan` and `nestjs-plan` in parallel
-6. reconcile the plans for contract, naming, ordering, and dependency alignment
-7. block execution if the two plans disagree on the same feature contract
+5. invoke the `nestjs-plan` skill first (via Skill tool) — it defines the shared API contract, types, and naming
+6. invoke the `nuxt-plan` skill next (via Skill tool) — it consumes the contract closed in step 5
+7. reconcile the plans for ordering and cross-plan dependency alignment
+8. block execution if the two plans disagree on the same feature contract
 
 ## Reconciliation Output
 
