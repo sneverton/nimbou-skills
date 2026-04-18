@@ -1,6 +1,6 @@
 # nimbou-skills
 
-`nimbou-skills` is the canonical skill library for `Claude Code` and `Codex`. It ships a backend-first core for `NestJS`, `Prisma`, `Clean Architecture`, and `SOLID`, plus Nuxt/Vuetify skills and Codex-only mirrors for Claude command workflows under `.codex/skills/`.
+`nimbou-skills` is the canonical skill library for `Claude Code`, `Codex`, and `VS Code Copilot Chat`. It ships a backend-first core for `NestJS`, `Prisma`, `Clean Architecture`, and `SOLID`, plus Nuxt/Vuetify skills and Codex-only mirrors for Claude command workflows under `.codex/skills/`.
 
 This fork consolidates:
 - backend-first workflow skills
@@ -11,6 +11,7 @@ This fork consolidates:
 ## Skill Model
 
 - Supported harnesses: `Claude Code` and `Codex`
+- VS Code integration: shared skills in `~/.copilot/skills` and agents in `~/.config/Code/User/prompts`
 - Default architecture bias: `NestJS + Prisma + Clean Architecture + SOLID`
 - Use `nestjs-*` for backend-first work and `nuxt-*` for Nuxt-specific work
 
@@ -71,6 +72,8 @@ The bootstrap script:
 - runs `pnpm install`
 - registers and installs the Claude Code plugin
 - installs the same plugin into GitHub Copilot CLI from the local repo path
+- links the shared skills and Codex command mirrors into `~/.copilot/skills` for VS Code Copilot Chat
+- links the review and auditing agents into `~/.config/Code/User/prompts` and `~/.config/Code/User/prompts/agents`
 - compares the installed Claude Code plugin version against `plugins/nimbou-skills/.claude-plugin/plugin.json` and skips reinstall when it already matches
 - requires Codex `rust-v0.121.0+` or newer for marketplace installation
 - registers the Codex marketplace from the repository root, backed by `.agents/plugins/marketplace.json`
@@ -80,7 +83,7 @@ The bootstrap script:
 
 If your installed Codex build does not support `codex marketplace add`, upgrade to `rust-v0.121.0+` or newer and rerun `./install.sh`.
 
-After the bootstrap finishes, restart Claude Code and Codex so they pick up the updated plugin and MCP configuration.
+After the bootstrap finishes, restart Claude Code and Codex, then reload VS Code so VS Code Copilot Chat picks up the updated skills and agents.
 
 ## Nuxt Catalog Workflow
 
