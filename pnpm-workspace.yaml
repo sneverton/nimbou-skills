@@ -1,0 +1,6 @@
+# pnpm v10+ blocks dependency build scripts by default and exits non-zero until
+# they are explicitly approved. tsx depends on esbuild, whose install script
+# links the platform binary, so it must be allowed for `pnpm install` to succeed
+# (and therefore for install.sh / install.ps1 to complete).
+allowBuilds:
+  esbuild: true

@@ -346,3 +346,31 @@ test('README documents backend-first core and prefixed NestJS and Nuxt skills', 
   assert.equal(existsSync(resolve(root, 'scripts/setup-vscode-copilot-chat.sh')), true)
   assert.equal(existsSync(resolve(root, 'LICENSE')), true)
 })
+
+test('Windows PowerShell installer mirrors the bootstrap flow', () => {
+  assert.equal(existsSync(resolve(root, 'install.ps1')), true)
+  assert.equal(existsSync(resolve(root, 'scripts/setup-codex-skills.ps1')), true)
+  assert.equal(existsSync(resolve(root, 'scripts/setup-vscode-copilot-chat.ps1')), true)
+  assert.equal(existsSync(resolve(root, 'scripts/setup-codex-full-wrapper.ps1')), true)
+  assert.equal(existsSync(resolve(root, 'scripts/setup-python-docx.ps1')), true)
+
+  const install = read('install.ps1')
+  assert.match(install, /setup-codex-full-wrapper\.ps1/)
+  assert.match(install, /setup-vscode-copilot-chat\.ps1/)
+  assert.match(install, /setup-codex-skills\.ps1/)
+  assert.match(install, /setup-python-docx\.ps1/)
+  assert.match(install, /@google\/design\.md/)
+  assert.match(install, /claude plugin list --json/)
+  assert.match(install, /codex plugin marketplace/i)
+  // The Wayland/X11 DevTools wrapper is Linux-only and must not be ported.
+  assert.doesNotMatch(install, /setup-chrome-devtools-wrapper/)
+  assert.doesNotMatch(install, /chrome-devtools-mcp-wayland/)
+  assert.equal(existsSync(resolve(root, 'scripts/setup-chrome-devtools-wrapper.ps1')), false)
+
+  const codexWrapper = read('scripts/setup-codex-full-wrapper.ps1')
+  assert.match(codexWrapper, /dangerously-bypass-approvals-and-sandbox/)
+
+  const readme = read('README.md')
+  assert.match(readme, /install\.ps1/)
+  assert.match(readme, /Installation \(Windows \/ PowerShell\)/)
+})

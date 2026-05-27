@@ -95,6 +95,26 @@ If your installed Codex build does not support `codex plugin marketplace add`, u
 After the bootstrap finishes, restart Claude Code and Codex, then reload VS Code so VS Code Copilot Chat picks up the updated skills and agents.
 If Codex already had a session open, close it fully and start a new one so it reloads `~/.codex/skills`.
 
+### Installation (Windows / PowerShell)
+
+On Windows, run the PowerShell bootstrap instead of `install.sh` (PowerShell 7+ required):
+
+```powershell
+cd C:\www
+git clone <your-fork-url> nimbou-skills
+cd C:\www\nimbou-skills
+pwsh -File .\install.ps1
+```
+
+`install.ps1` mirrors the Linux flow with these Windows-specific differences:
+- installs `nb-catalog` and `@google/design.md` under the npm prefix `%USERPROFILE%\.local`, and adds that directory to your user `PATH`
+- links the shared skills and Codex command mirrors into `%USERPROFILE%\.codex\skills` and `%USERPROFILE%\.copilot\skills` as directory junctions (no administrator or Developer Mode required)
+- copies the review and auditing agents into `%APPDATA%\Code\User\prompts` and `%APPDATA%\Code\User\prompts\agents` (Windows cannot junction individual files)
+- creates `%USERPROFILE%\.local\codex-full.cmd`, wired to `codex --dangerously-bypass-approvals-and-sandbox`
+- skips the `chrome-devtools-mcp-wayland` wrapper and the `config.toml` rewrite, which are specific to Linux Wayland/X11 sessions
+
+After it finishes, restart Claude Code, Codex, and VS Code, and open a new terminal so the updated `PATH` takes effect.
+
 ## Nuxt Catalog Workflow
 
 The Nuxt domain uses a shared machine-level catalog workflow:
